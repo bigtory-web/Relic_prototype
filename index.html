@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
 <head>
   <meta charset="utf-8">
@@ -57,7 +57,7 @@
       height: 720px;
       padding: 20px;
       display: grid;
-      grid-template-columns: 330px 1fr;
+      grid-template-columns: 388px 306px 1fr;
       gap: 12px;
       background: var(--bg);
     }
@@ -88,7 +88,7 @@
       padding-right: 4px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 124px;
+      grid-auto-rows: 138px;
       gap: 8px;
       overflow-y: auto;
     }
@@ -114,7 +114,7 @@
 
     .relic-card {
       min-width: 0;
-      padding: 8px;
+      padding: 10px 8px 9px;
       border: 1px solid var(--line-soft);
       border-radius: 10px;
       background: var(--panel-soft);
@@ -145,23 +145,23 @@
 
     .icon-box {
       position: relative;
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 7px;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 8px;
       display: grid;
       place-items: center;
       border-radius: 10px;
       color: #1f2621;
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 700;
     }
 
     .icon-box.small {
-      width: 84px;
-      height: 76px;
-      margin-bottom: 6px;
+      width: 82px;
+      height: 78px;
+      margin-bottom: 0;
       border-radius: 12px;
-      font-size: 38px;
+      font-size: 36px;
     }
 
     .icon-box.lock-icon {
@@ -176,18 +176,18 @@
 
     .level-chip {
       position: absolute;
-      right: 5px;
-      bottom: 5px;
-      min-width: 24px;
-      height: 19px;
-      padding: 0 5px;
+      right: 4px;
+      bottom: 4px;
+      min-width: 22px;
+      height: 18px;
+      padding: 0 4px;
       display: grid;
       place-items: center;
       border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 999px;
       background: rgba(28, 29, 26, 0.82);
       color: #eeeae1;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 700;
       line-height: 1;
       text-shadow: none;
@@ -197,26 +197,26 @@
       position: absolute;
       left: 4px;
       bottom: 4px;
-      min-width: 28px;
+      min-width: 26px;
       height: 18px;
-      padding: 0 5px;
+      padding: 0 4px;
       display: grid;
       place-items: center;
       border-radius: 999px;
       background: rgba(37, 38, 34, 0.78);
       color: var(--gold);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       line-height: 1;
     }
 
     .relic-name {
       display: block;
-      min-height: 17px;
+      min-height: 18px;
       overflow: hidden;
       color: #eeeae5;
-      font-size: 13px;
-      font-weight: 500;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 1.25;
       text-align: center;
       text-overflow: ellipsis;
@@ -224,24 +224,24 @@
     }
 
     .dots {
-      height: 18px;
-      margin-top: 5px;
+      height: 22px;
+      margin-top: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 5px;
     }
 
     .dot {
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
       display: grid;
       place-items: center;
       border: 1px solid #4b4e4a;
       border-radius: 50%;
       color: #fff;
-      font-size: 8px;
-      font-weight: 600;
+      font-size: 10px;
+      font-weight: 700;
       line-height: 1;
     }
 
@@ -254,43 +254,98 @@
       background: #22231f;
     }
 
-    .right {
-      height: 680px;
-      display: grid;
-      grid-template-rows: 262px 1fr;
-      gap: 12px;
-    }
-
     .equip-panel {
+      height: 680px;
       padding: 14px 16px;
       display: grid;
-      grid-template-rows: auto 120px 1fr;
+      grid-template-rows: auto 360px 1fr;
       gap: 10px;
       overflow: hidden;
     }
 
     .slot-row {
-      height: 120px;
+      height: 360px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-      align-items: start;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, 170px);
+      gap: 10px;
+      align-content: start;
     }
 
     .slot-card {
       min-width: 0;
-      height: 120px;
-      padding: 8px 10px 6px;
-      border: 1px solid transparent;
+      height: 170px;
+      padding: 10px;
+      border: 1px solid #4b4e49;
       border-radius: 12px;
-      background: transparent;
+      background: var(--panel-soft);
       cursor: pointer;
-      text-align: center;
+      text-align: left;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .slot-card.locked {
       cursor: default;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .slot-main {
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+    }
+
+    .slot-name {
+      overflow: hidden;
+      color: #f1ede4;
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .slot-synergy-box {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #5a5d57;
+      border-radius: 10px;
+      background: rgba(20, 21, 19, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .slot-dot {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #4b4e4a;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    .slot-dot.filled {
+      border-color: #49c6a1;
+      background: #36b58e;
+    }
+
+    .slot-dot.empty {
+      background: #22231f;
     }
 
     .star-row {
@@ -317,79 +372,86 @@
       min-height: 0;
       padding-top: 8px;
       border-top: 1px solid #3f423d;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
       gap: 8px;
     }
 
-    .summary-card {
-      min-width: 0;
-      padding: 7px 8px;
-      border: 1px solid #454943;
-      border-radius: 8px;
-      background: var(--panel-soft);
-      cursor: pointer;
-      text-align: left;
-    }
-
-    .summary-card:hover,
-    .summary-card.selected {
-      border-color: var(--accent-soft);
-      background: #30322f;
-    }
-
-    .summary-name {
-      display: block;
-      overflow: hidden;
-      color: #e8e4da;
-      font-size: 12px;
-      font-weight: 600;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .summary-synergies {
-      margin-top: 5px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-
     .summary-token {
-      max-width: 100%;
-      height: 20px;
-      padding: 0 6px;
+      height: 28px;
+      padding: 0 10px;
       display: inline-flex;
       align-items: center;
-      gap: 3px;
+      gap: 6px;
       border-radius: 999px;
       background: #363832;
-      color: #d8d4ca;
-      font-size: 11px;
+      color: #ede8de;
+      font-size: 13px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
-    .summary-token strong {
-      color: #f2eee5;
-      font-weight: 600;
+    .summary-count {
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(15, 16, 14, 0.35);
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .detail-panel {
+      height: 680px;
       min-height: 0;
       padding: 16px;
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto 256px 188px auto;
       gap: 12px;
     }
 
     .detail-header {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
     }
 
-    .detail-title {
+    .detail-title-wrap {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .title-icon .icon-box {
+      width: 92px;
+      height: 92px;
+      margin: 0;
+      font-size: 54px;
+      border-radius: 18px;
+    }
+
+    .detail-title-copy {
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .detail-title-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .detail-title-name {
       margin: 0;
       font-size: 20px;
       font-weight: 700;
@@ -422,7 +484,25 @@
     .grade-badge.N { background: #eeeeea; color: #6c675f; }
 
     .stat-block {
+      height: 256px;
       display: grid;
+      grid-template-rows: 172px 72px;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .stat-section {
+      min-height: 0;
+      display: grid;
+      align-content: start;
+      gap: 9px;
+    }
+
+    .owned-section {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto;
+      align-content: start;
       gap: 9px;
     }
 
@@ -457,6 +537,15 @@
       font-weight: 600;
     }
 
+    .synergy-section {
+      height: 188px;
+      min-height: 188px;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 8px;
+      align-content: start;
+    }
+
     .point-total {
       color: #c9c5bb;
       font-size: 16px;
@@ -466,18 +555,23 @@
     .synergy-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
+      gap: 8px;
+      align-content: start;
     }
 
     .synergy-slot {
       min-width: 0;
-      height: 96px;
-      padding: 9px;
+      height: 98px;
+      padding: 8px 6px;
       border: 1px solid #676a64;
       border-radius: 10px;
       background: var(--panel);
       cursor: pointer;
       text-align: center;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 8px;
     }
 
     .synergy-slot.empty {
@@ -499,24 +593,19 @@
     }
 
     .synergy-slot .synergy-icon {
-      width: 42px;
-      height: 42px;
-      font-size: 24px;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      font-size: 22px;
     }
 
     .synergy-name {
       overflow: hidden;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
+      line-height: 1.2;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .synergy-meta {
-      margin-top: 5px;
-      color: #bebbb3;
-      font-size: 12px;
-      font-weight: 400;
     }
 
     .plus {
@@ -617,48 +706,133 @@
     }
 
     .synergy-list {
-      max-height: 488px;
       margin-top: 12px;
-      padding-right: 4px;
       display: grid;
-      gap: 8px;
-      overflow-y: auto;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
     }
 
-    .synergy-option {
-      min-height: 142px;
-      padding: 12px;
+    .synergy-icon-grid {
       display: grid;
-      grid-template-columns: 46px 1fr 92px;
-      gap: 12px;
-      align-items: start;
-      border: 1px solid #4d504b;
-      border-radius: 10px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .synergy-pick {
+      position: relative;
+      height: 74px;
+      padding: 8px 6px;
+      border: 1px solid #50534d;
+      border-radius: 12px;
       background: var(--panel-soft);
       cursor: pointer;
-      text-align: left;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 6px;
     }
 
-    .synergy-option.selected {
+    .synergy-pick:hover:not(:disabled) {
+      border-color: #6b7069;
+      background: #30322f;
+    }
+
+    .synergy-pick.preview {
       border-color: var(--accent-soft);
       outline: 1px solid var(--accent);
     }
 
-    .synergy-option:disabled {
+    .synergy-pick.applied::after {
+      content: "적용";
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      height: 16px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: rgba(29, 158, 117, 0.18);
+      color: #dff8ef;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 16px;
+    }
+
+    .synergy-pick:disabled {
       cursor: default;
-      opacity: 0.46;
+      opacity: 0.42;
+    }
+
+    .synergy-pick .synergy-icon {
+      width: 34px;
+      height: 34px;
+      margin: 0;
+      font-size: 19px;
+    }
+
+    .pick-name {
+      overflow: hidden;
+      max-width: 100%;
+      color: #d9d5cb;
+      font-size: 12px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .synergy-preview {
+      min-height: 236px;
+      padding: 14px;
+      border: 1px solid #4d504b;
+      border-radius: 12px;
+      background: var(--panel-soft);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: 12px;
+    }
+
+    .preview-head {
+      display: grid;
+      grid-template-columns: 52px 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .preview-head .synergy-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .preview-title {
+      min-width: 0;
+      display: grid;
+      gap: 6px;
     }
 
     .option-title {
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .preview-cost {
+      color: #f1eee5;
       font-size: 15px;
-      font-weight: 600;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .option-desc {
+      margin: 0;
+      color: #bbb7af;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     .stage-list {
-      margin-top: 8px;
       display: grid;
       gap: 4px;
     }
@@ -688,25 +862,15 @@
       font-weight: 600;
     }
 
-    .option-desc {
-      margin-top: 5px;
-      color: #bbb7af;
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .cost {
-      color: #f1eee5;
-      font-size: 15px;
-      font-weight: 600;
-      white-space: nowrap;
-      text-align: right;
-    }
-
     .cost-note {
-      margin-top: 8px;
       color: #9f9b92;
       font-size: 12px;
+    }
+
+    .modal-actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
 
     .tag.rare { background: #faece7; color: #993c1d; }
@@ -737,35 +901,38 @@
       <div class="inventory-grid" id="inventoryGrid"></div>
     </section>
 
-    <section class="right">
-      <section class="panel equip-panel" aria-label="장착 슬롯">
-        <h2 class="panel-title">장착 슬롯</h2>
-        <div class="slot-row" id="slotRow"></div>
-        <div class="equip-summary" id="equipSummary" aria-label="장착 시너지 요약"></div>
-      </section>
+    <section class="panel equip-panel" aria-label="장착 슬롯">
+      <h2 class="panel-title">장착 슬롯</h2>
+      <div class="slot-row" id="slotRow"></div>
+      <div class="equip-summary" id="equipSummary" aria-label="장착 시너지 요약"></div>
+    </section>
 
-      <section class="panel detail-panel" aria-label="유물 상세 정보">
-        <div class="detail-header">
-          <h2 class="detail-title" id="detailName">불꽃의 심장</h2>
-          <div class="status-line" id="detailStatus"></div>
-        </div>
-
-        <div class="stat-block" id="statBlock"></div>
-
-        <div>
-          <div class="synergy-head">
-            <span>시너지 슬롯</span>
-            <span class="point-total" id="pointTotal">7 / 10 pt</span>
+    <section class="panel detail-panel" aria-label="유물 상세 정보">
+      <div class="detail-header">
+        <div class="detail-title-wrap">
+          <div class="title-icon" id="detailIcon"></div>
+          <div class="detail-title-copy">
+            <div class="detail-title-meta" id="detailStatus"></div>
+            <h2 class="detail-title-name" id="detailName">불꽃의 심장</h2>
           </div>
-          <div class="synergy-grid" id="synergyGrid"></div>
         </div>
+      </div>
 
-        <div class="actions">
-          <button class="action-button" type="button" data-action="promote">승급</button>
-          <button class="action-button" type="button" data-action="upgrade">강화</button>
-          <button class="action-button" type="button" data-action="unequip">장착해제</button>
+      <div class="stat-block" id="statBlock"></div>
+
+      <div class="synergy-section">
+        <div class="synergy-head">
+          <span>시너지 슬롯</span>
+          <span class="point-total" id="pointTotal">7 / 10 pt</span>
         </div>
-      </section>
+        <div class="synergy-grid" id="synergyGrid"></div>
+      </div>
+
+      <div class="actions">
+        <button class="action-button" type="button" data-action="promote">승급</button>
+        <button class="action-button" type="button" data-action="upgrade">강화</button>
+        <button class="action-button" type="button" data-action="unequip">장착해제</button>
+      </div>
     </section>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -988,12 +1155,15 @@
     let selectedRelicId = "heart_fire";
     let selectedSlotIndex = 0;
     let editingSynergyIndex = null;
+    let selectedSynergyPreviewId = null;
+    let pendingSynergyId = null;
     let toastTimer = null;
 
     const inventoryGrid = document.querySelector("#inventoryGrid");
     const slotRow = document.querySelector("#slotRow");
     const equipSummary = document.querySelector("#equipSummary");
     const detailName = document.querySelector("#detailName");
+    const detailIcon = document.querySelector("#detailIcon");
     const detailStatus = document.querySelector("#detailStatus");
     const statBlock = document.querySelector("#statBlock");
     const synergyGrid = document.querySelector("#synergyGrid");
@@ -1032,8 +1202,36 @@
       }, {});
     }
 
+    function synergyCountsFromList(list) {
+      return list.reduce((counts, id) => {
+        if (!id) return counts;
+        counts[id] = (counts[id] || 0) + 1;
+        return counts;
+      }, {});
+    }
+
     function synergyStage(relic, synergyId) {
       return Math.min(synergyCounts(relic)[synergyId] || 0, 3);
+    }
+
+    function previewSynergyStage(relic, synergyId, previewId) {
+      const list = normalizeSynergies(relic);
+      if (editingSynergyIndex !== null && previewId !== undefined) {
+        list[editingSynergyIndex] = previewId;
+      }
+      return Math.min(synergyCountsFromList(list)[synergyId] || 0, 3);
+    }
+
+    function equippedSynergyCounts() {
+      return equippedSlots.reduce((counts, relicId) => {
+        const relic = relicId ? getRelic(relicId) : null;
+        if (!relic) return counts;
+        normalizeSynergies(relic).forEach((id) => {
+          if (!id) return;
+          counts[id] = (counts[id] || 0) + 1;
+        });
+        return counts;
+      }, {});
     }
 
     function renderStageEffects(synergy, activeStage) {
@@ -1065,7 +1263,7 @@
       }).join("");
     }
 
-    function renderIcon(relic, sizeClass = "", showStars = false) {
+    function renderIcon(relic, sizeClass = "", showStars = false, showLevel = true) {
       if (!relic.owned) {
         return `<div class="icon-box ${sizeClass} lock-icon"><span>⌕</span></div>`;
       }
@@ -1074,7 +1272,7 @@
         <div class="icon-box ${sizeClass} grade-${relic.grade}">
           <span>${relic.icon}</span>
           ${showStars ? `<span class="star-chip">★${relic.stars}</span>` : ""}
-          <span class="level-chip">${relic.level}</span>
+          ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
         </div>
       `;
     }
@@ -1087,7 +1285,7 @@
 
         return `
           <button class="relic-card ${selected} ${locked}" type="button" data-relic-id="${relic.id}" ${relic.owned ? "" : "disabled"}>
-            ${renderIcon(relic)}
+            ${renderIcon(relic, "", true)}
             <span class="relic-name">${relic.name}</span>
             <span class="dots">${dots}</span>
           </button>
@@ -1110,51 +1308,50 @@
           `;
         }
 
+        const slotDots = normalizeSynergies(relic).map((id) => {
+          const synergy = getSynergy(id);
+          const label = synergy ? synergy.icon : "";
+          const className = synergy ? "slot-dot filled" : "slot-dot empty";
+          return `<span class="${className}">${label}</span>`;
+        }).join("");
+
         return `
           <button class="slot-card ${selected}" type="button" data-slot-index="${index}">
-            ${renderIcon(relic, "small", true)}
-            <span class="relic-name">${relic.name}</span>
+            <div class="slot-main">
+              ${renderIcon(relic, "small", true)}
+              <div class="slot-name">${relic.name}</div>
+            </div>
+            <div class="slot-synergy-box">${slotDots}</div>
           </button>
         `;
       }).join("");
     }
 
     function renderEquipSummary() {
-      equipSummary.innerHTML = equippedSlots.map((relicId, index) => {
-        const relic = relicId ? getRelic(relicId) : null;
-        if (!relic) return "";
-
-        const selected = relic.id === selectedRelicId ? "selected" : "";
-        const counts = synergyCounts(relic);
-        const tokens = Object.entries(counts).map(([id, count]) => {
-          const synergy = getSynergy(id);
-          if (!synergy) return "";
-          return `
-            <span class="summary-token">
-              <span>${synergy.icon}</span>
-              <strong>${synergy.name}${count > 1 ? ` x${count}` : ""}</strong>
-            </span>
-          `;
-        }).join("") || `<span class="summary-token">시너지 없음</span>`;
-
+      const counts = equippedSynergyCounts();
+      const tokens = synergies.map((synergy) => {
+        const count = counts[synergy.id] || 0;
+        if (!count) return "";
         return `
-          <button class="summary-card ${selected}" type="button" data-summary-slot="${index}">
-            <span class="summary-name">${relic.name}</span>
-            <span class="summary-synergies">${tokens}</span>
-          </button>
+          <span class="summary-token">
+            <span>${synergy.icon}</span>
+            <span class="summary-count">${count}</span>
+          </span>
         `;
       }).join("");
+
+      equipSummary.innerHTML = tokens || `<span class="summary-token">시너지 없음</span>`;
     }
 
     function renderDetail() {
       const relic = getRelic(selectedRelicId);
       if (!relic || !relic.owned) return;
 
+      detailIcon.innerHTML = renderIcon(relic, "", true, false);
       detailName.textContent = relic.name;
       detailStatus.innerHTML = `
         <span class="grade-badge ${relic.grade}">${relic.grade}</span>
         <span>Lv.${relic.level} / ${relic.maxLevel}</span>
-        <span class="star-row">${renderStars(relic.stars)}</span>
       `;
 
       const equipRows = relic.equipEffect.map(([label, value]) => `
@@ -1163,18 +1360,20 @@
           <span class="stat-value">${value}</span>
         </div>
       `).join("");
-      const ownedRows = relic.ownedEffect.map(([label, value]) => `
-        <div class="stat-row">
-          <span>${label}</span>
-          <span class="stat-value">${value}</span>
-        </div>
-      `).join("");
+      const ownedValue = relic.ownedEffect?.[0]?.[1] ? String(relic.ownedEffect[0][1]).replace(/^\+/, "") : "0%";
 
       statBlock.innerHTML = `
-        <div class="stat-title">장착 효과</div>
-        ${equipRows}
-        <div class="stat-title">보유 효과</div>
-        ${ownedRows}
+        <div class="stat-section">
+          <div class="stat-title">장착 효과</div>
+          ${equipRows}
+        </div>
+        <div class="owned-section">
+          <div class="stat-title">보유 효과</div>
+          <div class="stat-row">
+            <span>공격력/체력/방어력</span>
+            <span class="stat-value">${ownedValue}</span>
+          </div>
+        </div>
       `;
 
       pointTotal.textContent = `${usedPoints(relic)} / ${relic.pointMax} pt`;
@@ -1183,18 +1382,16 @@
         if (!synergy) {
           return `
             <button class="synergy-slot empty" type="button" data-synergy-index="${index}">
-              <div class="plus">+</div>
-              <div class="synergy-name">추가</div>
+              <div class="synergy-icon">+</div>
+              <div class="synergy-name">빈 슬롯</div>
             </button>
           `;
         }
 
-        const stage = synergyStage(relic, synergy.id);
         return `
           <button class="synergy-slot" type="button" data-synergy-index="${index}">
             <div class="synergy-icon">${synergy.icon}</div>
             <div class="synergy-name">${synergy.name}</div>
-            <div class="synergy-meta">${stage}단계 · ${synergy.cost}pt</div>
           </button>
         `;
       }).join("");
@@ -1205,33 +1402,71 @@
       const currentId = normalizeSynergies(relic)[editingSynergyIndex];
       const currentCost = currentId ? getSynergy(currentId).cost : 0;
       const remaining = relic.pointMax - usedPoints(relic) + currentCost;
+      const previewId = selectedSynergyPreviewId;
+      const previewSynergy = previewId ? getSynergy(previewId) : null;
+      const previewStage = previewSynergy ? previewSynergyStage(relic, previewSynergy.id, previewId) : 0;
+      const canApply = Boolean(previewId && previewId !== currentId && previewSynergy && previewSynergy.cost <= remaining);
 
-      synergyList.innerHTML = synergies.map((synergy) => {
-        const selected = synergy.id === currentId ? "selected" : "";
-        const disabled = synergy.cost > remaining ? "disabled" : "";
-        const activeStage = synergyStage(relic, synergy.id);
-        const costNote = synergy.cost > remaining ? "포인트 부족" : `선택 가능`;
+      const iconGrid = synergies.map((synergy) => {
+        const isPreview = synergy.id === previewId;
+        const isApplied = synergy.id === currentId;
+        const disabled = synergy.cost > remaining;
+        const classes = [
+          "synergy-pick",
+          isPreview ? "preview" : "",
+          isApplied ? "applied" : ""
+        ].filter(Boolean).join(" ");
+        const disabledAttr = disabled ? "disabled" : "";
         return `
-          <button class="synergy-option ${selected}" type="button" data-synergy-id="${synergy.id}" ${disabled}>
+          <button class="${classes}" type="button" data-preview-synergy-id="${synergy.id}" ${disabledAttr}>
             <div class="synergy-icon">${synergy.icon}</div>
-            <div>
-              <div class="option-title">
-                <span>${synergy.name}</span>
-                <span class="tag ${synergy.tagClass}">${synergy.grade}</span>
-              </div>
-              <div class="stage-list">${renderStageEffects(synergy, activeStage)}</div>
-            </div>
-            <div class="cost">
-              <div>${synergy.cost} pt</div>
-              <div class="cost-note">${costNote}</div>
-            </div>
+            <div class="pick-name">${synergy.name}</div>
           </button>
         `;
       }).join("");
+
+      const previewHtml = previewSynergy ? `
+        <div class="synergy-preview">
+          <div class="preview-head">
+            <div class="synergy-icon">${previewSynergy.icon}</div>
+            <div class="preview-title">
+              <div class="option-title">
+                <span>${previewSynergy.name}</span>
+                <span class="tag ${previewSynergy.tagClass}">${previewSynergy.grade}</span>
+              </div>
+              <div class="cost-note">${previewId === currentId ? "현재 적용 중" : "적용 대기 중"}</div>
+            </div>
+            <div class="preview-cost">${previewSynergy.cost} pt</div>
+          </div>
+          <div class="stage-list">${renderStageEffects(previewSynergy, previewStage)}</div>
+          <p class="option-desc">${previewSynergy.effect}</p>
+        </div>
+      ` : `
+        <div class="synergy-preview">
+          <div class="option-title">시너지 없음</div>
+          <p class="option-desc">선택 가능한 시너지 아이콘을 눌러 정보를 확인합니다.</p>
+        </div>
+      `;
+
+      synergyList.innerHTML = `
+        <div class="synergy-icon-grid">${iconGrid}</div>
+        ${previewHtml}
+        <div class="modal-actions">
+          <button class="action-button" type="button" data-modal-action="cancel">취소</button>
+          <button class="action-button" type="button" data-modal-action="apply" ${canApply ? "" : "disabled"}>적용</button>
+        </div>
+      `;
     }
 
     function openModal(index) {
+      const relic = getRelic(selectedRelicId);
       editingSynergyIndex = index;
+      const currentId = normalizeSynergies(relic)[index];
+      const currentCost = currentId ? getSynergy(currentId).cost : 0;
+      const remaining = relic.pointMax - usedPoints(relic) + currentCost;
+      const firstAvailable = synergies.find((synergy) => synergy.cost <= remaining)?.id || synergies[0]?.id || null;
+      selectedSynergyPreviewId = currentId || firstAvailable;
+      pendingSynergyId = currentId || firstAvailable;
       renderSynergyOptions();
       modalOverlay.classList.add("open");
       modalOverlay.setAttribute("aria-hidden", "false");
@@ -1241,6 +1476,18 @@
       modalOverlay.classList.remove("open");
       modalOverlay.setAttribute("aria-hidden", "true");
       editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+    }
+
+    function applyPendingSynergy() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic || editingSynergyIndex === null || !pendingSynergyId) return;
+      relic.synergies = normalizeSynergies(relic);
+      relic.synergies[editingSynergyIndex] = pendingSynergyId;
+      closeSynergyModal();
+      renderAll();
+      showToast("시너지가 적용되었습니다.");
     }
 
     function showToast(message) {
@@ -1278,14 +1525,6 @@
       renderAll();
     });
 
-    equipSummary.addEventListener("click", (event) => {
-      const summary = event.target.closest("[data-summary-slot]");
-      if (!summary) return;
-      selectedSlotIndex = Number(summary.dataset.summarySlot);
-      selectedRelicId = equippedSlots[selectedSlotIndex];
-      renderAll();
-    });
-
     synergyGrid.addEventListener("click", (event) => {
       const slot = event.target.closest("[data-synergy-index]");
       if (!slot) return;
@@ -1293,14 +1532,23 @@
     });
 
     synergyList.addEventListener("click", (event) => {
-      const option = event.target.closest("[data-synergy-id]");
-      if (!option || option.disabled) return;
-      const relic = getRelic(selectedRelicId);
-      relic.synergies = normalizeSynergies(relic);
-      relic.synergies[editingSynergyIndex] = option.dataset.synergyId;
-      closeSynergyModal();
-      renderAll();
-      showToast("시너지가 적용되었습니다.");
+      const previewButton = event.target.closest("[data-preview-synergy-id]");
+      if (previewButton && !previewButton.disabled) {
+        selectedSynergyPreviewId = previewButton.dataset.previewSynergyId;
+        pendingSynergyId = previewButton.dataset.previewSynergyId;
+        renderSynergyOptions();
+        return;
+      }
+
+      const actionButton = event.target.closest("[data-modal-action]");
+      if (!actionButton || actionButton.disabled) return;
+      if (actionButton.dataset.modalAction === "cancel") {
+        closeSynergyModal();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "apply") {
+        applyPendingSynergy();
+      }
     });
 
     closeModal.addEventListener("click", closeSynergyModal);

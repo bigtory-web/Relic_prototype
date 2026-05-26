@@ -4,6 +4,27 @@
 
 ### Done
 
+- Rebuilt `index.html` as a clean UTF-8 single-file prototype to remove broken Korean strings and unstable data literals.
+- Restored relic names, synergy names, stat labels, modal labels, and locked-slot copy.
+- Polished the prototype presentation with a stronger panel background and clearer state feedback.
+- Added modal subtitle context, per-option synergy effect copy, and a `현재 시너지 비우기` action.
+- Verified rendered DOM output in headless Chrome and Edge against the local `index.html` file.
+- Updated `README.md` to reflect the repaired prototype state and local-server run option.
+
+### Notes
+
+- The prototype still uses placeholder action toasts for `승급`, `강화`, and `장착해제`.
+- The current validation confirms successful render and script execution; no separate build step exists yet.
+
+### Next
+
+- Decide whether the next pass should implement real equip/unequip interactions.
+- Review emoji icon choices versus any final in-game icon direction.
+
+## 2026-05-26
+
+### Done
+
 - Created the public GitHub repository:
   https://github.com/bigtory-web/Relic_prototype
 - Installed and configured Git on this laptop.
@@ -60,7 +81,7 @@
 - Centered the fixed `1280 x 720` prototype stage in the browser viewport.
 - Reduced heavy font weights outside section titles and primary button labels.
 - Stabilized equipped slot cards so selection and icon clicks do not push the layout outside the panel.
-- Moved star/ascension display into the equipped relic icon as a `★N` badge.
+- Moved star/ascension display into the equipped relic icon as a `★` badge.
 - Removed synergy dot rows from equipped slots.
 - Added an equipped synergy summary area under the equipped slots.
 - Added duplicate synergy grouping in the summary, such as `치명 강화 x2`.

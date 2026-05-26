@@ -13,6 +13,7 @@ Relic prototype game project.
 - Local project folder is stored inside OneDrive for easier access from other PCs.
 - The first playable relic management prototype is implemented as a single HTML file.
 - The prototype includes equipped synergy summary, synergy stage preview, and stabilized slot layout.
+- The relic catalog now contains 22 relics across `N 4 / R 4 / SR 6 / SSR 8`.
 
 ## How To Run
 

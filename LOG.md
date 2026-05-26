@@ -78,3 +78,15 @@
 
 - Review stage effect copy and exact numerical values.
 - Decide whether the planning document should describe duplicate synergy stacking as the main rule.
+
+## 2026-05-26
+
+### Done
+
+- Expanded the relic catalog from 9 relics to 22 relics.
+- Matched the target grade distribution: `N 4 / R 4 / SR 6 / SSR 8`.
+- Kept newly added relics as locked/unowned entries so the equipped-slot unlock condition remains unchanged.
+
+### Notes
+
+- The inventory now relies on its internal vertical scroll area for the larger catalog.

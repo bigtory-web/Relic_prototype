@@ -11,10 +11,15 @@ Relic prototype game project.
 
 - Public GitHub repository is connected.
 - Local project folder is stored inside OneDrive for easier access from other PCs.
-- The repository currently contains project notes and setup history.
+- The first playable relic management prototype is implemented as a single HTML file.
+
+## How To Run
+
+- Open `index.html` in a browser.
+- The prototype is designed for a fixed `1280 x 720` desktop browser viewport.
 
 ## Next Steps
 
-- Add the actual game prototype files.
-- Decide the development environment and engine/framework.
-- Document how to run the project.
+- Review the relic synergy rules and point-cost logic.
+- Add any missing UI states needed for portfolio presentation.
+- Align the final prototype behavior with the system planning document.

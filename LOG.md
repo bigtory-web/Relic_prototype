@@ -30,3 +30,25 @@
 - Add the real prototype source files.
 - Choose the engine/framework and development workflow.
 - Add run/build instructions to `README.md`.
+
+## 2026-05-26
+
+### Done
+
+- Added `relic_prototype_prompt.md` as the source prompt for the relic prototype.
+- Implemented the first playable prototype in `index.html`.
+- Matched the first UI direction with a dark in-game relic management layout.
+- Added inventory selection, equipped slot selection, relic detail updates, synergy slot editing, and synergy selection modal behavior.
+- Verified the prototype in a local browser server at `http://127.0.0.1:4173/`.
+
+### Notes
+
+- The prototype is a single-file HTML/CSS/JS implementation.
+- The current visual direction intentionally follows the dark UI mockup rather than the earlier white-base common guide.
+- The first data correction changes the third equipped synergy on `불꽃의 심장` from a 1pt rare synergy to the 1pt normal synergy `공격력 증가`.
+
+### Next
+
+- Review whether duplicate rare synergies should be allowed.
+- Decide whether star display and synergy dot display need clearer separation.
+- Add any final portfolio-facing polish before using screenshots in the planning document.

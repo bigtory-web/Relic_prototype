@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relic Prototype</title>
+  <style>
+    :root {
+      --bg: #151615;
+      --panel: #292a28;
+      --panel-soft: #242523;
+      --panel-deep: #20211f;
+      --line: #4a4d49;
+      --line-soft: #383b37;
+      --text: #f3f1eb;
+      --muted: #b8b6ae;
+      --subtle: #85837d;
+      --accent: #1d9e75;
+      --accent-soft: #34c89c;
+      --gold: #f6aa2d;
+      --ssr: #faeeda;
+      --sr: #e6f1fb;
+      --r: #eaf3de;
+      --n: #e7e7e0;
+      --danger: #bf705a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+      letter-spacing: 0;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .stage {
+      width: 1280px;
+      height: 720px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 330px 1fr;
+      gap: 12px;
+      background: var(--bg);
+      transform-origin: top left;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .panel-title {
+      margin: 0;
+      color: #d0cec7;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .inventory {
+      height: 680px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inventory-grid {
+      min-height: 0;
+      padding-right: 4px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 124px;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .inventory-grid::-webkit-scrollbar,
+    .synergy-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .inventory-grid::-webkit-scrollbar-thumb,
+    .synergy-list::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: #575a55;
+    }
+
+    .relic-card,
+    .slot-card,
+    .synergy-slot,
+    .synergy-option,
+    .action-button {
+      transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .relic-card {
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--line-soft);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .relic-card:hover,
+    .slot-card:hover,
+    .synergy-slot:not(.disabled):hover,
+    .synergy-option:hover,
+    .action-button:not(:disabled):hover {
+      background: #30322f;
+      border-color: #6b7069;
+    }
+
+    .relic-card.selected,
+    .slot-card.selected {
+      border-color: var(--accent-soft);
+      outline: 1px solid var(--accent);
+    }
+
+    .relic-card.locked,
+    .slot-card.locked {
+      cursor: default;
+      opacity: 0.52;
+    }
+
+    .icon-box {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 7px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #1f2621;
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+    .icon-box.small {
+      width: 84px;
+      height: 84px;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      font-size: 43px;
+    }
+
+    .icon-box.lock-icon {
+      background: #222320;
+      color: #777771;
+    }
+
+    .grade-SSR { background: var(--ssr); color: #c07810; }
+    .grade-SR { background: var(--sr); color: #1d6db8; }
+    .grade-R { background: var(--r); color: #3e8a16; }
+    .grade-N { background: var(--n); color: #7c4a38; }
+
+    .level-chip {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      min-width: 20px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      color: #eeeae1;
+      font-size: 11px;
+      font-weight: 800;
+      text-shadow: 0 1px 1px #000;
+    }
+
+    .relic-name {
+      display: block;
+      min-height: 17px;
+      overflow: hidden;
+      color: #eeeae5;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.25;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dots {
+      height: 18px;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #4b4e4a;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 8px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .dot.filled {
+      border-color: #49c6a1;
+      background: #36b58e;
+    }
+
+    .dot.empty {
+      background: #22231f;
+    }
+
+    .right {
+      height: 680px;
+      display: grid;
+      grid-template-rows: 214px 1fr;
+      gap: 12px;
+    }
+
+    .equip-panel {
+      padding: 18px 16px;
+    }
+
+    .slot-row {
+      height: 162px;
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .slot-card {
+      min-width: 0;
+      padding: 10px 10px 8px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: transparent;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .slot-card.locked {
+      cursor: default;
+    }
+
+    .star-row,
+    .point-row {
+      height: 16px;
+      display: flex;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .star,
+    .point-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid #51544f;
+      background: #21221f;
+    }
+
+    .star.on,
+    .point-dot.on {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+
+    .detail-panel {
+      min-height: 0;
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 12px;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .detail-title {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .grade-badge,
+    .tag {
+      min-width: 44px;
+      height: 24px;
+      padding: 0 8px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .grade-badge.SSR { background: #fff2d7; color: #b56a00; }
+    .grade-badge.SR { background: #e3f1ff; color: #1c67a7; }
+    .grade-badge.R { background: #e5f4d7; color: #347a13; }
+    .grade-badge.N { background: #eeeeea; color: #6c675f; }
+
+    .stat-block {
+      display: grid;
+      gap: 9px;
+    }
+
+    .stat-title {
+      color: #c7c4bd;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #474a45;
+      color: #d6d3cc;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      color: #f5f2eb;
+      font-weight: 900;
+    }
+
+    .synergy-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      color: #c8c5be;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .point-total {
+      color: #c9c5bb;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .synergy-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .synergy-slot {
+      min-width: 0;
+      height: 96px;
+      padding: 9px;
+      border: 1px solid #676a64;
+      border-radius: 10px;
+      background: var(--panel);
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .synergy-slot.empty {
+      border-style: dashed;
+      color: #c7c3ba;
+    }
+
+    .synergy-icon {
+      width: 34px;
+      height: 34px;
+      margin: 0 auto 6px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff1ea;
+      color: #a64f2d;
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .synergy-name {
+      overflow: hidden;
+      font-size: 14px;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .synergy-meta {
+      margin-top: 5px;
+      color: #bebbb3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .plus {
+      margin-top: 10px;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .action-button {
+      height: 42px;
+      border: 1px solid #6a6d67;
+      border-radius: 9px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .action-button:disabled {
+      cursor: default;
+      opacity: 0.45;
+    }
+
+    .toast {
+      position: absolute;
+      right: 32px;
+      bottom: 24px;
+      padding: 10px 14px;
+      border: 1px solid #5d625b;
+      border-radius: 8px;
+      background: #262823;
+      color: #e8e4da;
+      font-size: 13px;
+      font-weight: 800;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 620px;
+      max-height: 600px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #282a27;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #41443f;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .close-button {
+      width: 44px;
+      height: 44px;
+      border: 1px solid #60645f;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .synergy-list {
+      max-height: 448px;
+      margin-top: 12px;
+      padding-right: 4px;
+      display: grid;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .synergy-option {
+      min-height: 78px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border: 1px solid #4d504b;
+      border-radius: 10px;
+      background: var(--panel-soft);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .synergy-option.selected {
+      border-color: var(--accent-soft);
+      outline: 1px solid var(--accent);
+    }
+
+    .option-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .option-desc {
+      margin-top: 5px;
+      color: #bbb7af;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .cost {
+      color: #f1eee5;
+      font-size: 15px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tag.rare { background: #faece7; color: #993c1d; }
+    .tag.advanced { background: #eeedfe; color: #534ab7; }
+    .tag.normal { background: #e7e7e2; color: #6d6a64; }
+
+    .locked-label {
+      margin-top: 7px;
+      color: #c3c0b8;
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .require-label {
+      margin-top: 8px;
+      color: #d8d4ca;
+      font-size: 13px;
+      font-weight: 800;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="유물 시스템 프로토타입">
+    <section class="panel inventory" aria-label="인벤토리">
+      <h1 class="panel-title">인벤토리</h1>
+      <div class="inventory-grid" id="inventoryGrid"></div>
+    </section>
+
+    <section class="right">
+      <section class="panel equip-panel" aria-label="장착 슬롯">
+        <h2 class="panel-title">장착 슬롯</h2>
+        <div class="slot-row" id="slotRow"></div>
+      </section>
+
+      <section class="panel detail-panel" aria-label="유물 상세 정보">
+        <div class="detail-header">
+          <h2 class="detail-title" id="detailName">불꽃의 심장</h2>
+          <div class="status-line" id="detailStatus"></div>
+        </div>
+
+        <div class="stat-block" id="statBlock"></div>
+
+        <div>
+          <div class="synergy-head">
+            <span>시너지 슬롯</span>
+            <span class="point-total" id="pointTotal">7 / 10 pt</span>
+          </div>
+          <div class="synergy-grid" id="synergyGrid"></div>
+        </div>
+
+        <div class="actions">
+          <button class="action-button" type="button" data-action="promote">승급</button>
+          <button class="action-button" type="button" data-action="upgrade">강화</button>
+          <button class="action-button" type="button" data-action="unequip">장착해제</button>
+        </div>
+      </section>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modalTitle">시너지 선택</h2>
+        <button class="close-button" type="button" id="closeModal" aria-label="닫기">×</button>
+      </div>
+      <div class="synergy-list" id="synergyList"></div>
+    </section>
+  </div>
+
+  <script>
+    const relics = [
+      {
+        id: "heart_fire",
+        name: "불꽃의 심장",
+        grade: "SSR",
+        icon: "♨",
+        level: 48,
+        maxLevel: 60,
+        stars: 3,
+        equipEffect: [
+          ["공격력", "+18%"],
+          ["치명타 확률", "+5%"]
+        ],
+        ownedEffect: [["공격력", "+3.2%"]],
+        pointMax: 10,
+        synergies: ["crit_boost", "crit_boost", "atk_up", null],
+        owned: true
+      },
+      {
+        id: "frost_shield",
+        name: "서리 방패",
+        grade: "SR",
+        icon: "⬡",
+        level: 22,
+        maxLevel: 40,
+        stars: 1,
+        equipEffect: [
+          ["공격력", "+10%"],
+          ["치명타 확률", "+3%"]
+        ],
+        ownedEffect: [["공격력", "+1.8%"]],
+        pointMax: 8,
+        synergies: ["atk_speed", "atk_up", null, null],
+        owned: true
+      },
+      {
+        id: "lightning_eye",
+        name: "번개의 눈",
+        grade: "SR",
+        icon: "ϟ",
+        level: 15,
+        maxLevel: 40,
+        stars: 2,
+        equipEffect: [
+          ["공격력", "+10%"],
+          ["치명타 확률", "+3%"]
+        ],
+        ownedEffect: [["공격력", "+1.5%"]],
+        pointMax: 8,
+        synergies: ["crit_rate", null, null, null],
+        owned: true
+      },
+      {
+        id: "dark_crystal",
+        name: "어둠의 수정",
+        grade: "SR",
+        icon: "◇",
+        level: 8,
+        maxLevel: 40,
+        stars: 1,
+        equipEffect: [
+          ["공격력", "+8%"],
+          ["치명타 확률", "+2%"]
+        ],
+        ownedEffect: [["공격력", "+1.1%"]],
+        pointMax: 8,
+        synergies: [],
+        owned: true
+      },
+      {
+        id: "steel_heart",
+        name: "강철의 심장",
+        grade: "R",
+        icon: "⌁",
+        level: 5,
+        maxLevel: 20,
+        stars: 1,
+        equipEffect: [["공격력", "+5%"]],
+        ownedEffect: [["공격력", "+0.8%"]],
+        pointMax: 6,
+        synergies: [],
+        owned: true
+      },
+      {
+        id: "old_staff",
+        name: "낡은 지팡이",
+        grade: "N",
+        icon: "†",
+        level: 3,
+        maxLevel: 20,
+        stars: 1,
+        equipEffect: [["공격력", "+3%"]],
+        ownedEffect: [["공격력", "+0.5%"]],
+        pointMax: 4,
+        synergies: [],
+        owned: true
+      },
+      { id: "sun_core", name: "태양의 핵", grade: "SSR", icon: "☉", owned: false },
+      { id: "storm_eye", name: "폭풍의 눈", grade: "SR", icon: "◎", owned: false },
+      { id: "ice_shard", name: "얼음 파편", grade: "R", icon: "△", owned: false }
+    ];
+
+    const synergies = [
+      {
+        id: "crit_boost",
+        name: "치명 강화",
+        grade: "희귀",
+        tagClass: "rare",
+        icon: "☆",
+        cost: 3,
+        effect: "치명타 발생 시 피해량의 X%를 추가로 입힌다."
+      },
+      {
+        id: "combo_strike",
+        name: "연속 강타",
+        grade: "희귀",
+        tagClass: "rare",
+        icon: "✦",
+        cost: 3,
+        effect: "공격 시 X% 확률로 연속 공격이 발동된다."
+      },
+      {
+        id: "kill_power",
+        name: "처치 강화",
+        grade: "고급",
+        tagClass: "advanced",
+        icon: "✧",
+        cost: 2,
+        effect: "몬스터 처치 시 X초 동안 공격력이 X% 증가한다."
+      },
+      {
+        id: "atk_speed",
+        name: "공격 가속",
+        grade: "고급",
+        tagClass: "advanced",
+        icon: "↟",
+        cost: 2,
+        effect: "X초마다 X초 동안 공격 속도가 증가한다."
+      },
+      {
+        id: "atk_up",
+        name: "공격력 증가",
+        grade: "일반",
+        tagClass: "normal",
+        icon: "▲",
+        cost: 1,
+        effect: "공격력이 X% 증가한다."
+      },
+      {
+        id: "crit_rate",
+        name: "치명타 확률 증가",
+        grade: "일반",
+        tagClass: "normal",
+        icon: "◈",
+        cost: 1,
+        effect: "치명타 확률이 X% 증가한다."
+      }
+    ];
+
+    const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye", null];
+    let selectedRelicId = "heart_fire";
+    let selectedSlotIndex = 0;
+    let editingSynergyIndex = null;
+    let toastTimer = null;
+
+    const inventoryGrid = document.querySelector("#inventoryGrid");
+    const slotRow = document.querySelector("#slotRow");
+    const detailName = document.querySelector("#detailName");
+    const detailStatus = document.querySelector("#detailStatus");
+    const statBlock = document.querySelector("#statBlock");
+    const synergyGrid = document.querySelector("#synergyGrid");
+    const pointTotal = document.querySelector("#pointTotal");
+    const modalOverlay = document.querySelector("#modalOverlay");
+    const synergyList = document.querySelector("#synergyList");
+    const closeModal = document.querySelector("#closeModal");
+    const toast = document.querySelector("#toast");
+
+    function getRelic(id) {
+      return relics.find((relic) => relic.id === id);
+    }
+
+    function getSynergy(id) {
+      return synergies.find((synergy) => synergy.id === id);
+    }
+
+    function usedPoints(relic) {
+      return normalizeSynergies(relic).reduce((total, id) => {
+        const synergy = getSynergy(id);
+        return total + (synergy ? synergy.cost : 0);
+      }, 0);
+    }
+
+    function normalizeSynergies(relic) {
+      const list = Array.isArray(relic.synergies) ? [...relic.synergies] : [];
+      while (list.length < 4) list.push(null);
+      return list.slice(0, 4);
+    }
+
+    function renderDots(relic) {
+      return normalizeSynergies(relic).map((id) => {
+        const synergy = getSynergy(id);
+        const label = synergy ? synergy.icon : "";
+        const className = synergy ? "dot filled" : "dot empty";
+        return `<span class="${className}">${label}</span>`;
+      }).join("");
+    }
+
+    function renderStars(count = 0) {
+      return Array.from({ length: 5 }, (_, index) => {
+        const className = index < count ? "star on" : "star";
+        return `<span class="${className}"></span>`;
+      }).join("");
+    }
+
+    function renderPointDots(relic) {
+      const used = normalizeSynergies(relic).filter(Boolean).length;
+      return Array.from({ length: 4 }, (_, index) => {
+        const className = index < used ? "point-dot on" : "point-dot";
+        return `<span class="${className}"></span>`;
+      }).join("");
+    }
+
+    function renderIcon(relic, sizeClass = "") {
+      if (!relic.owned) {
+        return `<div class="icon-box ${sizeClass} lock-icon"><span>⌕</span></div>`;
+      }
+
+      return `
+        <div class="icon-box ${sizeClass} grade-${relic.grade}">
+          <span>${relic.icon}</span>
+          <span class="level-chip">${relic.level}</span>
+        </div>
+      `;
+    }
+
+    function renderInventory() {
+      inventoryGrid.innerHTML = relics.map((relic) => {
+        const selected = relic.id === selectedRelicId ? "selected" : "";
+        const locked = relic.owned ? "" : "locked";
+        const dots = relic.owned ? renderDots(relic) : Array.from({ length: 4 }, () => `<span class="dot empty"></span>`).join("");
+
+        return `
+          <button class="relic-card ${selected} ${locked}" type="button" data-relic-id="${relic.id}" ${relic.owned ? "" : "disabled"}>
+            ${renderIcon(relic)}
+            <span class="relic-name">${relic.name}</span>
+            <span class="dots">${dots}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderSlots() {
+      slotRow.innerHTML = equippedSlots.map((relicId, index) => {
+        const relic = relicId ? getRelic(relicId) : null;
+        const selected = index === selectedSlotIndex ? "selected" : "";
+
+        if (!relic) {
+          return `
+            <button class="slot-card locked" type="button" data-slot-index="${index}" disabled>
+              <div class="icon-box small lock-icon"><span>⌕</span></div>
+              <div class="locked-label">미해금</div>
+              <div class="require-label">보유 15개 필요</div>
+            </button>
+          `;
+        }
+
+        return `
+          <button class="slot-card ${selected}" type="button" data-slot-index="${index}">
+            ${renderIcon(relic, "small")}
+            <span class="point-row">${renderPointDots(relic)}</span>
+            <span class="relic-name">${relic.name}</span>
+            <span class="dots">${renderDots(relic)}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderDetail() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic || !relic.owned) return;
+
+      detailName.textContent = relic.name;
+      detailStatus.innerHTML = `
+        <span class="grade-badge ${relic.grade}">${relic.grade}</span>
+        <span>Lv.${relic.level} / ${relic.maxLevel}</span>
+        <span class="star-row">${renderStars(relic.stars)}</span>
+      `;
+
+      const equipRows = relic.equipEffect.map(([label, value]) => `
+        <div class="stat-row">
+          <span>${label}</span>
+          <span class="stat-value">${value}</span>
+        </div>
+      `).join("");
+      const ownedRows = relic.ownedEffect.map(([label, value]) => `
+        <div class="stat-row">
+          <span>${label}</span>
+          <span class="stat-value">${value}</span>
+        </div>
+      `).join("");
+
+      statBlock.innerHTML = `
+        <div class="stat-title">장착 효과</div>
+        ${equipRows}
+        <div class="stat-title">보유 효과</div>
+        ${ownedRows}
+      `;
+
+      pointTotal.textContent = `${usedPoints(relic)} / ${relic.pointMax} pt`;
+      synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
+        const synergy = getSynergy(id);
+        if (!synergy) {
+          return `
+            <button class="synergy-slot empty" type="button" data-synergy-index="${index}">
+              <div class="plus">+</div>
+              <div class="synergy-name">추가</div>
+              <div class="synergy-meta">${relic.pointMax - usedPoints(relic)}pt 남음</div>
+            </button>
+          `;
+        }
+
+        return `
+          <button class="synergy-slot" type="button" data-synergy-index="${index}">
+            <div class="synergy-icon">${synergy.icon}</div>
+            <div class="synergy-name">${synergy.name}</div>
+            <div class="synergy-meta">${synergy.grade} · ${synergy.cost}pt</div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderSynergyOptions() {
+      const relic = getRelic(selectedRelicId);
+      const currentId = normalizeSynergies(relic)[editingSynergyIndex];
+      const currentCost = currentId ? getSynergy(currentId).cost : 0;
+      const remaining = relic.pointMax - usedPoints(relic) + currentCost;
+
+      synergyList.innerHTML = synergies.map((synergy) => {
+        const selected = synergy.id === currentId ? "selected" : "";
+        const disabled = synergy.cost > remaining ? "disabled" : "";
+        return `
+          <button class="synergy-option ${selected}" type="button" data-synergy-id="${synergy.id}" ${disabled}>
+            <div class="synergy-icon">${synergy.icon}</div>
+            <div>
+              <div class="option-title">
+                <span>${synergy.name}</span>
+                <span class="tag ${synergy.tagClass}">${synergy.grade}</span>
+              </div>
+              <div class="option-desc">${synergy.effect}</div>
+            </div>
+            <div class="cost">${synergy.cost} pt</div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function openModal(index) {
+      editingSynergyIndex = index;
+      renderSynergyOptions();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSynergyModal() {
+      modalOverlay.classList.remove("open");
+      modalOverlay.setAttribute("aria-hidden", "true");
+      editingSynergyIndex = null;
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1600);
+    }
+
+    function renderAll() {
+      renderInventory();
+      renderSlots();
+      renderDetail();
+    }
+
+    inventoryGrid.addEventListener("click", (event) => {
+      const card = event.target.closest("[data-relic-id]");
+      if (!card) return;
+      const relic = getRelic(card.dataset.relicId);
+      if (!relic || !relic.owned) return;
+      selectedRelicId = relic.id;
+      const slotIndex = equippedSlots.indexOf(relic.id);
+      selectedSlotIndex = slotIndex >= 0 ? slotIndex : -1;
+      renderAll();
+    });
+
+    slotRow.addEventListener("click", (event) => {
+      const slot = event.target.closest("[data-slot-index]");
+      if (!slot || slot.disabled) return;
+      selectedSlotIndex = Number(slot.dataset.slotIndex);
+      selectedRelicId = equippedSlots[selectedSlotIndex];
+      renderAll();
+    });
+
+    synergyGrid.addEventListener("click", (event) => {
+      const slot = event.target.closest("[data-synergy-index]");
+      if (!slot) return;
+      openModal(Number(slot.dataset.synergyIndex));
+    });
+
+    synergyList.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-synergy-id]");
+      if (!option || option.disabled) return;
+      const relic = getRelic(selectedRelicId);
+      relic.synergies = normalizeSynergies(relic);
+      relic.synergies[editingSynergyIndex] = option.dataset.synergyId;
+      closeSynergyModal();
+      renderAll();
+      showToast("시너지가 적용되었습니다.");
+    });
+
+    closeModal.addEventListener("click", closeSynergyModal);
+
+    modalOverlay.addEventListener("click", (event) => {
+      if (event.target === modalOverlay) {
+        closeSynergyModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modalOverlay.classList.contains("open")) {
+        closeSynergyModal();
+      }
+    });
+
+    document.querySelector(".actions").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+      const messages = {
+        promote: "승급 플로우는 문서 단계에서 상세화합니다.",
+        upgrade: "강화 플로우는 레벨 성장 검증 범위입니다.",
+        unequip: "장착해제는 선택 상태 유지 기준으로 처리됩니다."
+      };
+      showToast(messages[button.dataset.action]);
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>

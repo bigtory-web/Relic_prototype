@@ -41,12 +41,18 @@
       letter-spacing: 0;
     }
 
+    body {
+      display: grid;
+      place-items: center;
+    }
+
     button {
       font: inherit;
       color: inherit;
     }
 
     .stage {
+      position: relative;
       width: 1280px;
       height: 720px;
       padding: 20px;
@@ -54,7 +60,6 @@
       grid-template-columns: 330px 1fr;
       gap: 12px;
       background: var(--bg);
-      transform-origin: top left;
     }
 
     .panel {
@@ -67,7 +72,7 @@
       margin: 0;
       color: #d0cec7;
       font-size: 16px;
-      font-weight: 800;
+      font-weight: 700;
     }
 
     .inventory {
@@ -148,15 +153,15 @@
       border-radius: 10px;
       color: #1f2621;
       font-size: 32px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .icon-box.small {
       width: 84px;
-      height: 84px;
-      margin-bottom: 8px;
+      height: 76px;
+      margin-bottom: 6px;
       border-radius: 12px;
-      font-size: 43px;
+      font-size: 38px;
     }
 
     .icon-box.lock-icon {
@@ -179,8 +184,25 @@
       place-items: center;
       color: #eeeae1;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 600;
       text-shadow: 0 1px 1px #000;
+    }
+
+    .star-chip {
+      position: absolute;
+      left: 4px;
+      bottom: 4px;
+      min-width: 28px;
+      height: 18px;
+      padding: 0 5px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(37, 38, 34, 0.78);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .relic-name {
@@ -189,7 +211,7 @@
       overflow: hidden;
       color: #eeeae5;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 500;
       line-height: 1.25;
       text-align: center;
       text-overflow: ellipsis;
@@ -214,7 +236,7 @@
       border-radius: 50%;
       color: #fff;
       font-size: 8px;
-      font-weight: 900;
+      font-weight: 600;
       line-height: 1;
     }
 
@@ -230,47 +252,50 @@
     .right {
       height: 680px;
       display: grid;
-      grid-template-rows: 214px 1fr;
+      grid-template-rows: 262px 1fr;
       gap: 12px;
     }
 
     .equip-panel {
-      padding: 18px 16px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-rows: auto 120px 1fr;
+      gap: 10px;
+      overflow: hidden;
     }
 
     .slot-row {
-      height: 162px;
-      margin-top: 12px;
+      height: 120px;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 18px;
-      align-items: stretch;
+      align-items: start;
     }
 
     .slot-card {
       min-width: 0;
-      padding: 10px 10px 8px;
+      height: 120px;
+      padding: 8px 10px 6px;
       border: 1px solid transparent;
       border-radius: 12px;
       background: transparent;
       cursor: pointer;
       text-align: center;
+      overflow: hidden;
     }
 
     .slot-card.locked {
       cursor: default;
     }
 
-    .star-row,
-    .point-row {
+    .star-row {
       height: 16px;
       display: flex;
       justify-content: center;
       gap: 3px;
     }
 
-    .star,
-    .point-dot {
+    .star {
       width: 10px;
       height: 10px;
       border-radius: 50%;
@@ -278,10 +303,70 @@
       background: #21221f;
     }
 
-    .star.on,
-    .point-dot.on {
+    .star.on {
       border-color: var(--gold);
       background: var(--gold);
+    }
+
+    .equip-summary {
+      min-height: 0;
+      padding-top: 8px;
+      border-top: 1px solid #3f423d;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .summary-card {
+      min-width: 0;
+      padding: 7px 8px;
+      border: 1px solid #454943;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .summary-card:hover,
+    .summary-card.selected {
+      border-color: var(--accent-soft);
+      background: #30322f;
+    }
+
+    .summary-name {
+      display: block;
+      overflow: hidden;
+      color: #e8e4da;
+      font-size: 12px;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .summary-synergies {
+      margin-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .summary-token {
+      max-width: 100%;
+      height: 20px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      border-radius: 999px;
+      background: #363832;
+      color: #d8d4ca;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .summary-token strong {
+      color: #f2eee5;
+      font-weight: 600;
     }
 
     .detail-panel {
@@ -302,7 +387,7 @@
     .detail-title {
       margin: 0;
       font-size: 20px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .status-line {
@@ -311,7 +396,7 @@
       gap: 8px;
       color: var(--muted);
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 500;
     }
 
     .grade-badge,
@@ -323,7 +408,7 @@
       place-items: center;
       border-radius: 4px;
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .grade-badge.SSR { background: #fff2d7; color: #b56a00; }
@@ -339,7 +424,7 @@
     .stat-title {
       color: #c7c4bd;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 600;
     }
 
     .stat-row {
@@ -350,12 +435,12 @@
       border-bottom: 1px solid #474a45;
       color: #d6d3cc;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 400;
     }
 
     .stat-value {
       color: #f5f2eb;
-      font-weight: 900;
+      font-weight: 600;
     }
 
     .synergy-head {
@@ -364,13 +449,13 @@
       justify-content: space-between;
       color: #c8c5be;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 600;
     }
 
     .point-total {
       color: #c9c5bb;
       font-size: 16px;
-      font-weight: 900;
+      font-weight: 600;
     }
 
     .synergy-grid {
@@ -398,20 +483,26 @@
     .synergy-icon {
       width: 34px;
       height: 34px;
-      margin: 0 auto 6px;
+      margin: 4px auto 8px;
       display: grid;
       place-items: center;
       border-radius: 50%;
       background: #fff1ea;
       color: #a64f2d;
       font-size: 20px;
-      font-weight: 900;
+      font-weight: 600;
+    }
+
+    .synergy-slot .synergy-icon {
+      width: 42px;
+      height: 42px;
+      font-size: 24px;
     }
 
     .synergy-name {
       overflow: hidden;
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 500;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -420,7 +511,7 @@
       margin-top: 5px;
       color: #bebbb3;
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 400;
     }
 
     .plus {
@@ -442,7 +533,7 @@
       background: transparent;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .action-button:disabled {
@@ -460,7 +551,7 @@
       background: #262823;
       color: #e8e4da;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 500;
       opacity: 0;
       transform: translateY(8px);
       transition: opacity 0.15s ease, transform 0.15s ease;
@@ -486,8 +577,8 @@
     }
 
     .modal {
-      width: 620px;
-      max-height: 600px;
+      width: 760px;
+      max-height: 640px;
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 14px;
@@ -506,7 +597,7 @@
     .modal-title {
       margin: 0;
       font-size: 18px;
-      font-weight: 900;
+      font-weight: 700;
     }
 
     .close-button {
@@ -521,7 +612,7 @@
     }
 
     .synergy-list {
-      max-height: 448px;
+      max-height: 488px;
       margin-top: 12px;
       padding-right: 4px;
       display: grid;
@@ -530,12 +621,12 @@
     }
 
     .synergy-option {
-      min-height: 78px;
-      padding: 10px;
+      min-height: 142px;
+      padding: 12px;
       display: grid;
-      grid-template-columns: 42px 1fr auto;
-      gap: 10px;
-      align-items: center;
+      grid-template-columns: 46px 1fr 92px;
+      gap: 12px;
+      align-items: start;
       border: 1px solid #4d504b;
       border-radius: 10px;
       background: var(--panel-soft);
@@ -548,12 +639,48 @@
       outline: 1px solid var(--accent);
     }
 
+    .synergy-option:disabled {
+      cursor: default;
+      opacity: 0.46;
+    }
+
     .option-title {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 600;
+    }
+
+    .stage-list {
+      margin-top: 8px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .stage-effect {
+      min-height: 24px;
+      padding: 4px 7px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid #444740;
+      border-radius: 6px;
+      color: #8e8b83;
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .stage-effect.active {
+      border-color: rgba(52, 200, 156, 0.55);
+      background: rgba(29, 158, 117, 0.13);
+      color: #e8f7ef;
+    }
+
+    .stage-label {
+      color: #c7c3bb;
+      font-weight: 600;
     }
 
     .option-desc {
@@ -566,8 +693,15 @@
     .cost {
       color: #f1eee5;
       font-size: 15px;
-      font-weight: 900;
+      font-weight: 600;
       white-space: nowrap;
+      text-align: right;
+    }
+
+    .cost-note {
+      margin-top: 8px;
+      color: #9f9b92;
+      font-size: 12px;
     }
 
     .tag.rare { background: #faece7; color: #993c1d; }
@@ -578,7 +712,7 @@
       margin-top: 7px;
       color: #c3c0b8;
       font-size: 13px;
-      font-weight: 900;
+      font-weight: 600;
       text-align: center;
     }
 
@@ -586,7 +720,7 @@
       margin-top: 8px;
       color: #d8d4ca;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 500;
       text-align: center;
     }
   </style>
@@ -602,6 +736,7 @@
       <section class="panel equip-panel" aria-label="장착 슬롯">
         <h2 class="panel-title">장착 슬롯</h2>
         <div class="slot-row" id="slotRow"></div>
+        <div class="equip-summary" id="equipSummary" aria-label="장착 시너지 요약"></div>
       </section>
 
       <section class="panel detail-panel" aria-label="유물 상세 정보">
@@ -752,6 +887,11 @@
         tagClass: "rare",
         icon: "☆",
         cost: 3,
+        stages: [
+          "치명타 피해 +8%",
+          "치명타 피해 +14%",
+          "치명타 피해 +22%"
+        ],
         effect: "치명타 발생 시 피해량의 X%를 추가로 입힌다."
       },
       {
@@ -761,6 +901,11 @@
         tagClass: "rare",
         icon: "✦",
         cost: 3,
+        stages: [
+          "연속 공격 확률 +4%",
+          "연속 공격 확률 +7%",
+          "연속 공격 확률 +11%"
+        ],
         effect: "공격 시 X% 확률로 연속 공격이 발동된다."
       },
       {
@@ -770,6 +915,11 @@
         tagClass: "advanced",
         icon: "✧",
         cost: 2,
+        stages: [
+          "처치 후 공격력 +3%",
+          "처치 후 공격력 +5%",
+          "처치 후 공격력 +8%"
+        ],
         effect: "몬스터 처치 시 X초 동안 공격력이 X% 증가한다."
       },
       {
@@ -779,6 +929,11 @@
         tagClass: "advanced",
         icon: "↟",
         cost: 2,
+        stages: [
+          "공격 속도 +3%",
+          "공격 속도 +5%",
+          "공격 속도 +8%"
+        ],
         effect: "X초마다 X초 동안 공격 속도가 증가한다."
       },
       {
@@ -788,6 +943,11 @@
         tagClass: "normal",
         icon: "▲",
         cost: 1,
+        stages: [
+          "공격력 +2%",
+          "공격력 +3.5%",
+          "공격력 +5%"
+        ],
         effect: "공격력이 X% 증가한다."
       },
       {
@@ -797,6 +957,11 @@
         tagClass: "normal",
         icon: "◈",
         cost: 1,
+        stages: [
+          "치명타 확률 +1%",
+          "치명타 확률 +1.8%",
+          "치명타 확률 +3%"
+        ],
         effect: "치명타 확률이 X% 증가한다."
       }
     ];
@@ -809,6 +974,7 @@
 
     const inventoryGrid = document.querySelector("#inventoryGrid");
     const slotRow = document.querySelector("#slotRow");
+    const equipSummary = document.querySelector("#equipSummary");
     const detailName = document.querySelector("#detailName");
     const detailStatus = document.querySelector("#detailStatus");
     const statBlock = document.querySelector("#statBlock");
@@ -840,6 +1006,31 @@
       return list.slice(0, 4);
     }
 
+    function synergyCounts(relic) {
+      return normalizeSynergies(relic).reduce((counts, id) => {
+        if (!id) return counts;
+        counts[id] = (counts[id] || 0) + 1;
+        return counts;
+      }, {});
+    }
+
+    function synergyStage(relic, synergyId) {
+      return Math.min(synergyCounts(relic)[synergyId] || 0, 3);
+    }
+
+    function renderStageEffects(synergy, activeStage) {
+      return synergy.stages.map((text, index) => {
+        const stage = index + 1;
+        const active = stage === activeStage ? "active" : "";
+        return `
+          <div class="stage-effect ${active}">
+            <span class="stage-label">${stage}단계</span>
+            <span>${text}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
     function renderDots(relic) {
       return normalizeSynergies(relic).map((id) => {
         const synergy = getSynergy(id);
@@ -856,15 +1047,7 @@
       }).join("");
     }
 
-    function renderPointDots(relic) {
-      const used = normalizeSynergies(relic).filter(Boolean).length;
-      return Array.from({ length: 4 }, (_, index) => {
-        const className = index < used ? "point-dot on" : "point-dot";
-        return `<span class="${className}"></span>`;
-      }).join("");
-    }
-
-    function renderIcon(relic, sizeClass = "") {
+    function renderIcon(relic, sizeClass = "", showStars = false) {
       if (!relic.owned) {
         return `<div class="icon-box ${sizeClass} lock-icon"><span>⌕</span></div>`;
       }
@@ -872,6 +1055,7 @@
       return `
         <div class="icon-box ${sizeClass} grade-${relic.grade}">
           <span>${relic.icon}</span>
+          ${showStars ? `<span class="star-chip">★${relic.stars}</span>` : ""}
           <span class="level-chip">${relic.level}</span>
         </div>
       `;
@@ -910,10 +1094,35 @@
 
         return `
           <button class="slot-card ${selected}" type="button" data-slot-index="${index}">
-            ${renderIcon(relic, "small")}
-            <span class="point-row">${renderPointDots(relic)}</span>
+            ${renderIcon(relic, "small", true)}
             <span class="relic-name">${relic.name}</span>
-            <span class="dots">${renderDots(relic)}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function renderEquipSummary() {
+      equipSummary.innerHTML = equippedSlots.map((relicId, index) => {
+        const relic = relicId ? getRelic(relicId) : null;
+        if (!relic) return "";
+
+        const selected = relic.id === selectedRelicId ? "selected" : "";
+        const counts = synergyCounts(relic);
+        const tokens = Object.entries(counts).map(([id, count]) => {
+          const synergy = getSynergy(id);
+          if (!synergy) return "";
+          return `
+            <span class="summary-token">
+              <span>${synergy.icon}</span>
+              <strong>${synergy.name}${count > 1 ? ` x${count}` : ""}</strong>
+            </span>
+          `;
+        }).join("") || `<span class="summary-token">시너지 없음</span>`;
+
+        return `
+          <button class="summary-card ${selected}" type="button" data-summary-slot="${index}">
+            <span class="summary-name">${relic.name}</span>
+            <span class="summary-synergies">${tokens}</span>
           </button>
         `;
       }).join("");
@@ -958,16 +1167,16 @@
             <button class="synergy-slot empty" type="button" data-synergy-index="${index}">
               <div class="plus">+</div>
               <div class="synergy-name">추가</div>
-              <div class="synergy-meta">${relic.pointMax - usedPoints(relic)}pt 남음</div>
             </button>
           `;
         }
 
+        const stage = synergyStage(relic, synergy.id);
         return `
           <button class="synergy-slot" type="button" data-synergy-index="${index}">
             <div class="synergy-icon">${synergy.icon}</div>
             <div class="synergy-name">${synergy.name}</div>
-            <div class="synergy-meta">${synergy.grade} · ${synergy.cost}pt</div>
+            <div class="synergy-meta">${stage}단계 · ${synergy.cost}pt</div>
           </button>
         `;
       }).join("");
@@ -982,6 +1191,8 @@
       synergyList.innerHTML = synergies.map((synergy) => {
         const selected = synergy.id === currentId ? "selected" : "";
         const disabled = synergy.cost > remaining ? "disabled" : "";
+        const activeStage = synergyStage(relic, synergy.id);
+        const costNote = synergy.cost > remaining ? "포인트 부족" : `선택 가능`;
         return `
           <button class="synergy-option ${selected}" type="button" data-synergy-id="${synergy.id}" ${disabled}>
             <div class="synergy-icon">${synergy.icon}</div>
@@ -990,9 +1201,12 @@
                 <span>${synergy.name}</span>
                 <span class="tag ${synergy.tagClass}">${synergy.grade}</span>
               </div>
-              <div class="option-desc">${synergy.effect}</div>
+              <div class="stage-list">${renderStageEffects(synergy, activeStage)}</div>
             </div>
-            <div class="cost">${synergy.cost} pt</div>
+            <div class="cost">
+              <div>${synergy.cost} pt</div>
+              <div class="cost-note">${costNote}</div>
+            </div>
           </button>
         `;
       }).join("");
@@ -1023,6 +1237,7 @@
     function renderAll() {
       renderInventory();
       renderSlots();
+      renderEquipSummary();
       renderDetail();
     }
 
@@ -1041,6 +1256,14 @@
       const slot = event.target.closest("[data-slot-index]");
       if (!slot || slot.disabled) return;
       selectedSlotIndex = Number(slot.dataset.slotIndex);
+      selectedRelicId = equippedSlots[selectedSlotIndex];
+      renderAll();
+    });
+
+    equipSummary.addEventListener("click", (event) => {
+      const summary = event.target.closest("[data-summary-slot]");
+      if (!summary) return;
+      selectedSlotIndex = Number(summary.dataset.summarySlot);
       selectedRelicId = equippedSlots[selectedSlotIndex];
       renderAll();
     });

@@ -52,3 +52,29 @@
 - Review whether duplicate rare synergies should be allowed.
 - Decide whether star display and synergy dot display need clearer separation.
 - Add any final portfolio-facing polish before using screenshots in the planning document.
+
+## 2026-05-26
+
+### Done
+
+- Centered the fixed `1280 x 720` prototype stage in the browser viewport.
+- Reduced heavy font weights outside section titles and primary button labels.
+- Stabilized equipped slot cards so selection and icon clicks do not push the layout outside the panel.
+- Moved star/ascension display into the equipped relic icon as a `★N` badge.
+- Removed synergy dot rows from equipped slots.
+- Added an equipped synergy summary area under the equipped slots.
+- Added duplicate synergy grouping in the summary, such as `치명 강화 x2`.
+- Updated synergy slots to focus on the synergy icon and current stage.
+- Expanded the synergy selection modal to show all 1/2/3 stage effects.
+- Highlighted the currently active stage and marked point-blocked choices as unavailable.
+
+### Notes
+
+- Synergy stage is calculated from the number of copies equipped on the selected relic.
+- The dark UI direction remains the active visual direction.
+- The equipped slot panel now reserves separate height for slot cards and summary cards.
+
+### Next
+
+- Review stage effect copy and exact numerical values.
+- Decide whether the planning document should describe duplicate synergy stacking as the main rule.

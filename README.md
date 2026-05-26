@@ -12,6 +12,7 @@ Relic prototype game project.
 - Public GitHub repository is connected.
 - Local project folder is stored inside OneDrive for easier access from other PCs.
 - The first playable relic management prototype is implemented as a single HTML file.
+- The prototype includes equipped synergy summary, synergy stage preview, and stabilized slot layout.
 
 ## How To Run
 
@@ -20,6 +21,6 @@ Relic prototype game project.
 
 ## Next Steps
 
-- Review the relic synergy rules and point-cost logic.
-- Add any missing UI states needed for portfolio presentation.
+- Review the relic synergy balance values and stage names.
+- Add final portfolio screenshots after the planning document structure is fixed.
 - Align the final prototype behavior with the system planning document.

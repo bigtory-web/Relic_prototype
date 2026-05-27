@@ -111,3 +111,21 @@
 ### Notes
 
 - The inventory now relies on its internal vertical scroll area for the larger catalog.
+
+## 2026-05-27
+
+### Done
+
+- Allowed unowned relics to be selected from the inventory and inspected in the detail panel.
+- Removed relic names from inventory cards and added shard progress in `owned / required` format.
+- Removed the synergy box layout from equipped slot cards.
+- Added read-only integrated synergy popup from the equipped synergy summary area.
+- Added upgrade preview values in the detail panel using `current > next` formatting.
+- Implemented upgrade button behavior: level +1, equipped effect increase, owned effect increase.
+- Disabled promote, upgrade, and unequip actions for unowned relics.
+- Disabled upgrade at max level.
+
+### Notes
+
+- Upgrade values currently use fixed prototype rules: attack +1.0%p, critical rate +0.2%p, owned attack +0.1%p.
+- Integrated synergy popup is information-only and does not edit equipped relic synergy slots.

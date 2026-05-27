@@ -94,12 +94,12 @@
     }
 
     .inventory-grid::-webkit-scrollbar,
-    .synergy-list::-webkit-scrollbar {
+    .synergy-icon-grid::-webkit-scrollbar {
       width: 6px;
     }
 
     .inventory-grid::-webkit-scrollbar-thumb,
-    .synergy-list::-webkit-scrollbar-thumb {
+    .synergy-icon-grid::-webkit-scrollbar-thumb {
       border-radius: 999px;
       background: #575a55;
     }
@@ -113,6 +113,7 @@
     }
 
     .relic-card {
+      position: relative;
       min-width: 0;
       padding: 10px 8px;
       border: 1px solid var(--line-soft);
@@ -146,6 +147,26 @@
       cursor: pointer;
     }
 
+    .equipped-badge {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      z-index: 2;
+      height: 19px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(44, 214, 161, 0.42);
+      border-radius: 999px;
+      background: rgba(23, 112, 87, 0.82);
+      color: #e8fff7;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      pointer-events: none;
+    }
+
     .icon-box {
       position: relative;
       width: 72px;
@@ -160,11 +181,11 @@
     }
 
     .icon-box.small {
-      width: 82px;
-      height: 78px;
+      width: 74px;
+      height: 70px;
       margin-bottom: 0;
       border-radius: 12px;
-      font-size: 36px;
+      font-size: 33px;
     }
 
     .icon-box.lock-icon {
@@ -245,20 +266,40 @@
       white-space: nowrap;
     }
 
-    .shard-count {
+    .shard-gauge {
+      position: relative;
+      width: 76px;
       height: 22px;
       margin-top: 8px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 48px;
-      padding: 0 8px;
       border: 1px solid #4b4e4a;
       border-radius: 999px;
       background: rgba(20, 21, 19, 0.32);
+      overflow: hidden;
+    }
+
+    .shard-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--shard-progress, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(44, 214, 161, 0.35), rgba(44, 214, 161, 0.7));
+    }
+
+    .relic-card.locked .shard-fill {
+      background: linear-gradient(90deg, rgba(125, 130, 120, 0.22), rgba(125, 130, 120, 0.5));
+    }
+
+    .shard-label {
+      position: relative;
+      z-index: 1;
       color: #ded9cf;
       font-size: 12px;
       font-weight: 600;
+      line-height: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.58);
     }
 
     .dots {
@@ -313,7 +354,7 @@
     .slot-card {
       min-width: 0;
       height: 170px;
-      padding: 10px;
+      padding: 9px;
       border: 1px solid #4b4e49;
       border-radius: 12px;
       background: var(--panel-soft);
@@ -337,18 +378,45 @@
       width: 100%;
       display: grid;
       justify-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     .slot-name {
       overflow: hidden;
       color: #f1ede4;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 14px;
+      font-weight: 600;
       line-height: 1.2;
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align: center;
+    }
+
+    .slot-synergies {
+      width: 100%;
+      min-height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .slot-synergy-icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(44, 214, 161, 0.14);
+      color: #f3f0e8;
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    .slot-synergy-icon.empty {
+      border: 1px dashed #4b4e4a;
+      background: transparent;
+      color: #77746d;
     }
 
     .star-row {
@@ -439,17 +507,17 @@
     }
 
     .title-icon .icon-box {
-      width: 92px;
-      height: 92px;
+      width: 104px;
+      height: 104px;
       margin: 0;
-      font-size: 54px;
-      border-radius: 18px;
+      font-size: 60px;
+      border-radius: 20px;
     }
 
     .detail-title-copy {
       min-width: 0;
       display: grid;
-      gap: 8px;
+      gap: 7px;
     }
 
     .detail-title-meta {
@@ -460,6 +528,15 @@
       color: var(--muted);
       font-size: 15px;
       font-weight: 500;
+    }
+
+    .detail-shard-gauge {
+      margin-top: 8px;
+    }
+
+    .detail-shard-gauge .shard-gauge {
+      width: 168px;
+      margin-top: 0;
     }
 
     .detail-title-name {
@@ -598,6 +675,14 @@
       color: #c7c3ba;
     }
 
+    .synergy-slot.locked-slot {
+      border-style: solid;
+      background: #242521;
+      color: #85817a;
+      cursor: default;
+      opacity: 0.72;
+    }
+
     .synergy-icon {
       width: 34px;
       height: 34px;
@@ -616,6 +701,11 @@
       height: 40px;
       margin: 0;
       font-size: 22px;
+    }
+
+    .synergy-slot.locked-slot .synergy-icon {
+      background: #30312d;
+      color: #8b8880;
     }
 
     .synergy-name {
@@ -679,6 +769,7 @@
     .modal-overlay {
       position: fixed;
       inset: 0;
+      z-index: 100;
       display: none;
       align-items: center;
       justify-content: center;
@@ -690,7 +781,7 @@
     }
 
     .modal {
-      width: 760px;
+      width: 840px;
       max-height: 640px;
       padding: 18px;
       border: 1px solid var(--line);
@@ -727,22 +818,27 @@
     .synergy-list {
       margin-top: 12px;
       display: grid;
-      grid-template-rows: auto 1fr auto;
+      grid-template-columns: 352px 1fr;
+      grid-template-rows: 1fr auto;
       gap: 12px;
     }
 
     .synergy-icon-grid {
+      max-height: 430px;
+      padding-right: 4px;
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-content: start;
       gap: 8px;
+      overflow-y: auto;
     }
 
     .synergy-pick {
       position: relative;
-      height: 74px;
+      height: 68px;
       padding: 8px 6px;
       border: 1px solid #50534d;
-      border-radius: 12px;
+      border-radius: 8px;
       background: var(--panel-soft);
       cursor: pointer;
       display: grid;
@@ -799,13 +895,13 @@
     }
 
     .synergy-preview {
-      min-height: 236px;
+      min-height: 430px;
       padding: 14px;
       border: 1px solid #4d504b;
-      border-radius: 12px;
+      border-radius: 8px;
       background: var(--panel-soft);
       display: grid;
-      grid-template-rows: auto auto 1fr;
+      align-content: start;
       gap: 12px;
     }
 
@@ -814,6 +910,8 @@
       grid-template-columns: 52px 1fr auto;
       gap: 12px;
       align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #444740;
     }
 
     .preview-head .synergy-icon {
@@ -853,12 +951,12 @@
 
     .stage-list {
       display: grid;
-      gap: 4px;
+      gap: 8px;
     }
 
     .stage-effect {
-      min-height: 24px;
-      padding: 4px 7px;
+      min-height: 54px;
+      padding: 8px 10px;
       display: grid;
       grid-template-columns: 42px 1fr;
       gap: 8px;
@@ -887,9 +985,85 @@
     }
 
     .modal-actions {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
+    }
+
+    .modal-actions .action-button:only-child {
+      grid-column: 1 / -1;
+    }
+
+    .promotion-list {
+      margin-top: 12px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .promotion-hero {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      padding: 8px 0 2px;
+    }
+
+    .promotion-hero .icon-box {
+      width: 104px;
+      height: 104px;
+      margin: 0;
+      border-radius: 20px;
+      font-size: 60px;
+    }
+
+    .promotion-stars {
+      color: #f4f0e7;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .promotion-compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .promotion-card {
+      min-height: 104px;
+      padding: 12px;
+      border: 1px solid #4d504b;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .promotion-card-title {
+      color: #f1ede4;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .promotion-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      color: #d7d3ca;
+      font-size: 13px;
+    }
+
+    .promotion-change {
+      color: var(--accent-soft);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .promotion-note {
+      min-height: 18px;
+      color: #c8c4ba;
+      font-size: 13px;
+      text-align: center;
     }
 
     .tag.rare { background: #faece7; color: #993c1d; }
@@ -933,6 +1107,7 @@
           <div class="detail-title-copy">
             <div class="detail-title-meta" id="detailStatus"></div>
             <h2 class="detail-title-name" id="detailName">불꽃의 심장</h2>
+            <div class="detail-shard-gauge" id="detailShardGauge"></div>
           </div>
         </div>
       </div>
@@ -976,14 +1151,14 @@
         icon: "♨",
         level: 48,
         maxLevel: 60,
-        stars: 3,
+        stars: 1,
         equipEffect: [
           ["공격력", "+18%"],
           ["치명타 확률", "+5%"]
         ],
         ownedEffect: [["공격력", "+3.2%"]],
         pointMax: 10,
-        synergies: ["crit_boost", "crit_boost", "atk_up", null],
+        synergies: ["crit_boost", "crit_boost", null, null],
         owned: true
       },
       {
@@ -1206,7 +1381,7 @@
     };
 
     const shardSeed = {
-      heart_fire: [3, 5],
+      heart_fire: [5, 5],
       frost_shield: [2, 4],
       lightning_eye: [1, 4],
       dark_crystal: [3, 4],
@@ -1260,6 +1435,7 @@
     const detailName = document.querySelector("#detailName");
     const detailIcon = document.querySelector("#detailIcon");
     const detailStatus = document.querySelector("#detailStatus");
+    const detailShardGauge = document.querySelector("#detailShardGauge");
     const statBlock = document.querySelector("#statBlock");
     const synergyGrid = document.querySelector("#synergyGrid");
     const pointTotal = document.querySelector("#pointTotal");
@@ -1277,8 +1453,32 @@
       return synergies.find((synergy) => synergy.id === id);
     }
 
+    const gradeBasePoints = { N: 4, R: 6, SR: 8, SSR: 10 };
+    const starPointBonus = [0, 0, 2, 4, 6, 8];
+    const maxStars = 5;
+
+    function unlockedSlotCount(stars = 0) {
+      if (stars >= 3) return 4;
+      if (stars >= 2) return 3;
+      return 2;
+    }
+
+    function requiredStarsForSlot(index) {
+      if (index <= 1) return 0;
+      if (index === 2) return 2;
+      return 3;
+    }
+
+    function pointCapacity(relic, stars = relic.stars) {
+      return gradeBasePoints[relic.grade] + (starPointBonus[Math.min(stars, maxStars)] || 0);
+    }
+
+    function activeSynergies(relic, stars = relic.stars) {
+      return normalizeSynergies(relic).slice(0, unlockedSlotCount(stars));
+    }
+
     function usedPoints(relic) {
-      return normalizeSynergies(relic).reduce((total, id) => {
+      return activeSynergies(relic).reduce((total, id) => {
         const synergy = getSynergy(id);
         return total + (synergy ? synergy.cost : 0);
       }, 0);
@@ -1291,7 +1491,7 @@
     }
 
     function synergyCounts(relic) {
-      return normalizeSynergies(relic).reduce((counts, id) => {
+      return activeSynergies(relic).reduce((counts, id) => {
         if (!id) return counts;
         counts[id] = (counts[id] || 0) + 1;
         return counts;
@@ -1315,14 +1515,14 @@
       if (editingSynergyIndex !== null && previewId !== undefined) {
         list[editingSynergyIndex] = previewId;
       }
-      return Math.min(synergyCountsFromList(list)[synergyId] || 0, 3);
+      return Math.min(synergyCountsFromList(list.slice(0, unlockedSlotCount(relic.stars)))[synergyId] || 0, 3);
     }
 
     function equippedSynergyCounts() {
       return equippedSlots.reduce((counts, relicId) => {
         const relic = relicId ? getRelic(relicId) : null;
         if (!relic) return counts;
-        normalizeSynergies(relic).forEach((id) => {
+        activeSynergies(relic).forEach((id) => {
           if (!id) return;
           counts[id] = (counts[id] || 0) + 1;
         });
@@ -1380,17 +1580,44 @@
       `;
     }
 
+    function shardProgress(relic) {
+      if (!relic.requiredShards) return 0;
+      return Math.min(100, Math.round((relic.shards / relic.requiredShards) * 100));
+    }
+
+    function renderShardGauge(relic) {
+      return `
+        <span class="shard-gauge" aria-label="조각 ${relic.shards}/${relic.requiredShards}">
+          <span class="shard-fill" style="--shard-progress: ${shardProgress(relic)}%;"></span>
+          <span class="shard-label">${relic.shards}/${relic.requiredShards}</span>
+        </span>
+      `;
+    }
+
     function renderInventory() {
       inventoryGrid.innerHTML = relics.map((relic) => {
         const selected = relic.id === selectedRelicId ? "selected" : "";
         const locked = relic.owned ? "" : "locked";
+        const equipped = equippedSlots.includes(relic.id);
+        const equippedClass = equipped ? "equipped" : "";
 
         return `
-          <button class="relic-card ${selected} ${locked}" type="button" data-relic-id="${relic.id}">
+          <button class="relic-card ${selected} ${locked} ${equippedClass}" type="button" data-relic-id="${relic.id}">
+            ${equipped ? `<span class="equipped-badge">장착중</span>` : ""}
             ${renderIcon(relic, "", true)}
-            <span class="shard-count">${relic.shards}/${relic.requiredShards}</span>
+            ${renderShardGauge(relic)}
           </button>
         `;
+      }).join("");
+    }
+
+    function renderSlotSynergies(relic) {
+      const unlocked = unlockedSlotCount(relic.stars);
+      return normalizeSynergies(relic).map((id, index) => {
+        if (index >= unlocked) return `<span class="slot-synergy-icon empty" title="${requiredStarsForSlot(index)}성 해금">⌕</span>`;
+        const synergy = getSynergy(id);
+        if (!synergy) return `<span class="slot-synergy-icon empty">+</span>`;
+        return `<span class="slot-synergy-icon" title="${synergy.name}">${synergy.icon}</span>`;
       }).join("");
     }
 
@@ -1414,6 +1641,7 @@
             <div class="slot-main">
               ${renderIcon(relic, "small", true)}
               <div class="slot-name">${relic.name}</div>
+              <div class="slot-synergies" aria-label="${relic.name} 시너지">${renderSlotSynergies(relic)}</div>
             </div>
           </button>
         `;
@@ -1441,9 +1669,24 @@
       return formatPercent(parsePercent(value) + upgradeDelta(label, owned));
     }
 
+    function promotionDelta(label, owned = false) {
+      if (owned) return 0.3;
+      if (label.includes("치명타")) return 0.5;
+      if (label.includes("공격력")) return 2.0;
+      return 0;
+    }
+
+    function nextPromotionEffectValue(label, value, owned = false) {
+      return formatPercent(parsePercent(value) + promotionDelta(label, owned));
+    }
+
     function renderValueWithNext(label, value, relic, owned = false) {
       if (!relic.owned || relic.level >= relic.maxLevel) return value;
       return `${value} <span class="next-value">&gt; ${nextEffectValue(label, value, owned)}</span>`;
+    }
+
+    function ownedEffectLabel(label) {
+      return label === "공격력" ? "공격력/체력/방어력" : label;
     }
 
     function upgradeRelic(relic) {
@@ -1452,6 +1695,86 @@
       relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextEffectValue(label, value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
+    }
+
+    function canConfirmPromotion(relic) {
+      return Boolean(relic?.owned && relic.stars < maxStars && relic.shards >= relic.requiredShards);
+    }
+
+    function promotionRows(effects, owned = false) {
+      return effects.map(([label, value]) => `
+        <div class="promotion-row">
+          <span>${owned ? ownedEffectLabel(label) : label}</span>
+          <span class="promotion-change">${value} &gt; ${nextPromotionEffectValue(label, value, owned)}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderPromotionModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic) return;
+      const nextStars = Math.min(relic.stars + 1, maxStars);
+      const currentPoints = pointCapacity(relic, relic.stars);
+      const nextPoints = pointCapacity(relic, nextStars);
+      const currentSlots = unlockedSlotCount(relic.stars);
+      const nextSlots = unlockedSlotCount(nextStars);
+      const canPromote = canConfirmPromotion(relic);
+      const note = relic.stars >= maxStars
+        ? "최대 성급입니다."
+        : canPromote
+          ? `조각 ${relic.shards}/${relic.requiredShards}`
+          : `조각 부족 ${relic.shards}/${relic.requiredShards}`;
+
+      synergyList.className = "promotion-list";
+      synergyList.innerHTML = `
+        <div class="promotion-hero">
+          ${renderIcon(relic, "", true, false)}
+          <div class="promotion-stars">${relic.stars}성 &gt; ${nextStars}성</div>
+        </div>
+        <div class="promotion-compare">
+          <div class="promotion-card">
+            <div class="promotion-card-title">장착 효과</div>
+            ${promotionRows(relic.equipEffect)}
+          </div>
+          <div class="promotion-card">
+            <div class="promotion-card-title">보유 효과</div>
+            ${promotionRows(relic.ownedEffect, true)}
+          </div>
+          <div class="promotion-card">
+            <div class="promotion-card-title">시너지 포인트</div>
+            <div class="promotion-row">
+              <span>최대 포인트</span>
+              <span class="promotion-change">${currentPoints} pt &gt; ${nextPoints} pt</span>
+            </div>
+          </div>
+          <div class="promotion-card">
+            <div class="promotion-card-title">시너지 슬롯</div>
+            <div class="promotion-row">
+              <span>해금 슬롯</span>
+              <span class="promotion-change">${currentSlots}칸 &gt; ${nextSlots}칸</span>
+            </div>
+          </div>
+        </div>
+        <div class="promotion-note">${note}</div>
+        <div class="modal-actions">
+          <button class="action-button" type="button" data-modal-action="cancel">취소</button>
+          <button class="action-button" type="button" data-modal-action="promote-confirm" ${canPromote ? "" : "disabled"}>승급</button>
+        </div>
+      `;
+    }
+
+    function applyPromotion() {
+      const relic = getRelic(selectedRelicId);
+      if (!canConfirmPromotion(relic)) return;
+      relic.shards -= relic.requiredShards;
+      relic.stars = Math.min(relic.stars + 1, maxStars);
+      relic.pointMax = pointCapacity(relic);
+      relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value)]);
+      relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value, true)]);
+      relic.synergies = normalizeSynergies(relic);
+      closeSynergyModal();
+      renderAll();
+      showToast("승급되었습니다.");
     }
 
     function renderEquipSummary() {
@@ -1480,8 +1803,10 @@
       detailStatus.innerHTML = `
         <span class="grade-badge ${relic.grade}">${relic.grade}</span>
         <span>Lv.${relic.level} / ${relic.maxLevel}</span>
-        <span>조각 ${relic.shards}/${relic.requiredShards}</span>
         ${relic.owned ? "" : "<span>미보유</span>"}
+      `;
+      detailShardGauge.innerHTML = `
+        ${renderShardGauge(relic)}
       `;
 
       const equipRows = relic.equipEffect.map(([label, value]) => `
@@ -1492,7 +1817,7 @@
       `).join("");
       const ownedRows = relic.ownedEffect.map(([label, value]) => `
         <div class="stat-row ${relic.owned ? "" : "disabled"}">
-          <span>${label}</span>
+          <span>${ownedEffectLabel(label)}</span>
           <span class="stat-value">${renderValueWithNext(label, value, relic, true)}</span>
         </div>
       `).join("");
@@ -1508,8 +1833,17 @@
         </div>
       `;
 
-      pointTotal.textContent = `${usedPoints(relic)} / ${relic.pointMax} pt`;
+      pointTotal.textContent = `${usedPoints(relic)} / ${pointCapacity(relic)} pt`;
       synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
+        const isLocked = index >= unlockedSlotCount(relic.stars);
+        if (isLocked) {
+          return `
+            <button class="synergy-slot locked-slot" type="button" data-synergy-index="${index}" disabled>
+              <div class="synergy-icon">⌕</div>
+              <div class="synergy-name">${requiredStarsForSlot(index)}성 해금</div>
+            </button>
+          `;
+        }
         const synergy = getSynergy(id);
         if (!synergy) {
           return `
@@ -1529,16 +1863,17 @@
       }).join("");
 
       const canUpgrade = relic.owned && relic.level < relic.maxLevel;
-      document.querySelector('[data-action="promote"]').disabled = !relic.owned;
+      document.querySelector('[data-action="promote"]').disabled = !relic.owned || relic.stars >= maxStars;
       document.querySelector('[data-action="upgrade"]').disabled = !canUpgrade;
       document.querySelector('[data-action="unequip"]').disabled = !relic.owned || !equippedSlots.includes(relic.id);
     }
 
     function renderSynergyOptions() {
+      synergyList.className = "synergy-list";
       const relic = getRelic(selectedRelicId);
       const currentId = normalizeSynergies(relic)[editingSynergyIndex];
       const currentCost = currentId ? getSynergy(currentId).cost : 0;
-      const remaining = relic.pointMax - usedPoints(relic) + currentCost;
+      const remaining = pointCapacity(relic) - usedPoints(relic) + currentCost;
       const previewId = selectedSynergyPreviewId;
       const previewSynergy = previewId ? getSynergy(previewId) : null;
       const previewStage = previewSynergy ? previewSynergyStage(relic, previewSynergy.id, previewId) : 0;
@@ -1571,17 +1906,15 @@
                 <span>${previewSynergy.name}</span>
                 <span class="tag ${previewSynergy.tagClass}">${previewSynergy.grade}</span>
               </div>
-              <div class="cost-note">${previewId === currentId ? "현재 적용 중" : "적용 대기 중"}</div>
             </div>
             <div class="preview-cost">${previewSynergy.cost} pt</div>
           </div>
           <div class="stage-list">${renderStageEffects(previewSynergy, previewStage)}</div>
-          <p class="option-desc">${previewSynergy.effect}</p>
         </div>
       ` : `
         <div class="synergy-preview">
           <div class="option-title">시너지 없음</div>
-          <p class="option-desc">선택 가능한 시너지 아이콘을 눌러 정보를 확인합니다.</p>
+          <p class="option-desc">왼쪽 목록에서 시너지를 선택합니다.</p>
         </div>
       `;
 
@@ -1596,6 +1929,7 @@
     }
 
     function renderSummaryModal() {
+      synergyList.className = "synergy-list";
       const counts = equippedSynergyCounts();
       const activeSynergies = synergies.filter((synergy) => counts[synergy.id]);
       const selectedId = selectedSummarySynergyId || activeSynergies[0]?.id || null;
@@ -1622,12 +1956,10 @@
                 <span>${previewSynergy.name}</span>
                 <span class="tag ${previewSynergy.tagClass}">${previewSynergy.grade}</span>
               </div>
-              <div class="cost-note">통합 적용 ${counts[selectedId]}개 · ${activeStage}단계</div>
             </div>
             <div class="preview-cost">${previewSynergy.cost} pt</div>
           </div>
           <div class="stage-list">${renderStageEffects(previewSynergy, activeStage)}</div>
-          <p class="option-desc">${previewSynergy.effect}</p>
         </div>
       ` : `
         <div class="synergy-preview">
@@ -1648,12 +1980,13 @@
     function openModal(index) {
       const relic = getRelic(selectedRelicId);
       if (!relic?.owned) return;
+      if (index >= unlockedSlotCount(relic.stars)) return;
       modalMode = "edit";
       modalTitle.textContent = "시너지 선택";
       editingSynergyIndex = index;
       const currentId = normalizeSynergies(relic)[index];
       const currentCost = currentId ? getSynergy(currentId).cost : 0;
-      const remaining = relic.pointMax - usedPoints(relic) + currentCost;
+      const remaining = pointCapacity(relic) - usedPoints(relic) + currentCost;
       const firstAvailable = synergies.find((synergy) => synergy.cost <= remaining)?.id || synergies[0]?.id || null;
       selectedSynergyPreviewId = currentId || firstAvailable;
       pendingSynergyId = currentId || firstAvailable;
@@ -1675,10 +2008,24 @@
       modalOverlay.setAttribute("aria-hidden", "false");
     }
 
+    function openPromotionModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic?.owned || relic.stars >= maxStars) return;
+      modalMode = "promote";
+      modalTitle.textContent = "유물 승급";
+      editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+      renderPromotionModal();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
     function closeSynergyModal() {
       modalOverlay.classList.remove("open");
       modalOverlay.setAttribute("aria-hidden", "true");
       modalTitle.textContent = "시너지 선택";
+      synergyList.className = "synergy-list";
       modalMode = "edit";
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
@@ -1769,6 +2116,10 @@
       }
       if (actionButton.dataset.modalAction === "apply") {
         applyPendingSynergy();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "promote-confirm") {
+        applyPromotion();
       }
     });
 
@@ -1797,8 +2148,11 @@
         }
         return;
       }
+      if (button.dataset.action === "promote") {
+        openPromotionModal();
+        return;
+      }
       const messages = {
-        promote: "승급 플로우는 문서 단계에서 상세화합니다.",
         unequip: "장착해제는 선택 상태 유지 기준으로 처리됩니다."
       };
       showToast(messages[button.dataset.action]);

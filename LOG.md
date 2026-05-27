@@ -129,3 +129,25 @@
 
 - Upgrade values currently use fixed prototype rules: attack +1.0%p, critical rate +0.2%p, owned attack +0.1%p.
 - Integrated synergy popup is information-only and does not edit equipped relic synergy slots.
+
+## 2026-05-27
+
+### Done
+
+- Added `장착중` badges to inventory cards for relics currently in equipped slots.
+- Replaced plain inventory shard text with a compact shard progress gauge.
+- Updated the detail panel owned-effect display from `공격력` to `공격력/체력/방어력` while keeping the upgrade calculation data unchanged.
+- Changed the synergy modal to a two-column layout: selectable synergy icons on the left and stage effects on the right.
+- Restored the selected synergy icon, name, grade, and required point to the right-side modal preview while keeping current-state and one-line effect copy removed.
+- Moved detail shard progress from the top metadata row to a gauge below the relic name.
+- Restored equipped relic synergy icons in the main equipped-slot cards without returning to the previous boxed synergy layout.
+- Enlarged the detail relic icon and removed the `조각` caption from the detail shard gauge.
+- Added the promotion modal flow with before/after comparison for equip effects, owned effects, synergy points, and synergy slots.
+- Added star-based synergy unlock rules: 0-1 star opens 2 slots, 2 stars opens 3 slots, and 3+ stars opens 4 slots.
+- Changed `불꽃의 심장` to a 1-star, promotion-ready demo state so locked synergy slots are visible on the first screen.
+
+### Notes
+
+- Inventory shard gauge progress is calculated from `shards / requiredShards` and capped at 100%.
+- The modal overlay now has an explicit high layer so inventory badges and gauges cannot render above it.
+- Promotion currently uses fixed prototype deltas: equip attack +2.0%p, equip critical rate +0.5%p, owned effect +0.3%p.

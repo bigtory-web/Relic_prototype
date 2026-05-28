@@ -88,7 +88,7 @@
       padding-right: 4px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 138px;
+      grid-auto-rows: 136px;
       gap: 8px;
       overflow-y: auto;
     }
@@ -115,12 +115,17 @@
     .relic-card {
       position: relative;
       min-width: 0;
-      padding: 10px 8px;
+      padding: 8px 7px 7px;
       border: 1px solid var(--line-soft);
       border-radius: 10px;
       background: var(--panel-soft);
       cursor: pointer;
       text-align: center;
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      gap: 5px;
+      overflow: hidden;
     }
 
     .relic-card:hover,
@@ -169,14 +174,14 @@
 
     .icon-box {
       position: relative;
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 8px;
+      width: 66px;
+      height: 66px;
+      margin: 0 auto;
       display: grid;
       place-items: center;
       border-radius: 10px;
       color: #1f2621;
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 700;
     }
 
@@ -236,23 +241,6 @@
       text-shadow: none;
     }
 
-    .star-chip {
-      position: absolute;
-      left: 4px;
-      bottom: 4px;
-      min-width: 26px;
-      height: 18px;
-      padding: 0 4px;
-      display: grid;
-      place-items: center;
-      border-radius: 999px;
-      background: rgba(37, 38, 34, 0.78);
-      color: var(--gold);
-      font-size: 10px;
-      font-weight: 700;
-      line-height: 1;
-    }
-
     .relic-name {
       display: block;
       min-height: 18px;
@@ -266,11 +254,20 @@
       white-space: nowrap;
     }
 
+    .inventory-stars {
+      justify-content: center;
+      height: 14px;
+    }
+
+    .inventory-stars .star {
+      font-size: 12px;
+    }
+
     .shard-gauge {
       position: relative;
       width: 76px;
-      height: 22px;
-      margin-top: 8px;
+      height: 20px;
+      margin-top: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -296,7 +293,7 @@
       position: relative;
       z-index: 1;
       color: #ded9cf;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       line-height: 1;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.58);
@@ -382,6 +379,7 @@
     }
 
     .slot-name {
+      display: none;
       overflow: hidden;
       color: #f1ede4;
       font-size: 14px;
@@ -420,23 +418,28 @@
     }
 
     .star-row {
-      height: 16px;
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 3px;
+      gap: 4px;
     }
 
     .star {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid #51544f;
-      background: #21221f;
+      color: #50524e;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .star::before {
+      content: "★";
     }
 
     .star.on {
-      border-color: var(--gold);
-      background: var(--gold);
+      color: var(--gold);
+    }
+
+    .star.off {
+      color: #50524e;
     }
 
     .equip-summary {
@@ -488,8 +491,9 @@
       min-height: 0;
       padding: 16px;
       display: grid;
-      grid-template-rows: auto 256px 188px auto;
+      grid-template-rows: 124px 228px 168px 42px;
       gap: 12px;
+      overflow: hidden;
     }
 
     .detail-header {
@@ -520,6 +524,15 @@
       gap: 7px;
     }
 
+    .detail-stars {
+      justify-content: flex-start;
+      margin-top: -2px;
+    }
+
+    .detail-stars .star {
+      font-size: 16px;
+    }
+
     .detail-title-meta {
       display: flex;
       flex-wrap: wrap;
@@ -531,11 +544,11 @@
     }
 
     .detail-shard-gauge {
-      margin-top: 8px;
+      margin-top: 4px;
     }
 
     .detail-shard-gauge .shard-gauge {
-      width: 168px;
+      width: 150px;
       margin-top: 0;
     }
 
@@ -572,11 +585,12 @@
     .grade-badge.N { background: #eeeeea; color: #6c675f; }
 
     .stat-block {
-      height: 256px;
+      height: 228px;
       display: grid;
-      grid-template-rows: 172px 72px;
+      grid-template-rows: 152px 64px;
       gap: 12px;
       align-content: start;
+      overflow: hidden;
     }
 
     .stat-section {
@@ -602,12 +616,12 @@
 
     .stat-row {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(96px, 0.34fr) 1fr;
       gap: 10px;
-      padding-bottom: 6px;
+      padding-bottom: 5px;
       border-bottom: 1px solid #474a45;
       color: #d6d3cc;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 400;
     }
 
@@ -618,6 +632,13 @@
     .stat-value {
       color: #f5f2eb;
       font-weight: 600;
+      line-height: 1.35;
+      text-align: right;
+    }
+
+    .stat-section .stat-value {
+      font-weight: 500;
+      text-align: left;
     }
 
     .next-value {
@@ -634,12 +655,13 @@
     }
 
     .synergy-section {
-      height: 188px;
-      min-height: 188px;
+      height: 168px;
+      min-height: 168px;
       display: grid;
       grid-template-rows: auto 1fr;
-      gap: 8px;
+      gap: 6px;
       align-content: start;
+      overflow: hidden;
     }
 
     .point-total {
@@ -650,15 +672,15 @@
 
     .synergy-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
       align-content: start;
     }
 
     .synergy-slot {
       min-width: 0;
-      height: 98px;
-      padding: 8px 6px;
+      height: 84px;
+      padding: 6px 4px;
       border: 1px solid #676a64;
       border-radius: 10px;
       background: var(--panel);
@@ -697,10 +719,10 @@
     }
 
     .synergy-slot .synergy-icon {
-      width: 40px;
-      height: 40px;
+      width: 34px;
+      height: 34px;
       margin: 0;
-      font-size: 22px;
+      font-size: 20px;
     }
 
     .synergy-slot.locked-slot .synergy-icon {
@@ -710,7 +732,7 @@
 
     .synergy-name {
       overflow: hidden;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 1.2;
       text-overflow: ellipsis;
@@ -1017,9 +1039,22 @@
     }
 
     .promotion-stars {
+      display: grid;
+      justify-items: center;
+      gap: 8px;
       color: #f4f0e7;
-      font-size: 18px;
+      font-size: 14px;
       font-weight: 700;
+    }
+
+    .promotion-star-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promotion-star-track .star {
+      font-size: 16px;
     }
 
     .promotion-compare {
@@ -1057,6 +1092,14 @@
       color: var(--accent-soft);
       font-weight: 700;
       white-space: nowrap;
+    }
+
+    .promotion-change.text {
+      color: #d7d3ca;
+      font-weight: 500;
+      line-height: 1.35;
+      white-space: normal;
+      text-align: right;
     }
 
     .promotion-note {
@@ -1107,6 +1150,7 @@
           <div class="detail-title-copy">
             <div class="detail-title-meta" id="detailStatus"></div>
             <h2 class="detail-title-name" id="detailName">불꽃의 심장</h2>
+            <div class="star-row detail-stars" id="detailStars"></div>
             <div class="detail-shard-gauge" id="detailShardGauge"></div>
           </div>
         </div>
@@ -1151,14 +1195,10 @@
         icon: "♨",
         level: 48,
         maxLevel: 60,
-        stars: 1,
-        equipEffect: [
-          ["공격력", "+18%"],
-          ["치명타 확률", "+5%"]
-        ],
+        stars: 3,
+        equipEffect: [["치명 발화", "치명타 발생 시 대상에게 불꽃 폭발을 일으킨다."]],
         ownedEffect: [["공격력", "+3.2%"]],
-        pointMax: 10,
-        synergies: ["crit_boost", "crit_boost", null, null],
+        synergies: ["crit_rate", "crit_boost", null],
         owned: true
       },
       {
@@ -1169,13 +1209,9 @@
         level: 22,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [
-          ["공격력", "+10%"],
-          ["치명타 확률", "+3%"]
-        ],
+        equipEffect: [["서리 보호막", "피해를 받을 때 일정 확률로 짧은 보호막을 생성한다."]],
         ownedEffect: [["공격력", "+1.8%"]],
-        pointMax: 8,
-        synergies: ["atk_speed", "atk_up", null, null],
+        synergies: ["atk_speed", null],
         owned: true
       },
       {
@@ -1186,13 +1222,9 @@
         level: 15,
         maxLevel: 40,
         stars: 2,
-        equipEffect: [
-          ["공격력", "+10%"],
-          ["치명타 확률", "+3%"]
-        ],
+        equipEffect: [["연쇄 번개", "일정 횟수 공격할 때마다 추가 번개 피해가 발생한다."]],
         ownedEffect: [["공격력", "+1.5%"]],
-        pointMax: 8,
-        synergies: ["crit_rate", null, null, null],
+        synergies: ["crit_rate", null],
         owned: true
       },
       {
@@ -1203,13 +1235,9 @@
         level: 8,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [
-          ["공격력", "+8%"],
-          ["치명타 확률", "+2%"]
-        ],
+        equipEffect: [["암흑 흡수", "적 처치 시 짧은 시간 동안 다음 공격 피해가 증가한다."]],
         ownedEffect: [["공격력", "+1.1%"]],
-        pointMax: 8,
-        synergies: [],
+        synergies: ["kill_power", null],
         owned: true
       },
       {
@@ -1220,10 +1248,9 @@
         level: 5,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["공격력", "+5%"]],
+        equipEffect: [["강철 반격", "피해를 받은 뒤 다음 공격이 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.8%"]],
-        pointMax: 6,
-        synergies: [],
+        synergies: ["atk_up", null],
         owned: true
       },
       {
@@ -1234,28 +1261,25 @@
         level: 3,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["공격력", "+3%"]],
+        equipEffect: [["주문 잔류", "일정 시간마다 다음 시너지 발동 효과가 강화된다."]],
         ownedEffect: [["공격력", "+0.5%"]],
-        pointMax: 4,
-        synergies: [],
+        synergies: ["combo_strike", null],
         owned: true
       },
-      { id: "sun_core", name: "태양의 핵", grade: "SSR", icon: "☉", owned: false },
-      { id: "moon_crown", name: "달의 왕관", grade: "SSR", icon: "☾", owned: false },
-      { id: "dragon_scale", name: "용의 비늘", grade: "SSR", icon: "◆", owned: false },
-      { id: "void_lantern", name: "공허의 등불", grade: "SSR", icon: "◉", owned: false },
-      { id: "ancient_hourglass", name: "고대의 모래시계", grade: "SSR", icon: "⌛", owned: false },
-      { id: "star_seed", name: "별의 씨앗", grade: "SSR", icon: "✶", owned: false },
-      { id: "origin_orb", name: "기원의 보주", grade: "SSR", icon: "●", owned: false },
-      { id: "storm_eye", name: "폭풍의 눈", grade: "SR", icon: "◎", owned: false },
-      { id: "blood_chalice", name: "핏빛 성배", grade: "SR", icon: "▽", owned: false },
-      { id: "forest_totem", name: "숲의 토템", grade: "SR", icon: "♣", owned: false },
-      { id: "ice_shard", name: "얼음 파편", grade: "R", icon: "△", owned: false },
-      { id: "bone_ring", name: "뼈의 반지", grade: "R", icon: "○", owned: false },
-      { id: "rusted_medal", name: "녹슨 훈장", grade: "R", icon: "✚", owned: false },
-      { id: "wooden_charm", name: "나무 부적", grade: "N", icon: "♧", owned: false },
-      { id: "cracked_lens", name: "금 간 렌즈", grade: "N", icon: "◌", owned: false },
-      { id: "old_coin", name: "오래된 동전", grade: "N", icon: "¢", owned: false }
+      {
+        id: "sun_core",
+        name: "태양의 핵",
+        grade: "SSR",
+        icon: "☉",
+        owned: false
+      },
+      {
+        id: "moon_crown",
+        name: "달의 왕관",
+        grade: "SSR",
+        icon: "☾",
+        owned: false
+      }
     ];
 
     const synergies = [
@@ -1265,7 +1289,7 @@
         grade: "희귀",
         tagClass: "rare",
         icon: "☆",
-        cost: 3,
+        cost: 2,
         stages: [
           "치명타 피해 +8%",
           "치명타 피해 +14%",
@@ -1279,7 +1303,7 @@
         grade: "희귀",
         tagClass: "rare",
         icon: "✦",
-        cost: 3,
+        cost: 2,
         stages: [
           "연속 공격 확률 +4%",
           "연속 공격 확률 +7%",
@@ -1349,33 +1373,29 @@
       SSR: {
         maxLevel: 60,
         stars: 0,
-        pointMax: 10,
         requiredShards: 20,
-        equipEffect: [["공격력", "+18%"], ["치명타 확률", "+5%"]],
+        equipEffect: [["고유 발동", "전투 중 특정 조건을 만족하면 강한 효과가 발동한다."]],
         ownedEffect: [["공격력", "+3.0%"]]
       },
       SR: {
         maxLevel: 40,
         stars: 0,
-        pointMax: 8,
         requiredShards: 12,
-        equipEffect: [["공격력", "+10%"], ["치명타 확률", "+3%"]],
+        equipEffect: [["고유 발동", "전투 중 특정 조건을 만족하면 보조 효과가 발동한다."]],
         ownedEffect: [["공격력", "+1.5%"]]
       },
       R: {
         maxLevel: 20,
         stars: 0,
-        pointMax: 6,
         requiredShards: 8,
-        equipEffect: [["공격력", "+5%"]],
+        equipEffect: [["고유 발동", "전투 중 특정 조건에 맞춰 보조 효과가 발동한다."]],
         ownedEffect: [["공격력", "+0.8%"]]
       },
       N: {
         maxLevel: 20,
         stars: 0,
-        pointMax: 4,
         requiredShards: 5,
-        equipEffect: [["공격력", "+3%"]],
+        equipEffect: [["고유 발동", "전투 중 간단한 조건으로 보조 효과가 발동한다."]],
         ownedEffect: [["공격력", "+0.5%"]]
       }
     };
@@ -1411,7 +1431,6 @@
       relic.level = relic.level ?? 0;
       relic.maxLevel = relic.maxLevel ?? defaults.maxLevel;
       relic.stars = relic.stars ?? defaults.stars;
-      relic.pointMax = relic.pointMax ?? defaults.pointMax;
       relic.equipEffect = relic.equipEffect ?? defaults.equipEffect.map((effect) => [...effect]);
       relic.ownedEffect = relic.ownedEffect ?? defaults.ownedEffect.map((effect) => [...effect]);
       relic.synergies = relic.synergies ?? [];
@@ -1419,7 +1438,7 @@
       relic.requiredShards = relic.requiredShards ?? requiredShards;
     });
 
-    const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye", null];
+    const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye"];
     let selectedRelicId = "heart_fire";
     let selectedSlotIndex = 0;
     let editingSynergyIndex = null;
@@ -1435,6 +1454,7 @@
     const detailName = document.querySelector("#detailName");
     const detailIcon = document.querySelector("#detailIcon");
     const detailStatus = document.querySelector("#detailStatus");
+    const detailStars = document.querySelector("#detailStars");
     const detailShardGauge = document.querySelector("#detailShardGauge");
     const statBlock = document.querySelector("#statBlock");
     const synergyGrid = document.querySelector("#synergyGrid");
@@ -1453,28 +1473,34 @@
       return synergies.find((synergy) => synergy.id === id);
     }
 
-    const gradeBasePoints = { N: 4, R: 6, SR: 8, SSR: 10 };
-    const starPointBonus = [0, 0, 2, 4, 6, 8];
     const maxStars = 5;
 
-    function unlockedSlotCount(stars = 0) {
-      if (stars >= 3) return 4;
-      if (stars >= 2) return 3;
-      return 2;
+    function maxSynergySlots(relic) {
+      return relic?.grade === "SSR" ? 3 : 2;
     }
 
-    function requiredStarsForSlot(index) {
-      if (index <= 1) return 0;
-      if (index === 2) return 2;
-      return 3;
+    function unlockedSlotCount(relic, stars = relic?.stars || 0) {
+      const maxSlots = maxSynergySlots(relic);
+      if (stars >= 5) return maxSlots;
+      if (stars >= 3) return Math.min(2, maxSlots);
+      return 1;
+    }
+
+    function requiredStarsForSlot(index, relic) {
+      if (index === 0) return 1;
+      if (index === 1) return 3;
+      if (index === 2 && maxSynergySlots(relic) >= 3) return 5;
+      return null;
     }
 
     function pointCapacity(relic, stars = relic.stars) {
-      return gradeBasePoints[relic.grade] + (starPointBonus[Math.min(stars, maxStars)] || 0);
+      if (stars >= 5) return 4;
+      if (stars >= 3) return 3;
+      return 2;
     }
 
     function activeSynergies(relic, stars = relic.stars) {
-      return normalizeSynergies(relic).slice(0, unlockedSlotCount(stars));
+      return normalizeSynergies(relic).slice(0, unlockedSlotCount(relic, stars));
     }
 
     function usedPoints(relic) {
@@ -1486,8 +1512,9 @@
 
     function normalizeSynergies(relic) {
       const list = Array.isArray(relic.synergies) ? [...relic.synergies] : [];
-      while (list.length < 4) list.push(null);
-      return list.slice(0, 4);
+      const slotCount = maxSynergySlots(relic);
+      while (list.length < slotCount) list.push(null);
+      return list.slice(0, slotCount);
     }
 
     function synergyCounts(relic) {
@@ -1515,7 +1542,7 @@
       if (editingSynergyIndex !== null && previewId !== undefined) {
         list[editingSynergyIndex] = previewId;
       }
-      return Math.min(synergyCountsFromList(list.slice(0, unlockedSlotCount(relic.stars)))[synergyId] || 0, 3);
+      return Math.min(synergyCountsFromList(list.slice(0, unlockedSlotCount(relic, relic.stars)))[synergyId] || 0, 3);
     }
 
     function equippedSynergyCounts() {
@@ -1554,7 +1581,7 @@
 
     function renderStars(count = 0) {
       return Array.from({ length: 5 }, (_, index) => {
-        const className = index < count ? "star on" : "star";
+        const className = index < count ? "star on" : "star off";
         return `<span class="${className}"></span>`;
       }).join("");
     }
@@ -1565,7 +1592,6 @@
           <div class="icon-box ${sizeClass} grade-${relic.grade} unowned">
             <span>${relic.icon}</span>
             <span class="lock-chip">⌕</span>
-            ${showStars ? `<span class="star-chip">★${relic.stars}</span>` : ""}
             ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
           </div>
         `;
@@ -1574,7 +1600,6 @@
       return `
         <div class="icon-box ${sizeClass} grade-${relic.grade}">
           <span>${relic.icon}</span>
-          ${showStars ? `<span class="star-chip">★${relic.stars}</span>` : ""}
           ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
         </div>
       `;
@@ -1604,7 +1629,8 @@
         return `
           <button class="relic-card ${selected} ${locked} ${equippedClass}" type="button" data-relic-id="${relic.id}">
             ${equipped ? `<span class="equipped-badge">장착중</span>` : ""}
-            ${renderIcon(relic, "", true)}
+            ${renderIcon(relic)}
+            <div class="star-row inventory-stars">${renderStars(relic.stars)}</div>
             ${renderShardGauge(relic)}
           </button>
         `;
@@ -1612,9 +1638,9 @@
     }
 
     function renderSlotSynergies(relic) {
-      const unlocked = unlockedSlotCount(relic.stars);
+      const unlocked = unlockedSlotCount(relic);
       return normalizeSynergies(relic).map((id, index) => {
-        if (index >= unlocked) return `<span class="slot-synergy-icon empty" title="${requiredStarsForSlot(index)}성 해금">⌕</span>`;
+        if (index >= unlocked) return `<span class="slot-synergy-icon empty" title="${requiredStarsForSlot(index, relic)}성 해금">⌕</span>`;
         const synergy = getSynergy(id);
         if (!synergy) return `<span class="slot-synergy-icon empty">+</span>`;
         return `<span class="slot-synergy-icon" title="${synergy.name}">${synergy.icon}</span>`;
@@ -1639,8 +1665,8 @@
         return `
           <button class="slot-card ${selected}" type="button" data-slot-index="${index}">
             <div class="slot-main">
-              ${renderIcon(relic, "small", true)}
-              <div class="slot-name">${relic.name}</div>
+              ${renderIcon(relic, "small")}
+              <div class="star-row">${renderStars(relic.stars)}</div>
               <div class="slot-synergies" aria-label="${relic.name} 시너지">${renderSlotSynergies(relic)}</div>
             </div>
           </button>
@@ -1650,6 +1676,10 @@
 
     function parsePercent(value) {
       return Number(String(value).replace(/[+%]/g, ""));
+    }
+
+    function isPercentValue(value) {
+      return /%/.test(String(value));
     }
 
     function formatPercent(value) {
@@ -1666,6 +1696,7 @@
     }
 
     function nextEffectValue(label, value, owned = false) {
+      if (!isPercentValue(value)) return value;
       return formatPercent(parsePercent(value) + upgradeDelta(label, owned));
     }
 
@@ -1677,11 +1708,13 @@
     }
 
     function nextPromotionEffectValue(label, value, owned = false) {
+      if (!isPercentValue(value)) return value;
       return formatPercent(parsePercent(value) + promotionDelta(label, owned));
     }
 
     function renderValueWithNext(label, value, relic, owned = false) {
       if (!relic.owned || relic.level >= relic.maxLevel) return value;
+      if (!isPercentValue(value)) return value;
       return `${value} <span class="next-value">&gt; ${nextEffectValue(label, value, owned)}</span>`;
     }
 
@@ -1705,7 +1738,7 @@
       return effects.map(([label, value]) => `
         <div class="promotion-row">
           <span>${owned ? ownedEffectLabel(label) : label}</span>
-          <span class="promotion-change">${value} &gt; ${nextPromotionEffectValue(label, value, owned)}</span>
+          <span class="promotion-change ${isPercentValue(value) ? "" : "text"}">${isPercentValue(value) ? `${value} &gt; ${nextPromotionEffectValue(label, value, owned)}` : value}</span>
         </div>
       `).join("");
     }
@@ -1716,8 +1749,8 @@
       const nextStars = Math.min(relic.stars + 1, maxStars);
       const currentPoints = pointCapacity(relic, relic.stars);
       const nextPoints = pointCapacity(relic, nextStars);
-      const currentSlots = unlockedSlotCount(relic.stars);
-      const nextSlots = unlockedSlotCount(nextStars);
+      const currentSlots = unlockedSlotCount(relic, relic.stars);
+      const nextSlots = unlockedSlotCount(relic, nextStars);
       const canPromote = canConfirmPromotion(relic);
       const note = relic.stars >= maxStars
         ? "최대 성급입니다."
@@ -1728,8 +1761,15 @@
       synergyList.className = "promotion-list";
       synergyList.innerHTML = `
         <div class="promotion-hero">
-          ${renderIcon(relic, "", true, false)}
-          <div class="promotion-stars">${relic.stars}성 &gt; ${nextStars}성</div>
+          ${renderIcon(relic, "", false, false)}
+          <div class="promotion-stars">
+            <div class="promotion-star-track">
+              <div class="star-row">${renderStars(relic.stars)}</div>
+              <span>&gt;</span>
+              <div class="star-row">${renderStars(nextStars)}</div>
+            </div>
+            <div>${relic.stars}성 &gt; ${nextStars}성</div>
+          </div>
         </div>
         <div class="promotion-compare">
           <div class="promotion-card">
@@ -1768,7 +1808,6 @@
       if (!canConfirmPromotion(relic)) return;
       relic.shards -= relic.requiredShards;
       relic.stars = Math.min(relic.stars + 1, maxStars);
-      relic.pointMax = pointCapacity(relic);
       relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value, true)]);
       relic.synergies = normalizeSynergies(relic);
@@ -1798,8 +1837,9 @@
       const relic = getRelic(selectedRelicId);
       if (!relic) return;
 
-      detailIcon.innerHTML = renderIcon(relic, "", true, true);
+      detailIcon.innerHTML = renderIcon(relic, "", false, true);
       detailName.textContent = relic.name;
+      detailStars.innerHTML = renderStars(relic.stars);
       detailStatus.innerHTML = `
         <span class="grade-badge ${relic.grade}">${relic.grade}</span>
         <span>Lv.${relic.level} / ${relic.maxLevel}</span>
@@ -1808,11 +1848,10 @@
       detailShardGauge.innerHTML = `
         ${renderShardGauge(relic)}
       `;
-
       const equipRows = relic.equipEffect.map(([label, value]) => `
         <div class="stat-row ${relic.owned ? "" : "disabled"}">
           <span>${label}</span>
-          <span class="stat-value">${renderValueWithNext(label, value, relic)}</span>
+          <span class="stat-value">${value}</span>
         </div>
       `).join("");
       const ownedRows = relic.ownedEffect.map(([label, value]) => `
@@ -1835,12 +1874,12 @@
 
       pointTotal.textContent = `${usedPoints(relic)} / ${pointCapacity(relic)} pt`;
       synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
-        const isLocked = index >= unlockedSlotCount(relic.stars);
+        const isLocked = index >= unlockedSlotCount(relic);
         if (isLocked) {
           return `
             <button class="synergy-slot locked-slot" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-icon">⌕</div>
-              <div class="synergy-name">${requiredStarsForSlot(index)}성 해금</div>
+              <div class="synergy-name">${requiredStarsForSlot(index, relic)}성 해금</div>
             </button>
           `;
         }
@@ -1980,7 +2019,7 @@
     function openModal(index) {
       const relic = getRelic(selectedRelicId);
       if (!relic?.owned) return;
-      if (index >= unlockedSlotCount(relic.stars)) return;
+      if (index >= unlockedSlotCount(relic)) return;
       modalMode = "edit";
       modalTitle.textContent = "시너지 선택";
       editingSynergyIndex = index;

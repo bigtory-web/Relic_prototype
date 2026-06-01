@@ -266,7 +266,7 @@
     .shard-gauge {
       position: relative;
       width: 76px;
-      height: 20px;
+      height: 15px;
       margin-top: 0;
       display: inline-flex;
       align-items: center;
@@ -334,24 +334,24 @@
       height: 680px;
       padding: 14px 16px;
       display: grid;
-      grid-template-rows: auto 360px 1fr;
+      grid-template-rows: auto 270px 1fr;
       gap: 10px;
       overflow: hidden;
     }
 
     .slot-row {
-      height: 360px;
+      height: 270px;
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(2, 170px);
-      gap: 10px;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, 82px);
+      gap: 8px;
       align-content: start;
     }
 
     .slot-card {
       min-width: 0;
-      height: 170px;
-      padding: 9px;
+      height: 82px;
+      padding: 8px 10px;
       border: 1px solid #4b4e49;
       border-radius: 12px;
       background: var(--panel-soft);
@@ -359,9 +359,8 @@
       text-align: left;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+      align-items: stretch;
     }
 
     .slot-card.locked {
@@ -371,11 +370,33 @@
       text-align: center;
     }
 
+    .slot-card.empty-slot {
+      justify-content: center;
+      gap: 10px;
+      border-style: dashed;
+      color: #c8c4ba;
+      text-align: center;
+    }
+
+    .slot-card.equip-target {
+      border-color: var(--accent);
+      outline: 1px solid var(--accent-soft);
+      background: rgba(29, 158, 117, 0.12);
+    }
+
     .slot-main {
       width: 100%;
       display: grid;
-      justify-items: center;
-      gap: 6px;
+      grid-template-columns: 58px 74px 1fr;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slot-main .icon-box.small {
+      width: 58px;
+      height: 58px;
+      margin: 0;
+      font-size: 32px;
     }
 
     .slot-name {
@@ -395,7 +416,7 @@
       min-height: 26px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
       gap: 5px;
     }
 
@@ -491,7 +512,7 @@
       min-height: 0;
       padding: 16px;
       display: grid;
-      grid-template-rows: 124px 228px 168px 42px;
+      grid-template-rows: 124px 228px 186px 42px;
       gap: 12px;
       overflow: hidden;
     }
@@ -616,7 +637,7 @@
 
     .stat-row {
       display: grid;
-      grid-template-columns: minmax(96px, 0.34fr) 1fr;
+      grid-template-columns: minmax(150px, 0.34fr) 1fr;
       gap: 10px;
       padding-bottom: 5px;
       border-bottom: 1px solid #474a45;
@@ -655,8 +676,8 @@
     }
 
     .synergy-section {
-      height: 168px;
-      min-height: 168px;
+      height: 186px;
+      min-height: 186px;
       display: grid;
       grid-template-rows: auto 1fr;
       gap: 6px;
@@ -679,8 +700,8 @@
 
     .synergy-slot {
       min-width: 0;
-      height: 84px;
-      padding: 6px 4px;
+      height: 92px;
+      padding: 7px 6px;
       border: 1px solid #676a64;
       border-radius: 10px;
       background: var(--panel);
@@ -731,12 +752,13 @@
     }
 
     .synergy-name {
-      overflow: hidden;
       font-size: 12px;
       font-weight: 500;
       line-height: 1.2;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .plus {
@@ -804,11 +826,12 @@
 
     .modal {
       width: 840px;
-      max-height: 640px;
+      max-height: min(720px, calc(100vh - 40px));
       padding: 18px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #282a27;
+      overflow: hidden;
     }
 
     .modal-head {
@@ -841,8 +864,9 @@
       margin-top: 12px;
       display: grid;
       grid-template-columns: 352px 1fr;
-      grid-template-rows: 1fr auto;
+      grid-template-rows: minmax(0, 1fr) auto;
       gap: 12px;
+      max-height: calc(100vh - 134px);
     }
 
     .synergy-icon-grid {
@@ -857,8 +881,8 @@
 
     .synergy-pick {
       position: relative;
-      height: 68px;
-      padding: 8px 6px;
+      height: 80px;
+      padding: 10px 6px 8px;
       border: 1px solid #50534d;
       border-radius: 8px;
       background: var(--panel-soft);
@@ -866,7 +890,7 @@
       display: grid;
       justify-items: center;
       align-content: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .synergy-pick:hover:not(:disabled) {
@@ -894,8 +918,7 @@
       line-height: 16px;
     }
 
-    .synergy-pick:disabled {
-      cursor: default;
+    .synergy-pick.unavailable {
       opacity: 0.42;
     }
 
@@ -910,14 +933,16 @@
       overflow: hidden;
       max-width: 100%;
       color: #d9d5cb;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
+      line-height: 1.2;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .synergy-preview {
-      min-height: 430px;
+      min-height: 0;
+      max-height: 520px;
       padding: 14px;
       border: 1px solid #4d504b;
       border-radius: 8px;
@@ -925,6 +950,7 @@
       display: grid;
       align-content: start;
       gap: 12px;
+      overflow-y: auto;
     }
 
     .preview-head {
@@ -977,7 +1003,7 @@
     }
 
     .stage-effect {
-      min-height: 54px;
+      min-height: 58px;
       padding: 8px 10px;
       display: grid;
       grid-template-columns: 42px 1fr;
@@ -1031,11 +1057,11 @@
     }
 
     .promotion-hero .icon-box {
-      width: 104px;
-      height: 104px;
+      width: 72px;
+      height: 72px;
       margin: 0;
-      border-radius: 20px;
-      font-size: 60px;
+      border-radius: 16px;
+      font-size: 42px;
     }
 
     .promotion-stars {
@@ -1059,19 +1085,19 @@
 
     .promotion-compare {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
+      gap: 8px;
     }
 
     .promotion-card {
-      min-height: 104px;
-      padding: 12px;
+      min-height: 0;
+      padding: 10px 12px;
       border: 1px solid #4d504b;
       border-radius: 8px;
       background: var(--panel-soft);
       display: grid;
-      align-content: start;
-      gap: 8px;
+      grid-template-columns: minmax(92px, 0.28fr) 1fr;
+      align-items: center;
+      gap: 10px;
     }
 
     .promotion-card-title {
@@ -1086,6 +1112,7 @@
       gap: 8px;
       color: #d7d3ca;
       font-size: 13px;
+      align-items: center;
     }
 
     .promotion-change {
@@ -1169,7 +1196,7 @@
       <div class="actions">
         <button class="action-button" type="button" data-action="promote">승급</button>
         <button class="action-button" type="button" data-action="upgrade">강화</button>
-        <button class="action-button" type="button" data-action="unequip">장착해제</button>
+        <button class="action-button" type="button" data-action="unequip" id="equipActionButton">장착해제</button>
       </div>
     </section>
 
@@ -1196,7 +1223,7 @@
         level: 48,
         maxLevel: 60,
         stars: 3,
-        equipEffect: [["치명 발화", "치명타 발생 시 대상에게 불꽃 폭발을 일으킨다."]],
+        equipEffect: [["치명 발화", "치명타 발생 시 대상에게 공격력 80%의 불꽃 폭발 피해를 준다."]],
         ownedEffect: [["공격력", "+3.2%"]],
         synergies: ["crit_rate", "crit_boost", null],
         owned: true
@@ -1209,7 +1236,7 @@
         level: 22,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [["서리 보호막", "피해를 받을 때 일정 확률로 짧은 보호막을 생성한다."]],
+        equipEffect: [["서리 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
         ownedEffect: [["공격력", "+1.8%"]],
         synergies: ["atk_speed", null],
         owned: true
@@ -1222,7 +1249,7 @@
         level: 15,
         maxLevel: 40,
         stars: 2,
-        equipEffect: [["연쇄 번개", "일정 횟수 공격할 때마다 추가 번개 피해가 발생한다."]],
+        equipEffect: [["연쇄 번개", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 번개 피해를 준다."]],
         ownedEffect: [["공격력", "+1.5%"]],
         synergies: ["crit_rate", null],
         owned: true
@@ -1235,7 +1262,7 @@
         level: 8,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [["암흑 흡수", "적 처치 시 짧은 시간 동안 다음 공격 피해가 증가한다."]],
+        equipEffect: [["암흑 흡수", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 30% 증가한다."]],
         ownedEffect: [["공격력", "+1.1%"]],
         synergies: ["kill_power", null],
         owned: true
@@ -1248,7 +1275,7 @@
         level: 5,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["강철 반격", "피해를 받은 뒤 다음 공격이 추가 피해를 준다."]],
+        equipEffect: [["강철 반격", "피해를 받은 뒤 2초 안에 사용하는 다음 공격이 공격력 60%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.8%"]],
         synergies: ["atk_up", null],
         owned: true
@@ -1261,7 +1288,7 @@
         level: 3,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["주문 잔류", "일정 시간마다 다음 시너지 발동 효과가 강화된다."]],
+        equipEffect: [["주문 잔류", "10초마다 다음 시너지 발동 효과의 수치가 20% 증가한다."]],
         ownedEffect: [["공격력", "+0.5%"]],
         synergies: ["combo_strike", null],
         owned: true
@@ -1291,11 +1318,11 @@
         icon: "☆",
         cost: 2,
         stages: [
-          "치명타 피해 +8%",
-          "치명타 피해 +14%",
-          "치명타 피해 +22%"
+          "치명타 피해 +18%",
+          "치명타 피해 +32%",
+          "치명타 피해 +50%"
         ],
-        effect: "치명타 발생 시 피해량의 X%를 추가로 입힌다."
+        effect: "치명타 발생 시 추가 치명 피해가 크게 증가한다."
       },
       {
         id: "combo_strike",
@@ -1305,11 +1332,11 @@
         icon: "✦",
         cost: 2,
         stages: [
-          "연속 공격 확률 +4%",
-          "연속 공격 확률 +7%",
-          "연속 공격 확률 +11%"
+          "연속 공격 확률 +10%",
+          "연속 공격 확률 +18%",
+          "연속 공격 확률 +30%"
         ],
-        effect: "공격 시 X% 확률로 연속 공격이 발동된다."
+        effect: "공격 시 최대 30% 확률로 추가 공격이 즉시 발동된다."
       },
       {
         id: "kill_power",
@@ -1319,11 +1346,11 @@
         icon: "✧",
         cost: 2,
         stages: [
-          "처치 후 공격력 +3%",
-          "처치 후 공격력 +5%",
-          "처치 후 공격력 +8%"
+          "처치 후 5초 동안 공격력 +12%",
+          "처치 후 5초 동안 공격력 +22%",
+          "처치 후 5초 동안 공격력 +35%"
         ],
-        effect: "몬스터 처치 시 X초 동안 공격력이 X% 증가한다."
+        effect: "몬스터 처치 시 5초 동안 공격력이 증가한다."
       },
       {
         id: "atk_speed",
@@ -1333,11 +1360,11 @@
         icon: "↟",
         cost: 2,
         stages: [
-          "공격 속도 +3%",
-          "공격 속도 +5%",
-          "공격 속도 +8%"
+          "공격 속도 +10%",
+          "공격 속도 +18%",
+          "공격 속도 +30%"
         ],
-        effect: "X초마다 X초 동안 공격 속도가 증가한다."
+        effect: "전투 중 공격 속도가 지속적으로 증가한다."
       },
       {
         id: "atk_up",
@@ -1347,11 +1374,11 @@
         icon: "▲",
         cost: 1,
         stages: [
-          "공격력 +2%",
-          "공격력 +3.5%",
-          "공격력 +5%"
+          "공격력 +8%",
+          "공격력 +14%",
+          "공격력 +24%"
         ],
-        effect: "공격력이 X% 증가한다."
+        effect: "공격력이 증가한다."
       },
       {
         id: "crit_rate",
@@ -1361,11 +1388,11 @@
         icon: "◈",
         cost: 1,
         stages: [
-          "치명타 확률 +1%",
-          "치명타 확률 +1.8%",
-          "치명타 확률 +3%"
+          "치명타 확률 +6%",
+          "치명타 확률 +10%",
+          "치명타 확률 +16%"
         ],
-        effect: "치명타 확률이 X% 증가한다."
+        effect: "치명타 확률이 증가한다."
       }
     ];
 
@@ -1374,28 +1401,28 @@
         maxLevel: 60,
         stars: 0,
         requiredShards: 20,
-        equipEffect: [["고유 발동", "전투 중 특정 조건을 만족하면 강한 효과가 발동한다."]],
+        equipEffect: [["고유 발동", "5회 공격할 때마다 공격력 70%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+3.0%"]]
       },
       SR: {
         maxLevel: 40,
         stars: 0,
         requiredShards: 12,
-        equipEffect: [["고유 발동", "전투 중 특정 조건을 만족하면 보조 효과가 발동한다."]],
+        equipEffect: [["고유 발동", "피해를 받을 때 20% 확률로 2초간 보호막을 생성한다."]],
         ownedEffect: [["공격력", "+1.5%"]]
       },
       R: {
         maxLevel: 20,
         stars: 0,
         requiredShards: 8,
-        equipEffect: [["고유 발동", "전투 중 특정 조건에 맞춰 보조 효과가 발동한다."]],
+        equipEffect: [["고유 발동", "4회 공격할 때마다 공격력 35%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.8%"]]
       },
       N: {
         maxLevel: 20,
         stars: 0,
         requiredShards: 5,
-        equipEffect: [["고유 발동", "전투 중 간단한 조건으로 보조 효과가 발동한다."]],
+        equipEffect: [["고유 발동", "6초마다 다음 공격 피해가 15% 증가한다."]],
         ownedEffect: [["공격력", "+0.5%"]]
       }
     };
@@ -1444,6 +1471,7 @@
     let editingSynergyIndex = null;
     let selectedSynergyPreviewId = null;
     let pendingSynergyId = null;
+    let pendingEquipRelicId = null;
     let modalMode = "edit";
     let selectedSummarySynergyId = null;
     let toastTimer = null;
@@ -1464,6 +1492,7 @@
     const synergyList = document.querySelector("#synergyList");
     const closeModal = document.querySelector("#closeModal");
     const toast = document.querySelector("#toast");
+    const equipActionButton = document.querySelector("#equipActionButton");
 
     function getRelic(id) {
       return relics.find((relic) => relic.id === id);
@@ -1651,19 +1680,20 @@
       slotRow.innerHTML = equippedSlots.map((relicId, index) => {
         const relic = relicId ? getRelic(relicId) : null;
         const selected = index === selectedSlotIndex ? "selected" : "";
+        const equipTarget = pendingEquipRelicId ? "equip-target" : "";
 
         if (!relic) {
           return `
-            <button class="slot-card locked" type="button" data-slot-index="${index}" disabled>
-              <div class="icon-box small lock-icon"><span>⌕</span></div>
-              <div class="locked-label">미해금</div>
-              <div class="require-label">보유 15개 필요</div>
+            <button class="slot-card empty-slot ${selected} ${equipTarget}" type="button" data-slot-index="${index}">
+              <div class="icon-box small lock-icon"><span>+</span></div>
+              <div class="locked-label">${pendingEquipRelicId ? "여기에 장착" : "빈 슬롯"}</div>
+              <div class="require-label">${pendingEquipRelicId ? "터치해서 장착" : "유물을 장착할 수 있습니다"}</div>
             </button>
           `;
         }
 
         return `
-          <button class="slot-card ${selected}" type="button" data-slot-index="${index}">
+          <button class="slot-card ${selected} ${equipTarget}" type="button" data-slot-index="${index}">
             <div class="slot-main">
               ${renderIcon(relic, "small")}
               <div class="star-row">${renderStars(relic.stars)}</div>
@@ -1725,7 +1755,6 @@
     function upgradeRelic(relic) {
       if (!relic.owned || relic.level >= relic.maxLevel) return false;
       relic.level += 1;
-      relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextEffectValue(label, value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
     }
@@ -1738,7 +1767,7 @@
       return effects.map(([label, value]) => `
         <div class="promotion-row">
           <span>${owned ? ownedEffectLabel(label) : label}</span>
-          <span class="promotion-change ${isPercentValue(value) ? "" : "text"}">${isPercentValue(value) ? `${value} &gt; ${nextPromotionEffectValue(label, value, owned)}` : value}</span>
+          <span class="promotion-change ${owned && isPercentValue(value) ? "" : "text"}">${owned && isPercentValue(value) ? `${value} &gt; ${nextPromotionEffectValue(label, value, owned)}` : value}</span>
         </div>
       `).join("");
     }
@@ -1808,7 +1837,6 @@
       if (!canConfirmPromotion(relic)) return;
       relic.shards -= relic.requiredShards;
       relic.stars = Math.min(relic.stars + 1, maxStars);
-      relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value, true)]);
       relic.synergies = normalizeSynergies(relic);
       closeSynergyModal();
@@ -1902,9 +1930,12 @@
       }).join("");
 
       const canUpgrade = relic.owned && relic.level < relic.maxLevel;
+      const isEquipped = equippedSlots.includes(relic.id);
       document.querySelector('[data-action="promote"]').disabled = !relic.owned || relic.stars >= maxStars;
       document.querySelector('[data-action="upgrade"]').disabled = !canUpgrade;
-      document.querySelector('[data-action="unequip"]').disabled = !relic.owned || !equippedSlots.includes(relic.id);
+      equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
+      equipActionButton.textContent = isEquipped ? "장착해제" : "장착";
+      equipActionButton.disabled = !relic.owned;
     }
 
     function renderSynergyOptions() {
@@ -1927,9 +1958,8 @@
           isPreview ? "preview" : "",
           isApplied ? "applied" : ""
         ].filter(Boolean).join(" ");
-        const disabledAttr = disabled ? "disabled" : "";
         return `
-          <button class="${classes}" type="button" data-preview-synergy-id="${synergy.id}" ${disabledAttr}>
+          <button class="${classes} ${disabled ? "unavailable" : ""}" type="button" data-preview-synergy-id="${synergy.id}">
             <div class="synergy-icon">${synergy.icon}</div>
             <div class="pick-name">${synergy.name}</div>
           </button>
@@ -1948,6 +1978,7 @@
             </div>
             <div class="preview-cost">${previewSynergy.cost} pt</div>
           </div>
+          <p class="option-desc">${previewSynergy.effect}</p>
           <div class="stage-list">${renderStageEffects(previewSynergy, previewStage)}</div>
         </div>
       ` : `
@@ -1998,6 +2029,7 @@
             </div>
             <div class="preview-cost">${previewSynergy.cost} pt</div>
           </div>
+          <p class="option-desc">${previewSynergy.effect}</p>
           <div class="stage-list">${renderStageEffects(previewSynergy, activeStage)}</div>
         </div>
       ` : `
@@ -2071,6 +2103,30 @@
       pendingSynergyId = null;
     }
 
+    function equipRelicToSlot(relicId, slotIndex) {
+      const relic = getRelic(relicId);
+      if (!relic?.owned || slotIndex < 0 || slotIndex >= equippedSlots.length) return false;
+      const previousIndex = equippedSlots.indexOf(relicId);
+      if (previousIndex >= 0 && previousIndex !== slotIndex) {
+        equippedSlots[previousIndex] = null;
+      }
+      equippedSlots[slotIndex] = relicId;
+      selectedRelicId = relicId;
+      selectedSlotIndex = slotIndex;
+      pendingEquipRelicId = null;
+      return true;
+    }
+
+    function unequipRelic(relicId) {
+      const slotIndex = equippedSlots.indexOf(relicId);
+      if (slotIndex < 0) return false;
+      equippedSlots[slotIndex] = null;
+      selectedRelicId = relicId;
+      selectedSlotIndex = -1;
+      pendingEquipRelicId = null;
+      return true;
+    }
+
     function applyPendingSynergy() {
       const relic = getRelic(selectedRelicId);
       if (!relic || editingSynergyIndex === null || !pendingSynergyId) return;
@@ -2102,6 +2158,7 @@
       if (!card) return;
       const relic = getRelic(card.dataset.relicId);
       if (!relic) return;
+      pendingEquipRelicId = null;
       selectedRelicId = relic.id;
       const slotIndex = equippedSlots.indexOf(relic.id);
       selectedSlotIndex = slotIndex >= 0 ? slotIndex : -1;
@@ -2111,8 +2168,18 @@
     slotRow.addEventListener("click", (event) => {
       const slot = event.target.closest("[data-slot-index]");
       if (!slot || slot.disabled) return;
-      selectedSlotIndex = Number(slot.dataset.slotIndex);
-      selectedRelicId = equippedSlots[selectedSlotIndex];
+      const slotIndex = Number(slot.dataset.slotIndex);
+      if (pendingEquipRelicId) {
+        if (equipRelicToSlot(pendingEquipRelicId, slotIndex)) {
+          renderAll();
+          showToast("장착되었습니다.");
+        }
+        return;
+      }
+      selectedSlotIndex = slotIndex;
+      if (equippedSlots[selectedSlotIndex]) {
+        selectedRelicId = equippedSlots[selectedSlotIndex];
+      }
       renderAll();
     });
 
@@ -2140,7 +2207,7 @@
       }
 
       const previewButton = event.target.closest("[data-preview-synergy-id]");
-      if (modalMode === "edit" && previewButton && !previewButton.disabled) {
+      if (modalMode === "edit" && previewButton) {
         selectedSynergyPreviewId = previewButton.dataset.previewSynergyId;
         pendingSynergyId = previewButton.dataset.previewSynergyId;
         renderSynergyOptions();
@@ -2191,10 +2258,21 @@
         openPromotionModal();
         return;
       }
-      const messages = {
-        unequip: "장착해제는 선택 상태 유지 기준으로 처리됩니다."
-      };
-      showToast(messages[button.dataset.action]);
+      if (button.dataset.action === "equip") {
+        if (relic?.owned) {
+          pendingEquipRelicId = relic.id;
+          renderSlots();
+          renderDetail();
+          showToast("장착할 슬롯을 선택하세요.");
+        }
+        return;
+      }
+      if (button.dataset.action === "unequip") {
+        if (unequipRelic(relic.id)) {
+          renderAll();
+          showToast("장착해제되었습니다.");
+        }
+      }
     });
 
     renderAll();

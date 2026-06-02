@@ -18,10 +18,10 @@
       --accent: #1d9e75;
       --accent-soft: #34c89c;
       --gold: #f6aa2d;
-      --ssr: #faeeda;
-      --sr: #e6f1fb;
-      --r: #eaf3de;
-      --n: #e7e7e0;
+      --ssr: #ffe7b8;
+      --sr: #cbe7ff;
+      --r: #d8f0c2;
+      --n: #ece7dc;
       --danger: #bf705a;
     }
 
@@ -116,7 +116,7 @@
       position: relative;
       min-width: 0;
       padding: 5px 7px 4px;
-      border: 1px solid var(--line-soft);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 10px;
       background: var(--panel-soft);
       cursor: pointer;
@@ -217,10 +217,10 @@
       line-height: 1;
     }
 
-    .grade-SSR { background: var(--ssr); color: #c07810; }
-    .grade-SR { background: var(--sr); color: #1d6db8; }
-    .grade-R { background: var(--r); color: #3e8a16; }
-    .grade-N { background: var(--n); color: #7c4a38; }
+    .grade-SSR { border-color: #f4b34b; background: linear-gradient(145deg, #fff4d8, var(--ssr)); color: #b86a00; }
+    .grade-SR { border-color: #61aee8; background: linear-gradient(145deg, #eff8ff, var(--sr)); color: #146bb5; }
+    .grade-R { border-color: #8fc66d; background: linear-gradient(145deg, #f4ffe9, var(--r)); color: #347b14; }
+    .grade-N { border-color: #b9aa95; background: linear-gradient(145deg, #f3f0e9, var(--n)); color: #7c4a38; }
 
     .level-chip {
       position: absolute;
@@ -598,15 +598,6 @@
       font-weight: 500;
     }
 
-    .detail-shard-gauge {
-      margin-top: 4px;
-    }
-
-    .detail-shard-gauge .shard-gauge {
-      width: 150px;
-      margin-top: 0;
-    }
-
     .detail-title-name {
       margin: 0;
       font-size: 20px;
@@ -664,36 +655,63 @@
     }
 
     .stat-title {
-      color: #c7c4bd;
-      font-size: 14px;
-      font-weight: 600;
+      width: max-content;
+      padding: 3px 9px;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(135deg, #315f54, #1d4c40);
+      color: #f5f2eb;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
     }
 
-    .stat-row {
+    .effect-card {
       display: grid;
-      grid-template-columns: minmax(150px, 0.34fr) 1fr;
-      gap: 10px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #474a45;
-      color: #d6d3cc;
+      grid-template-columns: 112px 1fr;
+      gap: 12px;
+      min-height: 48px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--accent);
+      background: rgba(38, 51, 45, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      color: #d8d4cb;
       font-size: 14px;
-      font-weight: 400;
+      font-weight: 500;
     }
 
-    .stat-row.disabled {
+    .effect-card.disabled {
       color: #8f8b84;
+      border-left-color: #555951;
+      background: rgba(38, 39, 36, 0.75);
     }
 
-    .stat-value {
+    .effect-name {
+      color: #f5f2eb;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .effect-desc {
       color: #f5f2eb;
       font-weight: 600;
       line-height: 1.35;
+    }
+
+    .owned-section .effect-desc {
       text-align: right;
     }
 
-    .stat-section .stat-value {
-      font-weight: 500;
-      text-align: left;
+    .stat-section .effect-card {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+
+    .owned-section .effect-card {
+      grid-template-columns: 1fr auto;
+    }
+
+    .owned-section .effect-name {
+      white-space: nowrap;
     }
 
     .next-value {
@@ -817,9 +835,36 @@
       font-weight: 700;
     }
 
+    .actions .action-button {
+      height: 46px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 2px;
+      line-height: 1.1;
+    }
+
+    .action-label {
+      font-size: 14px;
+    }
+
+    .action-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: #c8c4ba;
+    }
+
     .action-button:disabled {
       cursor: default;
       opacity: 0.45;
+    }
+
+    .action-button:disabled .action-count {
+      color: #8f8b84;
+    }
+
+    .equip-action {
+      font-size: 14px;
     }
 
     .toast {
@@ -1212,7 +1257,6 @@
             <div class="detail-title-meta" id="detailStatus"></div>
             <h2 class="detail-title-name" id="detailName">불꽃의 심장</h2>
             <div class="star-row detail-stars" id="detailStars"></div>
-            <div class="detail-shard-gauge" id="detailShardGauge"></div>
           </div>
         </div>
       </div>
@@ -1267,6 +1311,7 @@
         name: "태양의 핵",
         grade: "SSR",
         icon: "☉",
+        equipEffect: [["강한 일격", "5회 공격할 때마다 공격력 70%의 추가 피해를 준다."]],
         owned: false
       },
       {
@@ -1300,6 +1345,7 @@
         name: "달의 왕관",
         grade: "SSR",
         icon: "☾",
+        equipEffect: [["전투 재정비", "8초마다 다음 공격의 치명타 확률이 25% 증가한다."]],
         owned: false
       },
       {
@@ -1331,8 +1377,9 @@
       {
         id: "dragon_scale",
         name: "용의 비늘",
-        grade: "SSR",
+        grade: "R",
         icon: "◈",
+        equipEffect: [["버티기", "피해를 4회 받을 때마다 3초 동안 받는 피해가 20% 감소한다."]],
         owned: false
       },
       {
@@ -1351,22 +1398,25 @@
       {
         id: "void_lantern",
         name: "공허의 등불",
-        grade: "SSR",
+        grade: "N",
         icon: "◐",
+        equipEffect: [["마무리 추적", "체력이 30% 이하인 대상 공격 시 공격력 45%의 추가 피해를 준다."]],
         owned: false
       },
       {
         id: "ancient_hourglass",
         name: "고대의 모래시계",
-        grade: "SSR",
+        grade: "N",
         icon: "⌛",
+        equipEffect: [["시간 지연", "6회 공격할 때마다 대상의 공격 속도를 3초 동안 18% 감소시킨다."]],
         owned: false
       },
       {
         id: "star_seed",
         name: "별의 씨앗",
-        grade: "SSR",
+        grade: "R",
         icon: "✦",
+        equipEffect: [["성장 반응", "시너지 효과가 발동될 때마다 5초 동안 공격력이 8% 증가한다."]],
         owned: false
       }
     ];
@@ -1514,6 +1564,38 @@
       old_coin: [1, 5]
     };
 
+    const upgradeCostByGrade = {
+      SSR: 10,
+      SR: 6,
+      R: 4,
+      N: 2
+    };
+
+    const upgradeMaterialSeed = {
+      heart_fire: 24,
+      frost_shield: 14,
+      lightning_eye: 8,
+      dark_crystal: 8,
+      steel_heart: 10,
+      old_staff: 6,
+      sun_core: 0,
+      moon_crown: 2,
+      dragon_scale: 3,
+      void_lantern: 1,
+      ancient_hourglass: 0,
+      star_seed: 4,
+      origin_orb: 0,
+      storm_eye: 7,
+      blood_chalice: 3,
+      forest_totem: 0,
+      ice_shard: 4,
+      bone_ring: 2,
+      rusted_medal: 0,
+      wooden_charm: 3,
+      cracked_lens: 0,
+      old_coin: 1
+    };
+
     relics.forEach((relic) => {
       const defaults = gradeDefaults[relic.grade];
       const [shards, requiredShards] = shardSeed[relic.id] || [0, defaults.requiredShards];
@@ -1525,6 +1607,8 @@
       relic.synergies = relic.synergies ?? [];
       relic.shards = relic.shards ?? shards;
       relic.requiredShards = relic.requiredShards ?? requiredShards;
+      relic.upgradeMaterials = relic.upgradeMaterials ?? (upgradeMaterialSeed[relic.id] || 0);
+      relic.requiredUpgradeMaterials = relic.requiredUpgradeMaterials ?? upgradeCostByGrade[relic.grade];
     });
 
     const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye"];
@@ -1545,7 +1629,6 @@
     const detailIcon = document.querySelector("#detailIcon");
     const detailStatus = document.querySelector("#detailStatus");
     const detailStars = document.querySelector("#detailStars");
-    const detailShardGauge = document.querySelector("#detailShardGauge");
     const statBlock = document.querySelector("#statBlock");
     const synergyGrid = document.querySelector("#synergyGrid");
     const pointTotal = document.querySelector("#pointTotal");
@@ -1682,7 +1765,6 @@
         return `
           <div class="icon-box ${sizeClass} grade-${relic.grade} unowned">
             <span>${relic.icon}</span>
-            <span class="lock-chip">⌕</span>
             ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
           </div>
         `;
@@ -1711,7 +1793,16 @@
     }
 
     function renderInventory() {
-      inventoryGrid.innerHTML = relics.map((relic) => {
+      const gradeOrder = { N: 0, R: 1, SR: 2, SSR: 3 };
+      const sortedRelics = relics
+        .map((relic, index) => ({ relic, index }))
+        .sort((a, b) => {
+          const gradeDiff = gradeOrder[a.relic.grade] - gradeOrder[b.relic.grade];
+          return gradeDiff || a.index - b.index;
+        })
+        .map(({ relic }) => relic);
+
+      inventoryGrid.innerHTML = sortedRelics.map((relic) => {
         const selected = relic.id === selectedRelicId ? "selected" : "";
         const locked = relic.owned ? "" : "locked";
         const equipped = equippedSlots.includes(relic.id);
@@ -1814,15 +1905,31 @@
       return label === "공격력" ? "공격력/체력/방어력" : label;
     }
 
+    function canUpgradeRelic(relic) {
+      return Boolean(
+        relic?.owned &&
+        relic.level < relic.maxLevel &&
+        relic.upgradeMaterials >= relic.requiredUpgradeMaterials
+      );
+    }
+
     function upgradeRelic(relic) {
-      if (!relic.owned || relic.level >= relic.maxLevel) return false;
+      if (!canUpgradeRelic(relic)) return false;
       relic.level += 1;
+      relic.upgradeMaterials = Math.max(0, relic.upgradeMaterials - relic.requiredUpgradeMaterials);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
     }
 
     function canConfirmPromotion(relic) {
       return Boolean(relic?.owned && relic.stars < maxStars && relic.shards >= relic.requiredShards);
+    }
+
+    function renderActionButtonContent(label, required, owned) {
+      return `
+        <span class="action-label">${label}</span>
+        <span class="action-count">${owned}/${required}</span>
+      `;
     }
 
     function promotionRows(effects, owned = false) {
@@ -1936,19 +2043,16 @@
         <span>Lv.${relic.level} / ${relic.maxLevel}</span>
         ${relic.owned ? "" : "<span>미보유</span>"}
       `;
-      detailShardGauge.innerHTML = `
-        ${renderShardGauge(relic)}
-      `;
       const equipRows = relic.equipEffect.map(([label, value]) => `
-        <div class="stat-row ${relic.owned ? "" : "disabled"}">
-          <span>${label}</span>
-          <span class="stat-value">${value}</span>
+        <div class="effect-card ${relic.owned ? "" : "disabled"}">
+          <span class="effect-name">${label}</span>
+          <span class="effect-desc">${value}</span>
         </div>
       `).join("");
       const ownedRows = relic.ownedEffect.map(([label, value]) => `
-        <div class="stat-row ${relic.owned ? "" : "disabled"}">
-          <span>${ownedEffectLabel(label)}</span>
-          <span class="stat-value">${renderValueWithNext(label, value, relic, true)}</span>
+        <div class="effect-card ${relic.owned ? "" : "disabled"}">
+          <span class="effect-name">${ownedEffectLabel(label)}</span>
+          <span class="effect-desc">${value}</span>
         </div>
       `).join("");
 
@@ -1992,12 +2096,17 @@
         `;
       }).join("");
 
-      const canUpgrade = relic.owned && relic.level < relic.maxLevel;
+      const promoteButton = document.querySelector('[data-action="promote"]');
+      const upgradeButton = document.querySelector('[data-action="upgrade"]');
+      const canUpgrade = canUpgradeRelic(relic);
       const isEquipped = equippedSlots.includes(relic.id);
-      document.querySelector('[data-action="promote"]').disabled = !relic.owned || relic.stars >= maxStars;
-      document.querySelector('[data-action="upgrade"]').disabled = !canUpgrade;
+      promoteButton.innerHTML = renderActionButtonContent("승급", relic.requiredShards, relic.shards);
+      upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, relic.upgradeMaterials);
+      promoteButton.disabled = !relic.owned || relic.stars >= maxStars;
+      upgradeButton.disabled = !canUpgrade;
       equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
       equipActionButton.textContent = isEquipped ? "장착해제" : "장착";
+      equipActionButton.classList.add("equip-action");
       equipActionButton.disabled = !relic.owned;
     }
 

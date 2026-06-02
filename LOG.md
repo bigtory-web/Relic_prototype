@@ -151,3 +151,77 @@
 - Inventory shard gauge progress is calculated from `shards / requiredShards` and capped at 100%.
 - The modal overlay now has an explicit high layer so inventory badges and gauges cannot render above it.
 - Promotion currently uses fixed prototype deltas: equip attack +2.0%p, equip critical rate +0.5%p, owned effect +0.3%p.
+
+## 2026-06-02 15:40 KST
+
+### Question
+
+- Align the equipped-slot card hierarchy with the inventory card hierarchy.
+
+### Implemented
+
+- Changed equipped-slot cards from horizontal layout to vertical layout.
+- Ordered each equipped card as relic icon, star rank, then synergy icons.
+- Increased equipped-card height while keeping all three equipped cards inside the panel.
+
+## 2026-06-02 15:45 KST
+
+### Question
+
+- Increase the visual priority of the integrated equipped-synergy summary.
+- Distinguish activated synergy stages with circular line colors.
+
+### Implemented
+
+- Replaced small summary pills with larger circular synergy icons.
+- Added count badges to the circular icons.
+- Applied stage-based circle line colors for 1, 2, and 3 activated copies.
+
+## 2026-06-02 15:46 KST
+
+### Question
+
+- Show integrated synergy activation as a three-segment circular progress line instead of replacing the full line color.
+
+### Implemented
+
+- Changed integrated synergy circles to progress rings.
+- Filled one-third of the ring per activated synergy copy.
+- Kept the maximum ring state at three activated copies.
+
+## 2026-06-02 15:59 KST
+
+### Question
+
+- Reduce the equipped-slot panel and card widths, then give the saved width to the detail panel.
+
+### Implemented
+
+- Reduced the equipped-slot panel width from `306px` to `260px`.
+- Standardized all equipped-slot card widths to `200px`.
+- Centered equipped-slot cards inside the narrower panel.
+- Expanded the detail panel from `522px` to `568px`.
+
+## 2026-06-02 16:37 KST
+
+### Question
+
+- Expand the inventory to 12 relics without sorting equipped relics to the top.
+- Reduce inventory card height from `136px` to `120px`.
+- Center the three integrated synergy icons in the equipped-slot panel.
+
+### Implemented
+
+- Added four unowned preview relics and fixed the inventory catalog order independently of equipped state.
+- Reduced inventory card height and compacted its internal spacing.
+- Centered integrated synergy icons inside the equipped-slot panel.
+
+## 2026-06-02 16:45 KST
+
+### Question
+
+- Keep the integrated synergy progress ring visible when hovering a summary icon.
+
+### Implemented
+
+- Changed the hover state to brighten only the inner circle without replacing the progress-ring background.

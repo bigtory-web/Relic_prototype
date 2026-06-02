@@ -57,7 +57,7 @@
       height: 720px;
       padding: 20px;
       display: grid;
-      grid-template-columns: 388px 306px 1fr;
+      grid-template-columns: 388px 260px 1fr;
       gap: 12px;
       background: var(--bg);
     }
@@ -88,7 +88,7 @@
       padding-right: 4px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 136px;
+      grid-auto-rows: 120px;
       gap: 8px;
       overflow-y: auto;
     }
@@ -115,7 +115,7 @@
     .relic-card {
       position: relative;
       min-width: 0;
-      padding: 8px 7px 7px;
+      padding: 5px 7px 4px;
       border: 1px solid var(--line-soft);
       border-radius: 10px;
       background: var(--panel-soft);
@@ -124,7 +124,7 @@
       display: grid;
       justify-items: center;
       align-content: start;
-      gap: 5px;
+      gap: 3px;
       overflow: hidden;
     }
 
@@ -334,24 +334,26 @@
       height: 680px;
       padding: 14px 16px;
       display: grid;
-      grid-template-rows: auto 270px 1fr;
+      grid-template-rows: auto 444px 1fr;
       gap: 10px;
       overflow: hidden;
     }
 
     .slot-row {
-      height: 270px;
+      height: 444px;
       display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(3, 82px);
+      grid-template-columns: 200px;
+      grid-template-rows: repeat(3, 142px);
       gap: 8px;
       align-content: start;
+      justify-content: center;
     }
 
     .slot-card {
-      min-width: 0;
-      height: 82px;
-      padding: 8px 10px;
+      width: 200px;
+      min-width: 200px;
+      height: 142px;
+      padding: 10px;
       border: 1px solid #4b4e49;
       border-radius: 12px;
       background: var(--panel-soft);
@@ -387,16 +389,16 @@
     .slot-main {
       width: 100%;
       display: grid;
-      grid-template-columns: 58px 74px 1fr;
-      align-items: center;
-      gap: 10px;
+      justify-items: center;
+      align-content: center;
+      gap: 7px;
     }
 
     .slot-main .icon-box.small {
-      width: 58px;
-      height: 58px;
+      width: 68px;
+      height: 68px;
       margin: 0;
-      font-size: 32px;
+      font-size: 38px;
     }
 
     .slot-name {
@@ -416,7 +418,7 @@
       min-height: 26px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
       gap: 5px;
     }
 
@@ -465,46 +467,78 @@
 
     .equip-summary {
       min-height: 0;
-      padding-top: 8px;
+      padding-top: 14px;
       border-top: 1px solid #3f423d;
       display: flex;
       flex-wrap: wrap;
       align-content: flex-start;
-      gap: 8px;
+      justify-content: center;
+      gap: 12px;
     }
 
     .summary-token {
-      border: 1px solid transparent;
-      height: 28px;
-      padding: 0 10px;
-      display: inline-flex;
+      position: relative;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
       align-items: center;
-      gap: 6px;
-      border-radius: 999px;
-      background: #363832;
+      border: 0;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent-soft) var(--summary-progress), #555852 0);
       color: #ede8de;
-      font-size: 13px;
-      font-weight: 700;
-      white-space: nowrap;
+      font-size: 24px;
+      font-weight: 600;
       cursor: pointer;
     }
 
-    .summary-token:hover,
+    .summary-token::before {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: #30322e;
+    }
+
+    .summary-token > span:not(.summary-count) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-token.stage-1 { --summary-progress: 33.333%; }
+    .summary-token.stage-2 { --summary-progress: 66.666%; }
+    .summary-token.stage-3 { --summary-progress: 100%; }
+
+    .summary-token:hover::before {
+      background: #383b36;
+    }
+
     .summary-token.selected {
-      border-color: var(--accent-soft);
-      background: #30322f;
+      outline: 2px solid rgba(255, 255, 255, 0.74);
+      outline-offset: 3px;
     }
 
     .summary-count {
-      min-width: 18px;
-      height: 18px;
-      padding: 0 5px;
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 4px;
       display: inline-grid;
       place-items: center;
+      border: 1px solid #60645e;
       border-radius: 999px;
-      background: rgba(15, 16, 14, 0.35);
+      background: #252723;
+      color: #f0ece3;
       font-size: 11px;
       font-weight: 700;
+    }
+
+    .summary-empty {
+      color: #9b978f;
+      font-size: 13px;
     }
 
     .detail-panel {
@@ -1229,6 +1263,13 @@
         owned: true
       },
       {
+        id: "sun_core",
+        name: "태양의 핵",
+        grade: "SSR",
+        icon: "☉",
+        owned: false
+      },
+      {
         id: "frost_shield",
         name: "서리 방패",
         grade: "SR",
@@ -1239,19 +1280,6 @@
         equipEffect: [["서리 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
         ownedEffect: [["공격력", "+1.8%"]],
         synergies: ["atk_speed", null],
-        owned: true
-      },
-      {
-        id: "lightning_eye",
-        name: "번개의 눈",
-        grade: "SR",
-        icon: "ϟ",
-        level: 15,
-        maxLevel: 40,
-        stars: 2,
-        equipEffect: [["연쇄 번개", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 번개 피해를 준다."]],
-        ownedEffect: [["공격력", "+1.5%"]],
-        synergies: ["crit_rate", null],
         owned: true
       },
       {
@@ -1268,6 +1296,26 @@
         owned: true
       },
       {
+        id: "moon_crown",
+        name: "달의 왕관",
+        grade: "SSR",
+        icon: "☾",
+        owned: false
+      },
+      {
+        id: "lightning_eye",
+        name: "번개의 눈",
+        grade: "SR",
+        icon: "ϟ",
+        level: 15,
+        maxLevel: 40,
+        stars: 2,
+        equipEffect: [["연쇄 번개", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 번개 피해를 준다."]],
+        ownedEffect: [["공격력", "+1.5%"]],
+        synergies: ["crit_rate", null],
+        owned: true
+      },
+      {
         id: "steel_heart",
         name: "강철의 심장",
         grade: "R",
@@ -1279,6 +1327,13 @@
         ownedEffect: [["공격력", "+0.8%"]],
         synergies: ["atk_up", null],
         owned: true
+      },
+      {
+        id: "dragon_scale",
+        name: "용의 비늘",
+        grade: "SSR",
+        icon: "◈",
+        owned: false
       },
       {
         id: "old_staff",
@@ -1294,17 +1349,24 @@
         owned: true
       },
       {
-        id: "sun_core",
-        name: "태양의 핵",
+        id: "void_lantern",
+        name: "공허의 등불",
         grade: "SSR",
-        icon: "☉",
+        icon: "◐",
         owned: false
       },
       {
-        id: "moon_crown",
-        name: "달의 왕관",
+        id: "ancient_hourglass",
+        name: "고대의 모래시계",
         grade: "SSR",
-        icon: "☾",
+        icon: "⌛",
+        owned: false
+      },
+      {
+        id: "star_seed",
+        name: "별의 씨앗",
+        grade: "SSR",
+        icon: "✦",
         owned: false
       }
     ];
@@ -1850,15 +1912,16 @@
         const count = counts[synergy.id] || 0;
         if (!count) return "";
         const selected = synergy.id === selectedSummarySynergyId ? "selected" : "";
+        const stage = Math.min(count, 3);
         return `
-          <button class="summary-token ${selected}" type="button" data-summary-synergy-id="${synergy.id}">
-            <span>${synergy.icon}</span>
+          <button class="summary-token stage-${stage} ${selected}" type="button" data-summary-synergy-id="${synergy.id}" title="${synergy.name} ${stage}단계">
+            <span aria-hidden="true">${synergy.icon}</span>
             <span class="summary-count">${count}</span>
           </button>
         `;
       }).join("");
 
-      equipSummary.innerHTML = tokens || `<span class="summary-token">시너지 없음</span>`;
+      equipSummary.innerHTML = tokens || `<span class="summary-empty">시너지 없음</span>`;
     }
 
     function renderDetail() {

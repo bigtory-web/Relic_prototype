@@ -225,3 +225,14 @@
 ### Implemented
 
 - Changed the hover state to brighten only the inner circle without replacing the progress-ring background.
+
+## 2026-06-02 16:52 KST
+
+### Question
+
+- Show more than three integrated synergy icons and place the fourth icon on the second row.
+
+### Implemented
+
+- Fixed the integrated synergy summary to a centered three-column grid.
+- Added a fourth active synergy to the initial equipped preview state so the second-row layout is visible.

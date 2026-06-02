@@ -469,8 +469,8 @@
       min-height: 0;
       padding-top: 14px;
       border-top: 1px solid #3f423d;
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 52px);
       align-content: flex-start;
       justify-content: center;
       gap: 12px;
@@ -1309,10 +1309,10 @@
         icon: "ϟ",
         level: 15,
         maxLevel: 40,
-        stars: 2,
+        stars: 3,
         equipEffect: [["연쇄 번개", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 번개 피해를 준다."]],
         ownedEffect: [["공격력", "+1.5%"]],
-        synergies: ["crit_rate", null],
+        synergies: ["crit_rate", "atk_up", null],
         owned: true
       },
       {

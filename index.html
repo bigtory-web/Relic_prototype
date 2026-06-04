@@ -57,7 +57,7 @@
       height: 720px;
       padding: 20px;
       display: grid;
-      grid-template-columns: 388px 260px 1fr;
+      grid-template-columns: 408px 240px 1fr;
       gap: 12px;
       background: var(--bg);
     }
@@ -88,7 +88,7 @@
       padding-right: 4px;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 110px;
+      grid-auto-rows: 120px;
       gap: 8px;
       overflow-y: auto;
     }
@@ -102,6 +102,33 @@
     .synergy-icon-grid::-webkit-scrollbar-thumb {
       border-radius: 999px;
       background: #575a55;
+    }
+
+    .draw-panel {
+      display: grid;
+      gap: 6px;
+    }
+
+    .draw-button {
+      height: 44px;
+      border: 1px solid rgba(52, 200, 156, 0.48);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(35, 92, 73, 0.92), rgba(29, 68, 55, 0.92));
+      color: #f4fff9;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .draw-button:hover {
+      border-color: var(--accent-soft);
+      background: linear-gradient(180deg, rgba(42, 119, 93, 0.96), rgba(32, 82, 65, 0.96));
+    }
+
+    .draw-note {
+      color: var(--subtle);
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.25;
     }
 
     .relic-card,
@@ -226,16 +253,16 @@
       position: absolute;
       right: 4px;
       top: 4px;
-      min-width: 22px;
-      height: 18px;
-      padding: 0 4px;
+      min-width: 42px;
+      height: 20px;
+      padding: 0 5px;
       display: grid;
       place-items: center;
       border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 999px;
       background: rgba(28, 29, 26, 0.82);
       color: #eeeae1;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 700;
       line-height: 1;
       text-shadow: none;
@@ -347,25 +374,25 @@
       height: 680px;
       padding: 14px 16px;
       display: grid;
-      grid-template-rows: auto 444px 1fr;
+      grid-template-rows: auto 436px 1fr;
       gap: 10px;
       overflow: hidden;
     }
 
     .slot-row {
-      height: 444px;
+      height: 436px;
       display: grid;
-      grid-template-columns: 200px;
-      grid-template-rows: repeat(3, 142px);
+      grid-template-columns: 140px;
+      grid-template-rows: repeat(3, 140px);
       gap: 8px;
       align-content: start;
       justify-content: center;
     }
 
     .slot-card {
-      width: 200px;
-      min-width: 200px;
-      height: 142px;
+      width: 140px;
+      min-width: 140px;
+      height: 140px;
       padding: 10px;
       border: 1px solid #4b4e49;
       border-radius: 12px;
@@ -415,10 +442,10 @@
     }
 
     .slot-main .icon-box.small {
-      width: 74px;
-      height: 74px;
+      width: 81px;
+      height: 81px;
       margin: 0;
-      font-size: 40px;
+      font-size: 44px;
     }
 
     .slot-name {
@@ -661,8 +688,8 @@
     .stat-block {
       height: 228px;
       display: grid;
-      grid-template-rows: 152px 64px;
-      gap: 12px;
+      grid-template-rows: 132px 58px;
+      gap: 14px;
       align-content: start;
       overflow: hidden;
     }
@@ -971,8 +998,14 @@
       width: 700px;
     }
 
+    .modal.summary-modal {
+      width: min(500px, calc(100vw - 40px));
+      height: min(500px, calc(100vh - 40px));
+    }
+
     .modal-head {
       position: relative;
+      min-height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -991,13 +1024,13 @@
       position: absolute;
       right: 0;
       top: 0;
-      width: 44px;
-      height: 44px;
+      width: 36px;
+      height: 36px;
       border: 1px solid #60645f;
       border-radius: 8px;
       background: transparent;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 22px;
       line-height: 1;
     }
 
@@ -1015,10 +1048,14 @@
       grid-template-rows: auto minmax(0, 1fr) auto;
     }
 
+    .synergy-list.summary-only {
+      grid-template-columns: 1fr;
+    }
+
     .modal-relic-context {
       grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: 64px 1fr auto;
+      grid-template-columns: 76px 1fr auto;
       gap: 12px;
       align-items: center;
       padding: 10px 12px;
@@ -1029,20 +1066,20 @@
     }
 
     .modal-relic-context .icon-box {
-      width: 58px;
-      height: 58px;
+      width: 70px;
+      height: 70px;
       margin: 0;
       border-radius: 12px;
-      font-size: 34px;
+      font-size: 41px;
     }
 
     .modal-relic-context .icon-stars {
-      bottom: 6px;
+      bottom: 7px;
       gap: 3px;
     }
 
     .modal-relic-context .icon-star {
-      font-size: 12px;
+      font-size: 14px;
     }
 
     .modal-relic-copy {
@@ -1105,24 +1142,48 @@
       gap: 8px;
     }
 
+    .synergy-pick::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      border-radius: 8px 8px 0 0;
+      opacity: 0.9;
+    }
+
     .synergy-pick:hover:not(:disabled) {
       border-color: #6b7069;
       background: #30322f;
     }
 
     .synergy-pick.rare {
-      border-color: rgba(186, 104, 70, 0.42);
-      background: linear-gradient(180deg, rgba(98, 57, 43, 0.22), rgba(40, 42, 39, 0.96));
+      border-color: rgba(238, 126, 72, 0.78);
+      background: linear-gradient(180deg, rgba(128, 67, 39, 0.5), rgba(43, 37, 32, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(238, 126, 72, 0.14);
+    }
+
+    .synergy-pick.rare::before {
+      background: #e98048;
     }
 
     .synergy-pick.advanced {
-      border-color: rgba(101, 115, 208, 0.38);
-      background: linear-gradient(180deg, rgba(56, 61, 104, 0.24), rgba(40, 42, 39, 0.96));
+      border-color: rgba(109, 138, 238, 0.78);
+      background: linear-gradient(180deg, rgba(50, 65, 132, 0.5), rgba(34, 37, 49, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(109, 138, 238, 0.14);
+    }
+
+    .synergy-pick.advanced::before {
+      background: #708cff;
     }
 
     .synergy-pick.normal {
-      border-color: rgba(132, 136, 126, 0.34);
-      background: linear-gradient(180deg, rgba(88, 92, 82, 0.18), rgba(40, 42, 39, 0.96));
+      border-color: rgba(142, 151, 158, 0.82);
+      background: linear-gradient(180deg, rgba(72, 78, 84, 0.58), rgba(32, 35, 38, 0.98));
+      box-shadow: inset 0 0 0 1px rgba(192, 202, 210, 0.12);
+    }
+
+    .synergy-pick.normal::before {
+      background: #9aa4ad;
     }
 
     .synergy-pick.preview {
@@ -1449,6 +1510,10 @@
     <section class="panel inventory" aria-label="인벤토리">
       <h1 class="panel-title">인벤토리</h1>
       <div class="inventory-grid" id="inventoryGrid"></div>
+      <div class="draw-panel">
+        <button class="draw-button" type="button" id="drawRelicButton">유물 뽑기</button>
+        <div class="draw-note">테스트 보상: 등급별 유물 조각 / 강화석</div>
+      </div>
     </section>
 
     <section class="panel equip-panel" aria-label="장착 슬롯">
@@ -1864,6 +1929,7 @@
     let toastTimer = null;
 
     const inventoryGrid = document.querySelector("#inventoryGrid");
+    const drawRelicButton = document.querySelector("#drawRelicButton");
     const slotRow = document.querySelector("#slotRow");
     const equipSummary = document.querySelector("#equipSummary");
     const detailName = document.querySelector("#detailName");
@@ -2051,6 +2117,10 @@
       return Array.from({ length: Math.max(0, count) }, () => `<span class="icon-star"></span>`).join("");
     }
 
+    function renderLevelLabel(level) {
+      return `Lv. ${level}`;
+    }
+
     function renderIcon(relic, sizeClass = "", showStars = false, showLevel = true) {
       const stars = showStars && relic.stars > 0 ? `<span class="icon-stars">${renderIconStars(relic.stars)}</span>` : "";
       if (!relic.owned) {
@@ -2058,7 +2128,7 @@
           <div class="icon-box ${sizeClass} grade-${relic.grade} unowned">
             <span>${relic.icon}</span>
             ${stars}
-            ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
+            ${showLevel ? `<span class="level-chip">${renderLevelLabel(relic.level)}</span>` : ""}
           </div>
         `;
       }
@@ -2067,7 +2137,7 @@
         <div class="icon-box ${sizeClass} grade-${relic.grade}">
           <span>${relic.icon}</span>
           ${stars}
-          ${showLevel ? `<span class="level-chip">${relic.level}</span>` : ""}
+          ${showLevel ? `<span class="level-chip">${renderLevelLabel(relic.level)}</span>` : ""}
         </div>
       `;
     }
@@ -2114,12 +2184,12 @@
 
     function renderSlotSynergies(relic) {
       const unlocked = unlockedSlotCount(relic);
-      return normalizeSynergies(relic).map((id, index) => {
-        if (index >= unlocked) return `<span class="slot-synergy-icon empty" title="${requiredStarsForSlot(index, relic)}성 해금">⌕</span>`;
-        const synergy = getSynergy(id);
-        if (!synergy) return `<span class="slot-synergy-icon empty">+</span>`;
-        return `<span class="slot-synergy-icon" title="${synergy.name}">${synergy.icon}</span>`;
-      }).join("");
+      return normalizeSynergies(relic)
+        .slice(0, unlocked)
+        .map((id) => getSynergy(id))
+        .filter(Boolean)
+        .map((synergy) => `<span class="slot-synergy-icon" title="${synergy.name}">${synergy.icon}</span>`)
+        .join("");
     }
 
     function renderSlots() {
@@ -2360,7 +2430,7 @@
       detailStars.innerHTML = "";
       detailStatus.innerHTML = `
         <span class="grade-badge ${relic.grade}">${relic.grade}</span>
-        <span>Lv.${relic.level} / ${relic.maxLevel}</span>
+        <span>${renderLevelLabel(relic.level)} / ${relic.maxLevel}</span>
         ${relic.owned ? "" : "<span>미보유</span>"}
       `;
       const equipRows = relic.equipEffect.map(([label, value]) => `
@@ -2504,23 +2574,13 @@
     }
 
     function renderSummaryModal() {
-      synergyList.className = "synergy-list";
+      synergyList.className = "synergy-list summary-only";
       const counts = equippedSynergyCounts();
       const activeSynergies = synergies.filter((synergy) => counts[synergy.id]);
       const selectedId = selectedSummarySynergyId || activeSynergies[0]?.id || null;
       selectedSummarySynergyId = selectedId;
       const previewSynergy = selectedId ? getSynergy(selectedId) : null;
       const activeStage = selectedId ? Math.min(counts[selectedId] || 0, 3) : 0;
-
-      const iconGrid = activeSynergies.map((synergy) => {
-        const selected = synergy.id === selectedId ? "preview" : "";
-        return `
-          <button class="synergy-pick ${synergy.tagClass} ${selected}" type="button" data-summary-preview-synergy-id="${synergy.id}">
-            <div class="synergy-icon">${synergy.icon}</div>
-            <div class="pick-name">${synergy.name}</div>
-          </button>
-        `;
-      }).join("");
 
       const previewHtml = previewSynergy ? `
         <div class="synergy-preview ${previewSynergy.tagClass}">
@@ -2543,10 +2603,9 @@
       `;
 
       synergyList.innerHTML = `
-        <div class="synergy-icon-grid">${iconGrid}</div>
         ${previewHtml}
         <div class="modal-actions">
-          <button class="action-button" type="button" data-modal-action="cancel">닫기</button>
+          <button class="action-button" type="button" data-modal-action="cancel">확인</button>
         </div>
       `;
     }
@@ -2567,7 +2626,7 @@
       const firstAvailable = synergies.find((synergy) => synergy.cost <= remaining && !equippedInOtherSlots.has(synergy.id))?.id || synergies[0]?.id || null;
       selectedSynergyPreviewId = currentId || firstAvailable;
       pendingSynergyId = currentId || firstAvailable;
-      modalOverlay.querySelector(".modal").classList.remove("promotion-modal");
+      modalOverlay.querySelector(".modal").classList.remove("promotion-modal", "summary-modal");
       renderSynergyOptions();
       modalOverlay.classList.add("open");
       modalOverlay.setAttribute("aria-hidden", "false");
@@ -2575,12 +2634,13 @@
 
     function openSummaryModal(synergyId) {
       modalMode = "summary";
-      modalTitle.textContent = "통합 시너지";
+      modalTitle.textContent = "장착 시너지";
       selectedSummarySynergyId = synergyId || Object.keys(equippedSynergyCounts())[0] || null;
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
       pendingSynergyId = null;
       modalOverlay.querySelector(".modal").classList.remove("promotion-modal");
+      modalOverlay.querySelector(".modal").classList.add("summary-modal");
       renderSummaryModal();
       renderEquipSummary();
       modalOverlay.classList.add("open");
@@ -2595,6 +2655,7 @@
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
       pendingSynergyId = null;
+      modalOverlay.querySelector(".modal").classList.remove("summary-modal");
       modalOverlay.querySelector(".modal").classList.add("promotion-modal");
       renderPromotionModal();
       modalOverlay.classList.add("open");
@@ -2667,6 +2728,54 @@
       renderDetail();
     }
 
+    function pickWeighted(items) {
+      const total = items.reduce((sum, item) => sum + item.weight, 0);
+      let roll = Math.random() * total;
+      for (const item of items) {
+        roll -= item.weight;
+        if (roll <= 0) return item;
+      }
+      return items[items.length - 1];
+    }
+
+    function drawTestReward() {
+      const rewardType = pickWeighted([
+        { type: "relic", weight: 70 },
+        { type: "stone", weight: 30 }
+      ]).type;
+
+      if (rewardType === "stone") {
+        const relic = getRelic(selectedRelicId) || relics[0];
+        const amount = pickWeighted([
+          { amount: 2, weight: 55 },
+          { amount: 4, weight: 30 },
+          { amount: 8, weight: 15 }
+        ]).amount;
+        relic.upgradeMaterials += amount;
+        renderAll();
+        showToast(`강화석 ${amount}개 획득 (${relic.name})`);
+        return;
+      }
+
+      const grade = pickWeighted([
+        { grade: "N", weight: 45 },
+        { grade: "R", weight: 30 },
+        { grade: "SR", weight: 18 },
+        { grade: "SSR", weight: 7 }
+      ]).grade;
+      const candidates = relics.filter((relic) => relic.grade === grade);
+      const relic = candidates[Math.floor(Math.random() * candidates.length)];
+      const shardAmountByGrade = { N: 3, R: 3, SR: 2, SSR: 1 };
+      const amount = shardAmountByGrade[grade] || 1;
+      relic.shards += amount;
+      if (!relic.owned && relic.shards >= relic.requiredShards) {
+        relic.owned = true;
+        relic.stars = Math.max(relic.stars, 1);
+      }
+      renderAll();
+      showToast(`${relic.grade} ${relic.name} 조각 ${amount}개 획득`);
+    }
+
     inventoryGrid.addEventListener("click", (event) => {
       const card = event.target.closest("[data-relic-id]");
       if (!card) return;
@@ -2678,6 +2787,8 @@
       selectedSlotIndex = slotIndex >= 0 ? slotIndex : -1;
       renderAll();
     });
+
+    drawRelicButton.addEventListener("click", drawTestReward);
 
     slotRow.addEventListener("click", (event) => {
       const slot = event.target.closest("[data-slot-index]");

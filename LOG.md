@@ -236,3 +236,117 @@
 
 - Fixed the integrated synergy summary to a centered three-column grid.
 - Added a fourth active synergy to the initial equipped preview state so the second-row layout is visible.
+
+## 2026-06-04 15:18 KST
+
+### Question
+
+- Roll back the two-column integrated layout experiment and return to the three-column layout.
+
+### Implemented
+
+- Restored the latest committed three-column layout because the separated inventory, equipped-slot, and detail columns read better.
+
+## 2026-06-04 15:24 KST
+
+### Question
+
+- Remove the visible synergy point total from the detail panel.
+- Make the synergy slot heading match the equipped-effect and owned-effect section titles.
+
+### Implemented
+
+- Hid the visible `X / X pt` label while preserving the internal point calculation.
+- Reused the section title styling for the synergy slot heading.
+
+## 2026-06-04 15:31 KST
+
+### Question
+
+- Move relic star rank into the icon area and stop rendering empty star slots.
+- Use the same icon rule in inventory, equipped slots, and detail.
+
+### Implemented
+
+- Added filled-only star rendering inside `renderIcon`.
+- Removed external star rows from inventory and equipped-slot cards.
+- Applied the same icon-with-stars rule to the detail icon.
+
+## 2026-06-04 15:42 KST
+
+### Question
+
+- Prevent duplicate synergy selection within the same relic.
+- Center the synergy selection modal title.
+- Show current and maximum synergy points in the relic context area.
+
+### Implemented
+
+- Disabled synergies already equipped in another slot and labeled them as equipped.
+- Added a duplicate guard before applying a pending synergy.
+- Centered the modal header title and moved the close button to the fixed right side.
+- Added `used / max pt` display to the modal relic context.
+
+## 2026-06-04 15:49 KST
+
+### Question
+
+- Reduce inventory card height from `120px` to `110px`.
+- Align relic icon metadata consistently across inventory, equipped slots, and detail.
+
+### Implemented
+
+- Centered inventory card contents within the shorter card.
+- Moved equipped status to the card top-left.
+- Moved level chips to the icon top-right and centered star rank at the icon bottom.
+- Enlarged the equipped-slot icon and detail icon star rank to match their larger icon sizes.
+
+## 2026-06-04 16:02 KST
+
+### Question
+
+- Keep the synergy selection modal open after applying a synergy.
+- Show the stage that will actually apply after the change, based on the equipped build.
+- Add three temporary synergies and differentiate synergy visuals by grade.
+
+### Implemented
+
+- Kept the synergy modal open and refreshed it in place after applying a synergy.
+- Changed preview stage highlighting to use equipped-build counts instead of only the current relic.
+- Added three temporary synergies for wider prototype coverage.
+- Applied grade-based color treatment to synergy picks and preview icons.
+
+## 2026-06-04 15:54 KST
+
+### Question
+
+- Allow unavailable synergies to be preview-selected even when they cannot be applied.
+- Sort the synergy selection grid by grade so the first row contains the lowest grade synergies.
+
+### Implemented
+
+- Kept all synergy picks selectable for preview and limited only the apply action.
+- Sorted modal synergy picks as `일반 -> 고급 -> 희귀`.
+
+## 2026-06-04 16:11 KST
+
+### Question
+
+- Make the promotion modal's equip and owned effect sections match the main detail panel layout.
+
+### Implemented
+
+- Replaced promotion effect rows with the same `stat-title + effect-card` structure used in the main detail panel.
+- Kept synergy point and synergy slot comparison rows in their compact promotion layout.
+
+## 2026-06-04 16:18 KST
+
+### Question
+
+- Increase the synergy selection modal height to fit the larger icon layout cleanly.
+- Enlarge the star-rank marker inside the modal relic icon.
+
+### Implemented
+
+- Changed the synergy selection modal to a fixed `600px` responsive height and made the internal grid fill that space.
+- Increased the modal relic icon star marker size by about 1.2x and adjusted its spacing.

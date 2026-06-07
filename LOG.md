@@ -350,3 +350,15 @@
 
 - Changed the synergy selection modal to a fixed `600px` responsive height and made the internal grid fill that space.
 - Increased the modal relic icon star marker size by about 1.2x and adjusted its spacing.
+
+## 2026-06-07 16:36 KST
+
+### Question
+
+- Make promotion modal synergy point and synergy slot comparisons use a distinct compact UI.
+- Reduce awkward vertical space in the owned-effect row inside the promotion modal.
+
+### Implemented
+
+- Replaced the promotion modal point and slot rows with separate compact metric cards.
+- Tightened promotion modal effect-card spacing so the owned-effect row reads as a clean single line.

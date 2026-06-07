@@ -1471,8 +1471,63 @@
       gap: 0;
     }
 
+    .promotion-effect-section .effect-card {
+      min-height: 0;
+      padding: 9px 12px;
+    }
+
     .promotion-effect-section .effect-card + .effect-card {
       margin-top: 6px;
+    }
+
+    .promotion-effect-section.owned-section .effect-card {
+      min-height: 0;
+      padding: 7px 12px;
+      align-items: center;
+    }
+
+    .promotion-effect-section.owned-section .effect-name,
+    .promotion-effect-section.owned-section .effect-desc {
+      line-height: 1.15;
+    }
+
+    .promotion-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .promotion-metric-card {
+      min-height: 0;
+      padding: 10px 12px 12px;
+      border: 1px solid rgba(52, 200, 156, 0.18);
+      border-radius: 10px;
+      background: rgba(34, 41, 38, 0.9);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      display: grid;
+      justify-items: start;
+      gap: 10px;
+    }
+
+    .promotion-metric-card .promotion-card-title {
+      margin: 0;
+    }
+
+    .promotion-metric-value {
+      width: 100%;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      background: rgba(38, 51, 45, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-soft);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
     }
 
     .promotion-confirm-button {
@@ -2368,16 +2423,14 @@
             <div class="promotion-card-title">보유 효과</div>
             ${promotionEffectCards(relic.ownedEffect, true)}
           </div>
-          <div class="promotion-card inline">
-            <div class="promotion-card-title">시너지 포인트</div>
-            <div class="promotion-row compact">
-              <span class="promotion-change">${currentPoints} pt &gt; ${nextPoints} pt</span>
+          <div class="promotion-meta-grid">
+            <div class="promotion-metric-card">
+              <div class="promotion-card-title">시너지 포인트</div>
+              <div class="promotion-metric-value">${currentPoints} pt &gt; ${nextPoints} pt</div>
             </div>
-          </div>
-          <div class="promotion-card inline">
-            <div class="promotion-card-title">시너지 슬롯</div>
-            <div class="promotion-row compact">
-              <span class="promotion-change">${currentSlots}칸 &gt; ${nextSlots}칸</span>
+            <div class="promotion-metric-card">
+              <div class="promotion-card-title">시너지 슬롯</div>
+              <div class="promotion-metric-value">${currentSlots}칸 &gt; ${nextSlots}칸</div>
             </div>
           </div>
         </div>

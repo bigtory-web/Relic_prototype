@@ -105,8 +105,9 @@
     }
 
     .draw-panel {
+      margin-top: auto;
       display: grid;
-      gap: 6px;
+      gap: 8px;
     }
 
     .draw-button {
@@ -122,13 +123,6 @@
     .draw-button:hover {
       border-color: var(--accent-soft);
       background: linear-gradient(180deg, rgba(42, 119, 93, 0.96), rgba(32, 82, 65, 0.96));
-    }
-
-    .draw-note {
-      color: var(--subtle);
-      font-size: 11px;
-      text-align: center;
-      line-height: 1.25;
     }
 
     .relic-card,
@@ -201,14 +195,14 @@
 
     .icon-box {
       position: relative;
-      width: 66px;
-      height: 66px;
+      width: 77px;
+      height: 77px;
       margin: 0 auto;
       display: grid;
       place-items: center;
       border-radius: 10px;
       color: #1f2621;
-      font-size: 36px;
+      font-size: 40px;
       font-weight: 700;
     }
 
@@ -282,7 +276,7 @@
 
     .icon-star {
       color: var(--gold);
-      font-size: 10px;
+      font-size: 12px;
       line-height: 1;
     }
 
@@ -485,6 +479,27 @@
       border: 1px dashed #4b4e4a;
       background: transparent;
       color: #77746d;
+    }
+
+    .slot-synergy-icon.rare,
+    .synergy-slot.rare .synergy-icon {
+      border: 1px solid rgba(238, 126, 72, 0.55);
+      background: #faece7;
+      color: #993c1d;
+    }
+
+    .slot-synergy-icon.advanced,
+    .synergy-slot.advanced .synergy-icon {
+      border: 1px solid rgba(109, 138, 238, 0.55);
+      background: #eeedfe;
+      color: #534ab7;
+    }
+
+    .slot-synergy-icon.normal,
+    .synergy-slot.normal .synergy-icon {
+      border: 1px solid rgba(142, 151, 158, 0.58);
+      background: #e7e7e2;
+      color: #5f666a;
     }
 
     .star-row {
@@ -736,8 +751,6 @@
 
     .effect-card.disabled {
       color: #8f8b84;
-      border-left-color: #555951;
-      background: rgba(38, 39, 36, 0.75);
     }
 
     .effect-name {
@@ -763,6 +776,9 @@
 
     .owned-section .effect-card {
       grid-template-columns: 1fr auto;
+      min-height: 34px;
+      padding: 7px 12px;
+      align-items: center;
     }
 
     .owned-section .effect-name {
@@ -797,7 +813,7 @@
     .synergy-slot {
       min-width: 0;
       height: 92px;
-      padding: 7px 6px;
+      padding: 8px 7px;
       border: 1px solid #676a64;
       border-radius: 10px;
       background: var(--panel);
@@ -806,7 +822,22 @@
       display: grid;
       align-content: center;
       justify-items: center;
-      gap: 8px;
+      gap: 9px;
+    }
+
+    .synergy-slot.rare {
+      border-color: rgba(238, 126, 72, 0.62);
+      background: linear-gradient(180deg, rgba(86, 50, 38, 0.4), rgba(41, 40, 37, 0.96));
+    }
+
+    .synergy-slot.advanced {
+      border-color: rgba(109, 138, 238, 0.58);
+      background: linear-gradient(180deg, rgba(45, 53, 88, 0.4), rgba(39, 40, 38, 0.96));
+    }
+
+    .synergy-slot.normal {
+      border-color: rgba(142, 151, 158, 0.58);
+      background: linear-gradient(180deg, rgba(62, 66, 68, 0.34), rgba(40, 41, 39, 0.96));
     }
 
     .synergy-slot.empty {
@@ -848,9 +879,9 @@
     }
 
     .synergy-name {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
-      line-height: 1.2;
+      line-height: 1.32;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -995,7 +1026,7 @@
     }
 
     .modal.promotion-modal {
-      width: 700px;
+      width: 600px;
     }
 
     .modal.summary-modal {
@@ -1055,10 +1086,11 @@
     .modal-relic-context {
       grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: 76px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 12px;
+      grid-template-columns: 92px 1fr auto;
+      min-height: 110px;
+      gap: 14px;
+      align-items: start;
+      padding: 12px 14px;
       border: 1px solid rgba(52, 200, 156, 0.18);
       border-left: 3px solid var(--accent);
       background: rgba(38, 51, 45, 0.86);
@@ -1066,26 +1098,27 @@
     }
 
     .modal-relic-context .icon-box {
-      width: 70px;
-      height: 70px;
+      width: 84px;
+      height: 84px;
       margin: 0;
-      border-radius: 12px;
-      font-size: 41px;
+      border-radius: 14px;
+      font-size: 48px;
     }
 
     .modal-relic-context .icon-stars {
-      bottom: 7px;
+      bottom: 8px;
       gap: 3px;
     }
 
     .modal-relic-context .icon-star {
-      font-size: 14px;
+      font-size: 15px;
     }
 
     .modal-relic-copy {
       min-width: 0;
       display: grid;
-      gap: 5px;
+      gap: 6px;
+      padding-top: 4px;
     }
 
     .modal-relic-name {
@@ -1096,8 +1129,8 @@
 
     .modal-relic-effect {
       display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 10px;
+      grid-template-columns: 1fr;
+      gap: 4px;
       color: #d7d3ca;
       font-size: 13px;
       line-height: 1.35;
@@ -1112,6 +1145,7 @@
     .modal-point-total {
       min-width: 74px;
       justify-self: end;
+      padding-top: 8px;
       color: #f0ece3;
       font-size: 15px;
       font-weight: 700;
@@ -1523,9 +1557,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--accent-soft);
-      font-size: 18px;
-      font-weight: 800;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
       line-height: 1;
       white-space: nowrap;
     }
@@ -1566,8 +1600,8 @@
       <h1 class="panel-title">인벤토리</h1>
       <div class="inventory-grid" id="inventoryGrid"></div>
       <div class="draw-panel">
-        <button class="draw-button" type="button" id="drawRelicButton">유물 뽑기</button>
-        <div class="draw-note">테스트 보상: 등급별 유물 조각 / 강화석</div>
+        <button class="draw-button" type="button" id="drawRelicOnceButton">유물 1회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicTenButton">유물 10회 뽑기</button>
       </div>
     </section>
 
@@ -1629,9 +1663,9 @@
         level: 48,
         maxLevel: 60,
         stars: 3,
-        equipEffect: [["치명 발화", "치명타 발생 시 대상에게 공격력 80%의 불꽃 폭발 피해를 준다."]],
+        equipEffect: [["치명 폭발", "치명타 발생 시 대상에게 공격력 80%의 범위 피해를 준다."]],
         ownedEffect: [["공격력", "+3.2%"]],
-        synergies: ["crit_rate", "crit_boost", null],
+        synergies: ["crit_boost", null, null],
         owned: true
       },
       {
@@ -1650,7 +1684,7 @@
         level: 22,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [["서리 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
+        equipEffect: [["피해 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
         ownedEffect: [["공격력", "+1.8%"]],
         synergies: ["atk_speed", null],
         owned: true
@@ -1663,7 +1697,7 @@
         level: 8,
         maxLevel: 40,
         stars: 1,
-        equipEffect: [["암흑 흡수", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 30% 증가한다."]],
+        equipEffect: [["처치 예열", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 30% 증가한다."]],
         ownedEffect: [["공격력", "+1.1%"]],
         synergies: ["kill_power", null],
         owned: true
@@ -1684,7 +1718,7 @@
         level: 15,
         maxLevel: 40,
         stars: 3,
-        equipEffect: [["연쇄 번개", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 번개 피해를 준다."]],
+        equipEffect: [["연쇄 타격", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 연쇄 피해를 준다."]],
         ownedEffect: [["공격력", "+1.5%"]],
         synergies: ["crit_rate", "atk_up", null],
         owned: true
@@ -1718,9 +1752,9 @@
         level: 3,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["주문 잔류", "10초마다 다음 시너지 발동 효과의 수치가 20% 증가한다."]],
+        equipEffect: [["시너지 반응", "10초마다 다음 시너지 효과의 수치가 20% 증가한다."]],
         ownedEffect: [["공격력", "+0.5%"]],
-        synergies: ["combo_strike", null],
+        synergies: ["atk_up", null],
         owned: true
       },
       {
@@ -1756,11 +1790,11 @@
         grade: "희귀",
         tagClass: "rare",
         icon: "☆",
-        cost: 2,
+        cost: 3,
         stages: [
-          "치명타 피해 +18%",
-          "치명타 확률 +8%",
-          "치명타 발생 시 공격력 40%의 범위 피해"
+          "치명타 확률 +14%",
+          "치명타 피해 +28%",
+          "치명타 시 2초간 공격력 +12%"
         ]
       },
       {
@@ -1769,11 +1803,11 @@
         grade: "희귀",
         tagClass: "rare",
         icon: "✦",
-        cost: 2,
+        cost: 3,
         stages: [
           "추가 공격 확률 +10%",
-          "추가 공격 피해 +25%",
-          "추가 공격 발동 시 가장 가까운 적 1명에게 한 번 더 타격"
+          "추가 공격 피해 +18%",
+          "추가 공격 시 다음 공격 피해 +12%"
         ]
       },
       {
@@ -1785,8 +1819,8 @@
         cost: 2,
         stages: [
           "처치 후 5초 동안 공격력 +12%",
-          "처치 후 5초 동안 공격 속도 +12%",
-          "처치 시 다음 공격이 공격력 60%의 추가 피해"
+          "처치 후 5초 동안 공격 속도 +10%",
+          "처치 후 효과 지속시간 +2초"
         ]
       },
       {
@@ -1798,8 +1832,8 @@
         cost: 2,
         stages: [
           "공격 속도 +10%",
-          "3회 공격할 때마다 공격력 +10%",
-          "6회 공격할 때마다 가장 가까운 적 2명에게 추가 타격"
+          "공격력 +8%",
+          "5회 공격 후 3초간 공격 속도 +12%"
         ]
       },
       {
@@ -1811,8 +1845,8 @@
         cost: 1,
         stages: [
           "공격력 +8%",
-          "보스에게 주는 피해 +12%",
-          "5회 공격할 때마다 공격력 55%의 추가 피해"
+          "공격력 +10%",
+          "5회 공격 후 다음 공격 피해 +10%"
         ]
       },
       {
@@ -1824,8 +1858,8 @@
         cost: 1,
         stages: [
           "치명타 확률 +10%",
-          "치명타 피해 +22%",
-          "치명타 발생 시 공격력 35%의 범위 피해"
+          "치명타 확률 +12%",
+          "치명타 시 다음 공격 피해 +8%"
         ]
       },
       {
@@ -1837,8 +1871,8 @@
         cost: 2,
         stages: [
           "피해 감소 +8%",
-          "피격 시 최대 체력 10% 보호막 생성",
-          "보호막 유지 중 공격력 +18%"
+          "최대 체력 +10%",
+          "보호막 지속시간 +2초"
         ]
       },
       {
@@ -1850,8 +1884,8 @@
         cost: 1,
         stages: [
           "보스에게 주는 피해 +8%",
-          "체력이 50% 이하인 대상 피해 +16%",
-          "약점 대상 공격 시 공격력 45%의 추가 피해"
+          "체력이 50% 이하인 대상 피해 +10%",
+          "약점 대상 공격 후 2초간 공격력 +8%"
         ]
       },
       {
@@ -1860,11 +1894,11 @@
         grade: "희귀",
         tagClass: "rare",
         icon: "✹",
-        cost: 2,
+        cost: 3,
         stages: [
           "범위 피해 +12%",
-          "범위 피해 후 추가 타격 확률 +25%",
-          "범위 피해 발생 시 가장 가까운 적 2명에게 연쇄 타격"
+          "범위 피해 +10%",
+          "범위 피해 후 2초간 공격 속도 +10%"
         ]
       }
     ];
@@ -1984,7 +2018,8 @@
     let toastTimer = null;
 
     const inventoryGrid = document.querySelector("#inventoryGrid");
-    const drawRelicButton = document.querySelector("#drawRelicButton");
+    const drawRelicOnceButton = document.querySelector("#drawRelicOnceButton");
+    const drawRelicTenButton = document.querySelector("#drawRelicTenButton");
     const slotRow = document.querySelector("#slotRow");
     const equipSummary = document.querySelector("#equipSummary");
     const detailName = document.querySelector("#detailName");
@@ -2082,21 +2117,28 @@
     }
 
     function previewEquippedSynergyStage(relic, synergyId, previewId) {
-      const counts = { ...equippedSynergyCounts() };
-      activeSynergies(relic).forEach((id) => {
-        if (!id) return;
-        counts[id] = Math.max(0, (counts[id] || 0) - 1);
-      });
-
       const list = normalizeSynergies(relic);
       if (editingSynergyIndex !== null && previewId !== undefined) {
         list[editingSynergyIndex] = previewId;
       }
+      const previewList = list.slice(0, unlockedSlotCount(relic, relic.stars));
 
-      list.slice(0, unlockedSlotCount(relic, relic.stars)).forEach((id) => {
-        if (!id) return;
-        counts[id] = (counts[id] || 0) + 1;
-      });
+      if (!equippedSlots.includes(relic.id)) {
+        return Math.min((synergyCountsFromList(previewList)[synergyId] || 0), 3);
+      }
+
+      const counts = equippedSlots.reduce((total, relicId) => {
+        const equippedRelic = relicId ? getRelic(relicId) : null;
+        if (!equippedRelic) return total;
+        const ids = equippedRelic.id === relic.id
+          ? previewList
+          : activeSynergies(equippedRelic);
+        ids.forEach((id) => {
+          if (!id) return;
+          total[id] = (total[id] || 0) + 1;
+        });
+        return total;
+      }, {});
 
       return Math.min(counts[synergyId] || 0, 3);
     }
@@ -2125,7 +2167,7 @@
     function renderStageEffects(synergy, activeStage) {
       return synergy.stages.map((text, index) => {
         const stage = index + 1;
-        const active = stage === activeStage ? "active" : "";
+        const active = stage <= activeStage ? "active" : "";
         return `
           <div class="stage-effect ${active}">
             <span class="stage-label">${stage}단계</span>
@@ -2139,7 +2181,7 @@
       const [effectName, effectDesc] = relic.equipEffect[0] || ["장착 효과", ""];
       return `
         <div class="modal-relic-context">
-          ${renderIcon(relic, "", false, true)}
+          ${renderIcon(relic, "", true, true)}
           <div class="modal-relic-copy">
             <div class="modal-relic-name">${relic.name}</div>
             <div class="modal-relic-effect">
@@ -2243,7 +2285,7 @@
         .slice(0, unlocked)
         .map((id) => getSynergy(id))
         .filter(Boolean)
-        .map((synergy) => `<span class="slot-synergy-icon" title="${synergy.name}">${synergy.icon}</span>`)
+        .map((synergy) => `<span class="slot-synergy-icon ${synergy.tagClass}" title="${synergy.name}">${synergy.icon}</span>`)
         .join("");
     }
 
@@ -2512,6 +2554,14 @@
 
       pointTotal.textContent = `${usedPoints(relic)} / ${pointCapacity(relic)} pt`;
       synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
+        if (!relic.owned) {
+          return `
+            <button class="synergy-slot locked-slot" type="button" data-synergy-index="${index}" disabled>
+              <div class="synergy-icon">⌕</div>
+              <div class="synergy-name">미보유</div>
+            </button>
+          `;
+        }
         const isLocked = index >= unlockedSlotCount(relic);
         if (isLocked) {
           return `
@@ -2532,7 +2582,7 @@
         }
 
         return `
-          <button class="synergy-slot" type="button" data-synergy-index="${index}" ${relic.owned ? "" : "disabled"}>
+          <button class="synergy-slot ${synergy.tagClass}" type="button" data-synergy-index="${index}" ${relic.owned ? "" : "disabled"}>
             <div class="synergy-icon">${synergy.icon}</div>
             <div class="synergy-name">${synergy.name}</div>
           </button>
@@ -2564,13 +2614,20 @@
       );
       const previewId = selectedSynergyPreviewId;
       const previewSynergy = previewId ? getSynergy(previewId) : null;
-      const previewStage = previewSynergy ? previewEquippedSynergyStage(relic, previewSynergy.id, previewId) : 0;
-      const canApply = Boolean(
+      const canPreviewApply = Boolean(
         previewId &&
-        previewId !== currentId &&
         previewSynergy &&
         previewSynergy.cost <= remaining &&
         !equippedInOtherSlots.has(previewId)
+      );
+      const rawPreviewStage = previewSynergy ? previewEquippedSynergyStage(relic, previewSynergy.id, previewId) : 0;
+      const previewStage = previewSynergy && (previewId === currentId || canPreviewApply)
+        ? Math.max(1, rawPreviewStage)
+        : 0;
+      const canApply = Boolean(
+        previewId &&
+        previewId !== currentId &&
+        canPreviewApply
       );
 
       const iconGrid = synergiesByGrade().map((synergy) => {
@@ -2611,7 +2668,7 @@
         </div>
       ` : `
         <div class="synergy-preview">
-          <div class="option-title">시너지 없음</div>
+          <div class="option-title">시너지를 선택하세요</div>
         </div>
       `;
 
@@ -2676,9 +2733,8 @@
       const equippedInOtherSlots = new Set(
         normalizeSynergies(relic).filter((id, slotIndex) => id && slotIndex !== index)
       );
-      const firstAvailable = synergies.find((synergy) => synergy.cost <= remaining && !equippedInOtherSlots.has(synergy.id))?.id || synergies[0]?.id || null;
-      selectedSynergyPreviewId = currentId || firstAvailable;
-      pendingSynergyId = currentId || firstAvailable;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
       modalOverlay.querySelector(".modal").classList.remove("promotion-modal", "summary-modal");
       renderSynergyOptions();
       modalOverlay.classList.add("open");
@@ -2791,7 +2847,7 @@
       return items[items.length - 1];
     }
 
-    function drawTestReward() {
+    function drawSingleReward() {
       const rewardType = pickWeighted([
         { type: "relic", weight: 70 },
         { type: "stone", weight: 30 }
@@ -2805,9 +2861,7 @@
           { amount: 8, weight: 15 }
         ]).amount;
         relic.upgradeMaterials += amount;
-        renderAll();
-        showToast(`강화석 ${amount}개 획득 (${relic.name})`);
-        return;
+        return { type: "stone", relic, amount };
       }
 
       const grade = pickWeighted([
@@ -2825,8 +2879,28 @@
         relic.owned = true;
         relic.stars = Math.max(relic.stars, 1);
       }
+      return { type: "relic", relic, amount };
+    }
+
+    function drawTestReward(count = 1) {
+      const rewards = Array.from({ length: count }, drawSingleReward);
       renderAll();
-      showToast(`${relic.grade} ${relic.name} 조각 ${amount}개 획득`);
+      if (count === 1) {
+        const reward = rewards[0];
+        if (reward.type === "stone") {
+          showToast(`강화석 ${reward.amount}개 획득 (${reward.relic.name})`);
+          return;
+        }
+        showToast(`${reward.relic.grade} ${reward.relic.name} 조각 ${reward.amount}개 획득`);
+        return;
+      }
+
+      const relicRewards = rewards.filter((reward) => reward.type === "relic").length;
+      const stoneAmount = rewards
+        .filter((reward) => reward.type === "stone")
+        .reduce((total, reward) => total + reward.amount, 0);
+      const stoneSummary = stoneAmount ? ` / 강화석 ${stoneAmount}개` : "";
+      showToast(`10회 뽑기 완료: 유물 조각 ${relicRewards}회${stoneSummary}`);
     }
 
     inventoryGrid.addEventListener("click", (event) => {
@@ -2841,7 +2915,8 @@
       renderAll();
     });
 
-    drawRelicButton.addEventListener("click", drawTestReward);
+    drawRelicOnceButton.addEventListener("click", () => drawTestReward(1));
+    drawRelicTenButton.addEventListener("click", () => drawTestReward(10));
 
     slotRow.addEventListener("click", (event) => {
       const slot = event.target.closest("[data-slot-index]");

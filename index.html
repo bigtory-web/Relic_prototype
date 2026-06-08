@@ -164,6 +164,12 @@
       outline: 1px solid var(--accent);
     }
 
+    .relic-card.growth-pulse,
+    .slot-card.growth-pulse,
+    .detail-panel.growth-pulse .title-icon {
+      animation: relicGrowthPulse 0.72s ease-out;
+    }
+
     .relic-card.locked,
     .slot-card.locked {
       opacity: 0.52;
@@ -475,6 +481,16 @@
       line-height: 1;
     }
 
+    .slot-synergy-icon.linked,
+    .slot-synergy-icon.just-applied {
+      box-shadow: 0 0 0 2px rgba(52, 200, 156, 0.42), 0 0 16px rgba(52, 200, 156, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .slot-synergy-icon.just-applied {
+      animation: synergyApplyPulse 0.82s ease-out;
+    }
+
     .slot-synergy-icon.empty {
       border: 1px dashed #4b4e4a;
       background: transparent;
@@ -579,6 +595,15 @@
     .summary-token.selected {
       outline: 2px solid rgba(255, 255, 255, 0.74);
       outline-offset: 3px;
+    }
+
+    .summary-token.linked,
+    .summary-token.just-applied {
+      box-shadow: 0 0 0 2px rgba(52, 200, 156, 0.28), 0 0 18px rgba(52, 200, 156, 0.28);
+    }
+
+    .summary-token.just-applied {
+      animation: synergyApplyPulse 0.82s ease-out;
     }
 
     .summary-count {
@@ -1357,6 +1382,10 @@
       color: #e8f7ef;
     }
 
+    .stage-effect.just-active {
+      animation: stageActivePulse 0.8s ease-out;
+    }
+
     .stage-label {
       color: #c7c3bb;
       font-weight: 600;
@@ -1571,6 +1600,85 @@
       justify-items: center;
       gap: 6px;
       line-height: 1.1;
+    }
+
+    .synergy-preview.just-applied {
+      animation: modalApplyPulse 0.72s ease-out;
+    }
+
+    .action-button.action-success {
+      animation: actionSuccessPulse 0.7s ease-out;
+    }
+
+    @keyframes synergyApplyPulse {
+      0% {
+        transform: scale(0.92);
+        box-shadow: 0 0 0 0 rgba(52, 200, 156, 0.48), 0 0 0 rgba(52, 200, 156, 0);
+      }
+      48% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 5px rgba(52, 200, 156, 0.18), 0 0 22px rgba(52, 200, 156, 0.4);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes stageActivePulse {
+      0% {
+        border-color: rgba(52, 200, 156, 0.28);
+        background: rgba(29, 158, 117, 0.05);
+      }
+      45% {
+        border-color: rgba(52, 200, 156, 0.82);
+        background: rgba(29, 158, 117, 0.22);
+      }
+      100% {
+        border-color: rgba(52, 200, 156, 0.55);
+        background: rgba(29, 158, 117, 0.13);
+      }
+    }
+
+    @keyframes modalApplyPulse {
+      0% {
+        box-shadow: inset 0 0 0 0 rgba(52, 200, 156, 0);
+      }
+      45% {
+        box-shadow: inset 0 0 0 1px rgba(52, 200, 156, 0.38), 0 0 24px rgba(52, 200, 156, 0.16);
+      }
+      100% {
+        box-shadow: inset 0 0 0 0 rgba(52, 200, 156, 0);
+      }
+    }
+
+    @keyframes relicGrowthPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 184, 79, 0);
+        transform: translateY(0);
+      }
+      42% {
+        box-shadow: 0 0 0 3px rgba(255, 184, 79, 0.25), 0 0 24px rgba(255, 184, 79, 0.22);
+        transform: translateY(-2px);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 184, 79, 0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes actionSuccessPulse {
+      0% {
+        border-color: rgba(52, 200, 156, 0.35);
+        background: transparent;
+      }
+      45% {
+        border-color: rgba(52, 200, 156, 0.86);
+        background: rgba(35, 117, 91, 0.2);
+      }
+      100% {
+        border-color: #6a6d67;
+        background: transparent;
+      }
     }
 
     .tag.rare { background: #faece7; color: #993c1d; }
@@ -2012,16 +2120,24 @@
     let editingSynergyIndex = null;
     let selectedSynergyPreviewId = null;
     let pendingSynergyId = null;
+    let previewTouchedInModal = false;
     let pendingEquipRelicId = null;
     let modalMode = "edit";
     let selectedSummarySynergyId = null;
     let toastTimer = null;
+    let keepModalOpenDuringApply = false;
+    let lastAppliedSynergyId = null;
+    let lastAppliedSynergyIndex = null;
+    let lastGrowthRelicId = null;
+    let lastActionFeedback = null;
+    let feedbackTimer = null;
 
     const inventoryGrid = document.querySelector("#inventoryGrid");
     const drawRelicOnceButton = document.querySelector("#drawRelicOnceButton");
     const drawRelicTenButton = document.querySelector("#drawRelicTenButton");
     const slotRow = document.querySelector("#slotRow");
     const equipSummary = document.querySelector("#equipSummary");
+    const detailPanel = document.querySelector(".detail-panel");
     const detailName = document.querySelector("#detailName");
     const detailIcon = document.querySelector("#detailIcon");
     const detailStatus = document.querySelector("#detailStatus");
@@ -2168,8 +2284,9 @@
       return synergy.stages.map((text, index) => {
         const stage = index + 1;
         const active = stage <= activeStage ? "active" : "";
+        const justActive = active && synergy.id === lastAppliedSynergyId ? "just-active" : "";
         return `
-          <div class="stage-effect ${active}">
+          <div class="stage-effect ${active} ${justActive}">
             <span class="stage-label">${stage}단계</span>
             <span>${text}</span>
           </div>
@@ -2268,9 +2385,10 @@
         const locked = relic.owned ? "" : "locked";
         const equipped = equippedSlots.includes(relic.id);
         const equippedClass = equipped ? "equipped" : "";
+        const growthPulse = relic.id === lastGrowthRelicId ? "growth-pulse" : "";
 
         return `
-          <button class="relic-card ${selected} ${locked} ${equippedClass}" type="button" data-relic-id="${relic.id}">
+          <button class="relic-card ${selected} ${locked} ${equippedClass} ${growthPulse}" type="button" data-relic-id="${relic.id}">
             ${equipped ? `<span class="equipped-badge">장착중</span>` : ""}
             ${renderIcon(relic, "", true)}
             ${renderShardGauge(relic)}
@@ -2283,9 +2401,15 @@
       const unlocked = unlockedSlotCount(relic);
       return normalizeSynergies(relic)
         .slice(0, unlocked)
-        .map((id) => getSynergy(id))
-        .filter(Boolean)
-        .map((synergy) => `<span class="slot-synergy-icon ${synergy.tagClass}" title="${synergy.name}">${synergy.icon}</span>`)
+        .map((id, index) => ({ id, index }))
+        .filter(({ id }) => id)
+        .map(({ id, index }) => ({ synergy: getSynergy(id), index }))
+        .filter(({ synergy }) => synergy)
+        .map(({ synergy, index }) => {
+          const linked = synergy.id === selectedSummarySynergyId ? "linked" : "";
+          const justApplied = synergy.id === lastAppliedSynergyId && index === lastAppliedSynergyIndex ? "just-applied" : "";
+          return `<span class="slot-synergy-icon ${synergy.tagClass} ${linked} ${justApplied}" title="${synergy.name}">${synergy.icon}</span>`;
+        })
         .join("");
     }
 
@@ -2294,6 +2418,7 @@
         const relic = relicId ? getRelic(relicId) : null;
         const selected = index === selectedSlotIndex ? "selected" : "";
         const equipTarget = pendingEquipRelicId ? "equip-target" : "";
+        const growthPulse = relic?.id === lastGrowthRelicId ? "growth-pulse" : "";
 
         if (!relic) {
           return `
@@ -2304,7 +2429,7 @@
         }
 
         return `
-          <button class="slot-card ${selected} ${equipTarget}" type="button" data-slot-index="${index}">
+          <button class="slot-card ${selected} ${equipTarget} ${growthPulse}" type="button" data-slot-index="${index}">
             <div class="slot-main">
               ${renderIcon(relic, "small", true)}
               <div class="slot-synergies" aria-label="${relic.name} 시너지">${renderSlotSynergies(relic)}</div>
@@ -2493,6 +2618,7 @@
       relic.stars = Math.min(relic.stars + 1, maxStars);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value, true)]);
       relic.synergies = normalizeSynergies(relic);
+      triggerGrowthFeedback(relic.id, "promote");
       closeSynergyModal();
       renderAll();
       showToast("승급되었습니다.");
@@ -2504,9 +2630,11 @@
         const count = counts[synergy.id] || 0;
         if (!count) return "";
         const selected = synergy.id === selectedSummarySynergyId ? "selected" : "";
+        const linked = synergy.id === selectedSummarySynergyId ? "linked" : "";
+        const justApplied = synergy.id === lastAppliedSynergyId ? "just-applied" : "";
         const stage = Math.min(count, 3);
         return `
-          <button class="summary-token stage-${stage} ${selected}" type="button" data-summary-synergy-id="${synergy.id}" title="${synergy.name} ${stage}단계">
+          <button class="summary-token stage-${stage} ${selected} ${linked} ${justApplied}" type="button" data-summary-synergy-id="${synergy.id}" title="${synergy.name} ${stage}단계">
             <span aria-hidden="true">${synergy.icon}</span>
             <span class="summary-count">${count}</span>
           </button>
@@ -2520,6 +2648,7 @@
       const relic = getRelic(selectedRelicId);
       if (!relic) return;
 
+      detailPanel.classList.toggle("growth-pulse", relic.id === lastGrowthRelicId);
       detailIcon.innerHTML = renderIcon(relic, "", true, true);
       detailName.textContent = relic.name;
       detailStars.innerHTML = "";
@@ -2595,6 +2724,8 @@
       const isEquipped = equippedSlots.includes(relic.id);
       promoteButton.innerHTML = renderActionButtonContent("승급", relic.requiredShards, relic.shards);
       upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, relic.upgradeMaterials);
+      promoteButton.classList.toggle("action-success", lastActionFeedback === "promote");
+      upgradeButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
       promoteButton.disabled = !relic.owned || relic.stars >= maxStars;
       upgradeButton.disabled = !canUpgrade;
       equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
@@ -2621,9 +2752,12 @@
         !equippedInOtherSlots.has(previewId)
       );
       const rawPreviewStage = previewSynergy ? previewEquippedSynergyStage(relic, previewSynergy.id, previewId) : 0;
-      const previewStage = previewSynergy && (previewId === currentId || canPreviewApply)
-        ? Math.max(1, rawPreviewStage)
-        : 0;
+      let activeStage = 0;
+      if (previewSynergy && previewId === currentId) {
+        activeStage = Math.max(1, rawPreviewStage);
+      } else if (previewSynergy && previewTouchedInModal && canPreviewApply) {
+        activeStage = 1;
+      }
       const canApply = Boolean(
         previewId &&
         previewId !== currentId &&
@@ -2652,8 +2786,9 @@
         `;
       }).join("");
 
+      const previewJustApplied = previewSynergy?.id === lastAppliedSynergyId ? "just-applied" : "";
       const previewHtml = previewSynergy ? `
-        <div class="synergy-preview ${previewSynergy.tagClass}">
+        <div class="synergy-preview ${previewSynergy.tagClass} ${previewJustApplied}">
           <div class="preview-head">
             <div class="synergy-icon">${previewSynergy.icon}</div>
             <div class="preview-title">
@@ -2664,7 +2799,7 @@
             </div>
             <div class="preview-cost">${previewSynergy.cost} pt</div>
           </div>
-          <div class="stage-list">${renderStageEffects(previewSynergy, previewStage)}</div>
+          <div class="stage-list">${renderStageEffects(previewSynergy, activeStage)}</div>
         </div>
       ` : `
         <div class="synergy-preview">
@@ -2678,7 +2813,7 @@
         ${previewHtml}
         <div class="modal-actions">
           <button class="action-button" type="button" data-modal-action="cancel">취소</button>
-          <button class="action-button" type="button" data-modal-action="apply" ${canApply ? "" : "disabled"}>적용</button>
+          <button class="action-button ${previewJustApplied ? "action-success" : ""}" type="button" data-modal-action="apply" ${canApply ? "" : "disabled"}>적용</button>
         </div>
       `;
     }
@@ -2733,8 +2868,10 @@
       const equippedInOtherSlots = new Set(
         normalizeSynergies(relic).filter((id, slotIndex) => id && slotIndex !== index)
       );
-      selectedSynergyPreviewId = null;
-      pendingSynergyId = null;
+      const firstAvailable = synergiesByGrade().find((synergy) => synergy.cost <= remaining && !equippedInOtherSlots.has(synergy.id))?.id || synergiesByGrade()[0]?.id || null;
+      selectedSynergyPreviewId = currentId || firstAvailable;
+      pendingSynergyId = currentId || firstAvailable;
+      previewTouchedInModal = false;
       modalOverlay.querySelector(".modal").classList.remove("promotion-modal", "summary-modal");
       renderSynergyOptions();
       modalOverlay.classList.add("open");
@@ -2748,6 +2885,7 @@
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
       pendingSynergyId = null;
+      previewTouchedInModal = false;
       modalOverlay.querySelector(".modal").classList.remove("promotion-modal");
       modalOverlay.querySelector(".modal").classList.add("summary-modal");
       renderSummaryModal();
@@ -2764,6 +2902,7 @@
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
       pendingSynergyId = null;
+      previewTouchedInModal = false;
       modalOverlay.querySelector(".modal").classList.remove("summary-modal");
       modalOverlay.querySelector(".modal").classList.add("promotion-modal");
       renderPromotionModal();
@@ -2772,6 +2911,7 @@
     }
 
     function closeSynergyModal() {
+      if (keepModalOpenDuringApply) return;
       modalOverlay.classList.remove("open");
       modalOverlay.setAttribute("aria-hidden", "true");
       modalTitle.textContent = "시너지 선택";
@@ -2781,6 +2921,7 @@
       editingSynergyIndex = null;
       selectedSynergyPreviewId = null;
       pendingSynergyId = null;
+      previewTouchedInModal = false;
     }
 
     function equipRelicToSlot(relicId, slotIndex) {
@@ -2813,12 +2954,49 @@
       relic.synergies = normalizeSynergies(relic);
       const duplicateIndex = relic.synergies.findIndex((id, index) => id === pendingSynergyId && index !== editingSynergyIndex);
       if (duplicateIndex >= 0) return;
+      const appliedId = pendingSynergyId;
+      keepModalOpenDuringApply = true;
       relic.synergies[editingSynergyIndex] = pendingSynergyId;
+      triggerSynergyFeedback(appliedId, editingSynergyIndex);
       renderAll();
-      selectedSynergyPreviewId = pendingSynergyId;
-      pendingSynergyId = pendingSynergyId;
+      selectedSynergyPreviewId = appliedId;
+      pendingSynergyId = appliedId;
+      previewTouchedInModal = false;
       renderSynergyOptions();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
       showToast("시너지가 적용되었습니다.");
+      setTimeout(() => {
+        keepModalOpenDuringApply = false;
+      }, 0);
+    }
+
+    function clearFeedbackLater() {
+      clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        lastAppliedSynergyId = null;
+        lastAppliedSynergyIndex = null;
+        lastGrowthRelicId = null;
+        lastActionFeedback = null;
+        renderAll();
+        if (modalOverlay.classList.contains("open")) {
+          if (modalMode === "edit") renderSynergyOptions();
+          if (modalMode === "summary") renderSummaryModal();
+        }
+      }, 900);
+    }
+
+    function triggerSynergyFeedback(synergyId, index) {
+      lastAppliedSynergyId = synergyId;
+      lastAppliedSynergyIndex = index;
+      selectedSummarySynergyId = synergyId;
+      clearFeedbackLater();
+    }
+
+    function triggerGrowthFeedback(relicId, action) {
+      lastGrowthRelicId = relicId;
+      lastActionFeedback = action;
+      clearFeedbackLater();
     }
 
     function showToast(message) {
@@ -2940,6 +3118,8 @@
       const token = event.target.closest("[data-summary-synergy-id]");
       if (!token) return;
       selectedSummarySynergyId = token.dataset.summarySynergyId;
+      renderSlots();
+      renderEquipSummary();
       openSummaryModal(selectedSummarySynergyId);
     });
 
@@ -2955,6 +3135,7 @@
       if (summaryPreviewButton) {
         selectedSummarySynergyId = summaryPreviewButton.dataset.summaryPreviewSynergyId;
         renderSummaryModal();
+        renderSlots();
         renderEquipSummary();
         return;
       }
@@ -2963,6 +3144,7 @@
       if (modalMode === "edit" && previewButton) {
         selectedSynergyPreviewId = previewButton.dataset.previewSynergyId;
         pendingSynergyId = previewButton.dataset.previewSynergyId;
+        previewTouchedInModal = true;
         renderSynergyOptions();
         return;
       }
@@ -2974,6 +3156,8 @@
         return;
       }
       if (actionButton.dataset.modalAction === "apply") {
+        event.preventDefault();
+        event.stopPropagation();
         applyPendingSynergy();
         return;
       }
@@ -3002,6 +3186,7 @@
       const relic = getRelic(selectedRelicId);
       if (button.dataset.action === "upgrade") {
         if (upgradeRelic(relic)) {
+          triggerGrowthFeedback(relic.id, "upgrade");
           renderAll();
           showToast("강화되었습니다.");
         }

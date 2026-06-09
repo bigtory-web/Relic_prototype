@@ -362,3 +362,91 @@
 
 - Replaced the promotion modal point and slot rows with separate compact metric cards.
 - Tightened promotion modal effect-card spacing so the owned-effect row reads as a clean single line.
+
+## 2026-06-09 16:20 KST
+
+### Question
+
+- Differentiate promotion shard count and upgrade material count inside action gauges.
+
+### Implemented
+
+- Added distinct resource icons to action gauges: shard for promotion and material marker for upgrade.
+- Kept the existing gauge layout and progress values while making the owned-resource count easier to identify.
+
+## 2026-06-09 16:42 KST
+
+### Question
+
+- Change synergy stages from cumulative interpretation to highest-stage-only interpretation.
+- Make synergy stage UI focus only the currently applied stage.
+- Rewrite synergy stage copy so 3-stage effects do not read as comma-separated option lists.
+
+### Implemented
+
+- Updated `시스템_고민.md` to define synergy stages as highest-stage replacement effects.
+- Changed synergy stage rendering so only the current stage is active and previous/future stages are secondary.
+- Reworked synergy stage data so 3-stage effects use two-line final value plus relic-effect adjustment copy.
+
+## 2026-06-09 17:05 KST
+
+### Question
+
+- Rename synergies around build concepts instead of stat-option labels.
+- Make normal synergies pure scaling, advanced synergies conditional scaling, and rare synergies feel distinct without becoming new relic effects.
+
+### Implemented
+
+- Replaced the prototype synergy names with `맹공`, `연격`, `예리함`, `처형`, `수호`, `추격`, `급소`, `파열`, and `폭주`.
+- Reworked synergy stage values so highest-stage-only scaling is clearly stronger, such as `연격` reaching `공격 속도 +40%`.
+- Updated `시스템_고민.md` to remove the hard requirement that 3-stage effects must include relic-effect adjustment text.
+
+## 2026-06-09 17:18 KST
+
+### Question
+
+- Remove relic effects that use synergy activation as their trigger.
+- Make relic equip effects use observable combat situations instead of system-internal events.
+
+### Implemented
+
+- Replaced `낡은 지팡이` and `별의 씨앗` equip effects with time-based combat effects.
+- Updated explicit and generated relic equip effects to use clearer combat trigger/result wording.
+- Added relic effect design rules to `시스템_고민.md`.
+
+## 2026-06-09 17:40 KST
+
+### Question
+
+- Reduce the visual weight of the dummy relic draw buttons.
+- Remove visible inventory and equip-slot title text while keeping panel alignment clean.
+
+### Implemented
+
+- Changed relic draw buttons to two muted 170px buttons in one row.
+- Lowered draw-button color contrast and font weight so they read as secondary prototype controls.
+- Visually hid the inventory and equip-slot titles while preserving their accessibility labels.
+
+## 2026-06-09 17:48 KST
+
+### Question
+
+- In the synergy selection preview, do not make stage 1 look applied just because a candidate synergy is selected.
+
+### Implemented
+
+- Changed synergy preview stage highlighting to use only currently equipped synergy counts.
+- Kept the right-side preview information visible while removing false active-stage styling from unapplied candidates.
+
+## 2026-06-09 21:35 KST
+
+### Question
+
+- Change the detail-panel synergy slots so the effect can be read before opening the selection modal.
+- Make synergies on non-equipped relics feel inactive while still showing what they would apply.
+
+### Implemented
+
+- Replaced the detail-panel synergy cards with compact rows.
+- Added icon/name on the left and current or equip-preview stage effect text on the right.
+- Preserved locked, empty, unowned, and clickable states with the existing synergy slot behavior.

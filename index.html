@@ -746,8 +746,8 @@
     .stat-block {
       height: 200px;
       display: grid;
-      grid-template-rows: 124px 52px;
-      gap: 10px;
+      grid-template-rows: 112px 52px;
+      gap: 8px;
       align-content: start;
       overflow: hidden;
     }
@@ -849,21 +849,21 @@
     .synergy-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 5px;
+      gap: 6px;
       align-content: start;
     }
 
     .synergy-slot {
       min-width: 0;
-      height: 36px;
-      padding: 5px 8px;
+      min-height: 56px;
+      padding: 7px 10px;
       border: 1px solid #676a64;
       border-radius: 7px;
       background: var(--panel);
       cursor: pointer;
       display: grid;
-      grid-template-columns: 112px 1fr;
-      gap: 10px;
+      grid-template-columns: 94px minmax(0, 1fr);
+      gap: 12px;
       align-items: center;
       text-align: left;
     }
@@ -886,10 +886,6 @@
     .synergy-slot.empty {
       border-style: dashed;
       color: #c7c3ba;
-    }
-
-    .synergy-slot.inactive-relic {
-      opacity: 0.58;
     }
 
     .synergy-slot.locked-slot {
@@ -936,9 +932,8 @@
       font-weight: 500;
       line-height: 1.32;
       color: #ece8df;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       overflow: hidden;
     }
 
@@ -953,11 +948,12 @@
       min-width: 0;
       color: #c9c6bd;
       font-size: 12px;
-      line-height: 1.25;
+      line-height: 1.35;
       overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-align: right;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      text-align: left;
     }
 
     .synergy-slot.normal .synergy-effect-value {
@@ -2411,7 +2407,7 @@
         ? equippedSynergyStage(synergy.id)
         : Math.max(1, synergyStage(relic, synergy.id));
       const effectText = plainStageText(synergy.stages[Math.max(stage - 1, 0)] || synergy.stages[0]);
-      return `${isEquippedRelic ? `${stage}단계` : `장착 시 ${stage}단계`} · ${effectText}`;
+      return effectText;
     }
 
     function renderStageText(text) {
@@ -2863,9 +2859,9 @@
             <button class="synergy-slot locked-slot ${inactiveRelic}" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
                 <div class="synergy-icon">⌕</div>
-                <div class="synergy-name">${requiredStarsForSlot(index, relic)}성 해금</div>
+                <div class="synergy-name">빈 슬롯</div>
               </div>
-              <div class="synergy-effect-value">승급 필요</div>
+              <div class="synergy-effect-value">${requiredStarsForSlot(index, relic)}성 승급 시 해금</div>
             </button>
           `;
         }

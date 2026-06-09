@@ -450,3 +450,38 @@
 - Replaced the detail-panel synergy cards with compact rows.
 - Added icon/name on the left and current or equip-preview stage effect text on the right.
 - Preserved locked, empty, unowned, and clickable states with the existing synergy slot behavior.
+
+## 2026-06-09 23:26 KST
+
+### Question
+
+- Increase the detail-panel synergy effect description space so it can read as roughly two lines.
+
+### Implemented
+
+- Increased synergy slot row height and spacing.
+- Narrowed the icon/name column to give the effect column more width.
+- Changed synergy effect text from single-line ellipsis to a two-line clamp.
+
+## 2026-06-09 23:33 KST
+
+### Question
+
+- Remove the stage prefix from the detail-panel synergy slot effect text.
+- Move the owned-effect block slightly upward so the detail-panel vertical gaps feel more consistent.
+
+### Implemented
+
+- Changed detail-panel synergy effect rows to show only the effect text.
+- Reduced the fixed equip-effect row height and stat-block gap so owned effects sit closer to equip effects.
+
+## 2026-06-09 23:37 KST
+
+### Question
+
+- Change locked synergy slot copy so the first column still reads as an empty slot.
+
+### Implemented
+
+- Updated locked synergy rows to show `빈 슬롯` on the left.
+- Moved the unlock requirement into the effect column as `N성 승급 시 해금`.

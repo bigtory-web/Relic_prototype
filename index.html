@@ -651,8 +651,8 @@
       min-height: 0;
       padding: 16px;
       display: grid;
-      grid-template-rows: 124px 228px 186px 42px;
-      gap: 12px;
+      grid-template-rows: 116px 200px 238px 46px;
+      gap: 10px;
       overflow: hidden;
     }
 
@@ -744,10 +744,10 @@
     .grade-badge.N { background: #eeeeea; color: #6c675f; }
 
     .stat-block {
-      height: 228px;
+      height: 200px;
       display: grid;
-      grid-template-rows: 132px 58px;
-      gap: 14px;
+      grid-template-rows: 124px 52px;
+      gap: 10px;
       align-content: start;
       overflow: hidden;
     }
@@ -756,7 +756,7 @@
       min-height: 0;
       display: grid;
       align-content: start;
-      gap: 9px;
+      gap: 7px;
     }
 
     .owned-section {
@@ -764,7 +764,7 @@
       display: grid;
       grid-template-rows: auto auto;
       align-content: start;
-      gap: 9px;
+      gap: 7px;
     }
 
     .stat-title {
@@ -782,8 +782,8 @@
       display: grid;
       grid-template-columns: 112px 1fr;
       gap: 12px;
-      min-height: 48px;
-      padding: 10px 12px;
+      min-height: 44px;
+      padding: 8px 12px;
       border-left: 3px solid var(--accent);
       background: rgba(38, 51, 45, 0.86);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
@@ -819,8 +819,8 @@
 
     .owned-section .effect-card {
       grid-template-columns: 1fr auto;
-      min-height: 34px;
-      padding: 7px 12px;
+      min-height: 30px;
+      padding: 5px 12px;
       align-items: center;
     }
 
@@ -833,11 +833,11 @@
     }
 
     .synergy-section {
-      height: 186px;
-      min-height: 186px;
+      height: 238px;
+      min-height: 238px;
       display: grid;
       grid-template-rows: auto 1fr;
-      gap: 6px;
+      gap: 8px;
       align-content: start;
       overflow: hidden;
     }
@@ -888,6 +888,10 @@
       color: #c7c3ba;
     }
 
+    .synergy-slot.inactive-relic {
+      opacity: 0.58;
+    }
+
     .synergy-slot.locked-slot {
       border-style: solid;
       background: #242521;
@@ -928,7 +932,7 @@
     }
 
     .synergy-name {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       line-height: 1.32;
       color: #ece8df;
@@ -2433,6 +2437,19 @@
       }).join("");
     }
 
+    function detailSynergyStage(relic, synergy) {
+      if (!synergy) return 0;
+      if (equippedSlots.includes(relic.id)) {
+        return Math.min(equippedSynergyCounts()[synergy.id] || 0, 3);
+      }
+      return synergyStage(relic, synergy.id);
+    }
+
+    function detailSynergyEffectText(relic, synergy) {
+      const stage = detailSynergyStage(relic, synergy);
+      return stage > 0 ? synergy.stages[stage - 1] : "";
+    }
+
     function renderModalRelicContext(relic) {
       const [effectName, effectDesc] = relic.equipEffect[0] || ["장착 효과", ""];
       return `
@@ -2828,9 +2845,10 @@
       pointTotal.textContent = `${usedPoints(relic)} / ${pointCapacity(relic)} pt`;
       const isEquippedRelic = equippedSlots.includes(relic.id);
       synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
+        const inactiveRelic = !equippedSlots.includes(relic.id) ? "inactive-relic" : "";
         if (!relic.owned) {
           return `
-            <button class="synergy-slot locked-slot" type="button" data-synergy-index="${index}" disabled>
+            <button class="synergy-slot locked-slot inactive-relic" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
                 <div class="synergy-icon">⌕</div>
                 <div class="synergy-name">미보유</div>
@@ -2842,7 +2860,7 @@
         const isLocked = index >= unlockedSlotCount(relic);
         if (isLocked) {
           return `
-            <button class="synergy-slot locked-slot" type="button" data-synergy-index="${index}" disabled>
+            <button class="synergy-slot locked-slot ${inactiveRelic}" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
                 <div class="synergy-icon">⌕</div>
                 <div class="synergy-name">${requiredStarsForSlot(index, relic)}성 해금</div>
@@ -2854,7 +2872,7 @@
         const synergy = getSynergy(id);
         if (!synergy) {
           return `
-            <button class="synergy-slot empty" type="button" data-synergy-index="${index}" ${relic.owned ? "" : "disabled"}>
+            <button class="synergy-slot empty ${inactiveRelic}" type="button" data-synergy-index="${index}" ${relic.owned ? "" : "disabled"}>
               <div class="synergy-slot-main">
                 <div class="synergy-icon">+</div>
                 <div class="synergy-name">빈 슬롯</div>

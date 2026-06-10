@@ -582,7 +582,9 @@
       align-items: center;
       border: 0;
       border-radius: 50%;
-      background: conic-gradient(var(--accent-soft) var(--summary-progress), #555852 0);
+      --summary-grade: var(--accent-soft);
+      --summary-track: #555852;
+      background: conic-gradient(var(--summary-grade) var(--summary-progress), var(--summary-track) 0);
       color: #ede8de;
       font-size: 24px;
       font-weight: 600;
@@ -605,6 +607,24 @@
     .summary-token.stage-1 { --summary-progress: 33.333%; }
     .summary-token.stage-2 { --summary-progress: 66.666%; }
     .summary-token.stage-3 { --summary-progress: 100%; }
+
+    .summary-token.rare {
+      --summary-grade: #e98048;
+      --summary-track: rgba(238, 126, 72, 0.28);
+      color: #ffe0cf;
+    }
+
+    .summary-token.advanced {
+      --summary-grade: #708cff;
+      --summary-track: rgba(109, 138, 238, 0.28);
+      color: #dfe5ff;
+    }
+
+    .summary-token.normal {
+      --summary-grade: #9aa4ad;
+      --summary-track: rgba(154, 164, 173, 0.28);
+      color: #f0f2f2;
+    }
 
     .summary-token:hover::before {
       background: #383b36;
@@ -2177,30 +2197,7 @@
       N: 2
     };
 
-    const upgradeMaterialSeed = {
-      heart_fire: 24,
-      frost_shield: 14,
-      lightning_eye: 8,
-      dark_crystal: 8,
-      steel_heart: 10,
-      old_staff: 6,
-      sun_core: 0,
-      moon_crown: 2,
-      dragon_scale: 3,
-      void_lantern: 1,
-      ancient_hourglass: 0,
-      star_seed: 4,
-      origin_orb: 0,
-      storm_eye: 7,
-      blood_chalice: 3,
-      forest_totem: 0,
-      ice_shard: 4,
-      bone_ring: 2,
-      rusted_medal: 0,
-      wooden_charm: 3,
-      cracked_lens: 0,
-      old_coin: 1
-    };
+    let playerUpgradeMaterials = 100;
 
     relics.forEach((relic) => {
       const defaults = gradeDefaults[relic.grade];
@@ -2214,7 +2211,6 @@
       relic.synergies = relic.synergies ?? [];
       relic.shards = relic.shards ?? shards;
       relic.requiredShards = defaults.requiredShards;
-      relic.upgradeMaterials = relic.upgradeMaterials ?? (upgradeMaterialSeed[relic.id] || 0);
       relic.requiredUpgradeMaterials = relic.requiredUpgradeMaterials ?? upgradeCostByGrade[relic.grade];
     });
 
@@ -2634,20 +2630,39 @@
       return formatPercent(parsePercent(value) + promotionDelta(label, owned));
     }
 
+    function descriptionPercentMatches(value) {
+      return [...String(value).matchAll(/(\d+(?:\.\d+)?)%/g)];
+    }
+
+    function targetDescriptionPercent(value) {
+      const matches = descriptionPercentMatches(value);
+      return matches[matches.length - 1] || null;
+    }
+
+    function replaceTargetDescriptionPercent(value, render) {
+      const text = String(value);
+      const target = targetDescriptionPercent(text);
+      if (!target) return text;
+
+      const before = text.slice(0, target.index);
+      const after = text.slice(target.index + target[0].length);
+      return `${before}${render(target[0], parseFloat(target[1]))}${after}`;
+    }
+
     function nextPromotionDescription(value) {
-      return value.replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
-        return `${match}${renderDeltaBadge(3)}`;
-      });
+      return replaceTargetDescriptionPercent(value, (match) => `${match}${renderDeltaBadge(3)}`);
     }
 
     function upgradeDescriptionDelta(value) {
-      return String(value).includes("확률") ? 0.2 : 1.0;
+      const text = String(value);
+      const target = targetDescriptionPercent(text);
+      if (!target) return 0;
+      const context = text.slice(Math.max(0, target.index - 8), target.index + target[0].length + 8);
+      return context.includes("확률") ? 0.2 : 1.0;
     }
 
     function bumpDescriptionPercent(value, delta) {
-      return String(value).replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
-        return formatPlainPercent(parseFloat(amount) + delta);
-      });
+      return replaceTargetDescriptionPercent(value, (match, amount) => formatPlainPercent(amount + delta));
     }
 
     function nextUpgradeDescription(value) {
@@ -2659,9 +2674,7 @@
     }
 
     function renderDescriptionWithNext(value, relic) {
-      return String(value).replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
-        return `${match}${renderDeltaBadge(upgradeDescriptionDelta(value))}`;
-      });
+      return replaceTargetDescriptionPercent(value, (match) => `${match}${renderDeltaBadge(upgradeDescriptionDelta(value))}`);
     }
 
     function renderPromotionValue(label, value, owned = false) {
@@ -2688,14 +2701,14 @@
       return Boolean(
         relic?.owned &&
         relic.level < relic.maxLevel &&
-        relic.upgradeMaterials >= relic.requiredUpgradeMaterials
+        playerUpgradeMaterials >= relic.requiredUpgradeMaterials
       );
     }
 
     function upgradeRelic(relic) {
       if (!canUpgradeRelic(relic)) return false;
       relic.level += 1;
-      relic.upgradeMaterials = Math.max(0, relic.upgradeMaterials - relic.requiredUpgradeMaterials);
+      playerUpgradeMaterials = Math.max(0, playerUpgradeMaterials - relic.requiredUpgradeMaterials);
       relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextUpgradeDescription(value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
@@ -2813,7 +2826,7 @@
         const justApplied = synergy.id === lastAppliedSynergyId ? "just-applied" : "";
         const stage = Math.min(count, 3);
         return `
-          <button class="summary-token stage-${stage} ${selected} ${linked} ${justApplied}" type="button" data-summary-synergy-id="${synergy.id}" title="${synergy.name} ${stage}단계">
+          <button class="summary-token ${synergy.tagClass} stage-${stage} ${selected} ${linked} ${justApplied}" type="button" data-summary-synergy-id="${synergy.id}" title="${synergy.name} ${stage}단계">
             <span aria-hidden="true">${synergy.icon}</span>
             <span class="summary-count">${count}</span>
           </button>
@@ -2918,7 +2931,7 @@
       const canUpgrade = canUpgradeRelic(relic);
       const isEquipped = equippedSlots.includes(relic.id);
       promoteButton.innerHTML = renderActionButtonContent("승급", relic.requiredShards, relic.shards, "shard");
-      upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, relic.upgradeMaterials, "upgrade");
+      upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, playerUpgradeMaterials, "upgrade");
       promoteButton.classList.toggle("action-success", lastActionFeedback === "promote");
       upgradeButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
       promoteButton.disabled = !relic.owned || relic.stars >= maxStars;
@@ -3221,14 +3234,13 @@
       ]).type;
 
       if (rewardType === "stone") {
-        const relic = getRelic(selectedRelicId) || relics[0];
         const amount = pickWeighted([
           { amount: 2, weight: 55 },
           { amount: 4, weight: 30 },
           { amount: 8, weight: 15 }
         ]).amount;
-        relic.upgradeMaterials += amount;
-        return { type: "stone", relic, amount };
+        playerUpgradeMaterials += amount;
+        return { type: "stone", amount };
       }
 
       const grade = pickWeighted([
@@ -3255,7 +3267,7 @@
       if (count === 1) {
         const reward = rewards[0];
         if (reward.type === "stone") {
-          showToast(`강화석 ${reward.amount}개 획득 (${reward.relic.name})`);
+          showToast(`강화석 ${reward.amount}개 획득`);
           return;
         }
         showToast(`${reward.relic.grade} ${reward.relic.name} 조각 ${reward.amount}개 획득`);

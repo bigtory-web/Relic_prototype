@@ -535,3 +535,55 @@
 - Changed promotion equip and owned effect values to inline delta notation.
 - Reworked promotion point and slot comparison cards into two compact one-line rows.
 - Used unit-aware deltas for promotion metrics, such as `pt` and `칸`.
+
+## 2026-06-10 15:28 KST
+
+### Question
+
+- Make upgrade and promotion increases target effect values instead of condition percentages.
+- Example: `공허의 등불` should increase its attack damage value, not the `체력 30% 이하` condition.
+
+### Implemented
+
+- Changed equip-effect percentage targeting to use the final percentage in the description.
+- Kept chance-only effects increasing their chance value, while mixed condition/result effects now increase the result value.
+- Verified examples so `30% 이하 ... 35% 피해` targets `35%`, and `25% 확률 ... 12% 보호막` targets `12%`.
+
+## 2026-06-10 16:00 KST
+
+### Question
+
+- 강화석을 유물별 재료가 아니라 공용 재화로 처리한다.
+- 승급은 유물별 조각, 강화는 공용 강화석으로 분리해서 두 성장 방식이 비슷하게 보이는 문제를 줄인다.
+
+### Implemented
+
+- 유물별 `upgradeMaterials` 값을 제거하고 공용 `playerUpgradeMaterials` 풀을 추가했다.
+- 강화 가능 조건과 강화 버튼 게이지가 공용 강화석 보유량을 보도록 변경했다.
+- 강화 시 공용 강화석을 차감하고, 유물 뽑기의 강화석 보상도 공용 풀에 더하도록 변경했다.
+- 강화석 획득 토스트에서 특정 유물명을 제거했다.
+
+## 2026-06-10 16:08 KST
+
+### Question
+
+- 장착 시너지 요약 토큰에도 시너지 등급별 색상을 적용한다.
+
+### Implemented
+
+- 요약 토큰에 `normal`, `advanced`, `rare` 등급 클래스를 붙이도록 변경했다.
+- 요약 토큰의 원형 진행 링과 아이콘 색상이 등급별 색상으로 보이도록 CSS 변수를 추가했다.
+
+## 2026-06-10 17:06 KST
+
+### Question
+
+- 최고 성급 이후 남는 승급 재료를 어떻게 처리할지 정리한다.
+- 캐릭터 수집형 BM이 아니라 유물/장비 BM 기준으로 초과 조각 처리 방향을 다시 잡는다.
+
+### Implemented
+
+- `시스템_고민.md`에 `최고 성급 이후 초과 조각 처리` 문단을 추가했다.
+- 초과 조각을 상위 유물 선택권이나 직접 뽑기권으로 연결하면 뽑기 확률 가치가 약해진다는 문제를 기록했다.
+- 초과 조각은 새 유물 획득 보정이 아니라 등급별 정련/분해 재료 같은 장비 품질 개선 방향으로 검토하는 것이 적합하다고 정리했다.
+- 고액 과금 손실감 완화와 뽑기 확률 가치 보존을 함께 판단 기준으로 남겼다.

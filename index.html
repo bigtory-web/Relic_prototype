@@ -1670,39 +1670,28 @@
 
     .promotion-meta-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+      grid-template-columns: 1fr;
+      gap: 6px;
     }
 
     .promotion-metric-card {
       min-height: 0;
-      padding: 10px 12px 12px;
-      border: 1px solid rgba(52, 200, 156, 0.18);
-      border-radius: 10px;
-      background: rgba(34, 41, 38, 0.9);
+      padding: 7px 12px;
+      border: 1px solid rgba(52, 200, 156, 0.16);
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      background: rgba(38, 51, 45, 0.86);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
       display: grid;
-      justify-items: start;
-      gap: 10px;
-    }
-
-    .promotion-metric-card .promotion-card-title {
-      margin: 0;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
     }
 
     .promotion-metric-value {
-      width: 100%;
-      min-height: 42px;
-      padding: 0 14px;
-      border-radius: 8px;
-      background: rgba(38, 51, 45, 0.86);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: #ffffff;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 700;
       line-height: 1;
       white-space: nowrap;
     }
@@ -1953,7 +1942,7 @@
         level: 5,
         maxLevel: 20,
         stars: 1,
-        equipEffect: [["강철 반격", "피해를 받은 뒤 2초 안에 사용하는 다음 공격이 공격력 60%의 추가 피해를 준다."]],
+        equipEffect: [["강철 반격", "피해를 4회 받을 때마다 다음 공격이 공격력 80%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.8%"]],
         synergies: ["atk_up", null],
         owned: true
@@ -2611,6 +2600,16 @@
       return `${text}%`;
     }
 
+    function renderDeltaBadge(delta) {
+      if (!delta) return "";
+      return `<span class="next-value">(+${formatPlainPercent(delta)})</span>`;
+    }
+
+    function renderMetricDeltaBadge(delta, unit) {
+      if (!delta) return "";
+      return `<span class="next-value">(+${delta}${unit})</span>`;
+    }
+
     function upgradeDelta(label, owned = false) {
       if (owned) return 0.1;
       if (label.includes("치명타")) return 0.2;
@@ -2637,23 +2636,44 @@
 
     function nextPromotionDescription(value) {
       return value.replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
-        const current = parseFloat(amount);
-        const next = formatPlainPercent(current + 3);
-        return `<span class="promotion-inline-change">${match} &gt; ${next}</span>`;
+        return `${match}${renderDeltaBadge(3)}`;
+      });
+    }
+
+    function upgradeDescriptionDelta(value) {
+      return String(value).includes("확률") ? 0.2 : 1.0;
+    }
+
+    function bumpDescriptionPercent(value, delta) {
+      return String(value).replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
+        return formatPlainPercent(parseFloat(amount) + delta);
+      });
+    }
+
+    function nextUpgradeDescription(value) {
+      return bumpDescriptionPercent(value, upgradeDescriptionDelta(value));
+    }
+
+    function nextPromotionDescriptionValue(value) {
+      return bumpDescriptionPercent(value, 3);
+    }
+
+    function renderDescriptionWithNext(value, relic) {
+      return String(value).replace(/(\d+(?:\.\d+)?)%/, (match, amount) => {
+        return `${match}${renderDeltaBadge(upgradeDescriptionDelta(value))}`;
       });
     }
 
     function renderPromotionValue(label, value, owned = false) {
       if (owned && isPercentValue(value)) {
-        return `${value} &gt; ${nextPromotionEffectValue(label, value, owned)}`;
+        return `${value}${renderDeltaBadge(promotionDelta(label, owned))}`;
       }
       return owned ? value : nextPromotionDescription(value);
     }
 
     function renderValueWithNext(label, value, relic, owned = false) {
-      if (!relic.owned || relic.level >= relic.maxLevel) return value;
       if (!isPercentValue(value)) return value;
-      return `${value} <span class="next-value">&gt; ${nextEffectValue(label, value, owned)}</span>`;
+      return `${value}${renderDeltaBadge(upgradeDelta(label, owned))}`;
     }
 
     function ownedEffectLabel(label) {
@@ -2676,6 +2696,7 @@
       if (!canUpgradeRelic(relic)) return false;
       relic.level += 1;
       relic.upgradeMaterials = Math.max(0, relic.upgradeMaterials - relic.requiredUpgradeMaterials);
+      relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextUpgradeDescription(value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
     }
@@ -2749,12 +2770,12 @@
           </div>
           <div class="promotion-meta-grid">
             <div class="promotion-metric-card">
-              <div class="promotion-card-title">시너지 포인트</div>
-              <div class="promotion-metric-value">${currentPoints} pt &gt; ${nextPoints} pt</div>
+              <div class="promotion-effect-name">시너지 포인트</div>
+              <div class="promotion-metric-value">${currentPoints} pt${renderMetricDeltaBadge(nextPoints - currentPoints, " pt")}</div>
             </div>
             <div class="promotion-metric-card">
-              <div class="promotion-card-title">시너지 슬롯</div>
-              <div class="promotion-metric-value">${currentSlots}칸 &gt; ${nextSlots}칸</div>
+              <div class="promotion-effect-name">시너지 슬롯</div>
+              <div class="promotion-metric-value">${currentSlots}칸${renderMetricDeltaBadge(nextSlots - currentSlots, "칸")}</div>
             </div>
           </div>
         </div>
@@ -2773,6 +2794,7 @@
       if (!canConfirmPromotion(relic)) return;
       relic.shards -= relic.requiredShards;
       relic.stars = Math.min(relic.stars + 1, maxStars);
+      relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextPromotionDescriptionValue(value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextPromotionEffectValue(label, value, true)]);
       relic.synergies = normalizeSynergies(relic);
       triggerGrowthFeedback(relic.id, "promote");
@@ -2816,13 +2838,13 @@
       const equipRows = relic.equipEffect.map(([label, value]) => `
         <div class="effect-card ${relic.owned ? "" : "disabled"}">
           <span class="effect-name">${label}</span>
-          <span class="effect-desc">${value}</span>
+          <span class="effect-desc">${renderDescriptionWithNext(value, relic)}</span>
         </div>
       `).join("");
       const ownedRows = relic.ownedEffect.map(([label, value]) => `
         <div class="effect-card ${relic.owned ? "" : "disabled"}">
           <span class="effect-name">${ownedEffectLabel(label)}</span>
-          <span class="effect-desc">${displayOwnedEffectValue(value)}</span>
+          <span class="effect-desc">${displayOwnedEffectValue(renderValueWithNext(label, value, relic, true))}</span>
         </div>
       `).join("");
 
@@ -2842,13 +2864,14 @@
       synergyGrid.innerHTML = normalizeSynergies(relic).map((id, index) => {
         const inactiveRelic = !equippedSlots.includes(relic.id) ? "inactive-relic" : "";
         if (!relic.owned) {
+          const unlockText = index === 0 ? "획득 시 해금" : `${requiredStarsForSlot(index, relic)}성 달성 시 해금`;
           return `
             <button class="synergy-slot locked-slot inactive-relic" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
                 <div class="synergy-icon">⌕</div>
-                <div class="synergy-name">미보유</div>
+                <div class="synergy-name">빈 슬롯</div>
               </div>
-              <div class="synergy-effect-value">획득 후 설정 가능</div>
+              <div class="synergy-effect-value">${unlockText}</div>
             </button>
           `;
         }

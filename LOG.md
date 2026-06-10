@@ -485,3 +485,53 @@
 
 - Updated locked synergy rows to show `빈 슬롯` on the left.
 - Moved the unlock requirement into the effect column as `N성 승급 시 해금`.
+
+## 2026-06-10 14:55 KST
+
+### Question
+
+- Make equip-effect percentages increase through upgrade, not only owned-effect values.
+- Change unowned relic synergy slot copy to show empty slots and explicit unlock conditions.
+
+### Implemented
+
+- Added upgrade and promotion percentage updates for equip-effect descriptions.
+- Added equip-effect next-value preview for owned relics that can still level up.
+- Changed unowned synergy rows to show `빈 슬롯` with `획득 시 해금` or `N성 달성 시 해금` conditions.
+
+## 2026-06-10 15:00 KST
+
+### Question
+
+- Adjust `강철의 심장` because its counterattack could trigger too often against dense monster groups.
+
+### Implemented
+
+- Changed `강철의 심장` from a short post-hit attack window to a 4-hit received counter trigger.
+- Raised the counter damage to keep the effect meaningful while controlling trigger frequency.
+
+## 2026-06-10 15:08 KST
+
+### Question
+
+- Show upgrade growth as `current(+delta)` instead of `current > next`.
+- Keep upgrade growth visible at all times for equip and owned effects.
+
+### Implemented
+
+- Changed equip-effect percentage previews to inline delta badges such as `45%(+1%)`.
+- Changed owned-effect percentage previews to use the same inline delta format.
+- Removed the condition that only showed upgrade preview when the relic was currently upgradeable.
+
+## 2026-06-10 15:14 KST
+
+### Question
+
+- Apply the same compact delta notation to the promotion modal.
+- Show synergy point and synergy slot changes as one-line rows.
+
+### Implemented
+
+- Changed promotion equip and owned effect values to inline delta notation.
+- Reworked promotion point and slot comparison cards into two compact one-line rows.
+- Used unit-aware deltas for promotion metrics, such as `pt` and `칸`.

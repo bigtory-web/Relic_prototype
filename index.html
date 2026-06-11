@@ -57,7 +57,7 @@
       height: 720px;
       padding: 20px;
       display: grid;
-      grid-template-columns: 408px 240px 1fr;
+      grid-template-columns: 450px 240px 1fr;
       gap: 12px;
       background: var(--bg);
     }
@@ -131,7 +131,7 @@
       min-height: 0;
       padding-right: 4px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       grid-auto-rows: 120px;
       gap: 8px;
       overflow-y: auto;
@@ -151,13 +151,12 @@
     .draw-panel {
       margin-top: auto;
       display: grid;
-      grid-template-columns: repeat(2, 170px);
+      grid-template-columns: repeat(3, 1fr);
       justify-content: center;
       gap: 8px;
     }
 
     .draw-button {
-      width: 170px;
       height: 40px;
       border: 1px solid rgba(112, 126, 118, 0.42);
       border-radius: 10px;
@@ -433,6 +432,9 @@
       grid-template-rows: 1fr auto;
       gap: 10px;
       overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(34, 48, 42, 0.72), rgba(27, 31, 29, 0.94)),
+        var(--panel);
     }
 
     .slot-row {
@@ -1027,6 +1029,11 @@
       color: #8f8b83;
     }
 
+    .synergy-slot.empty .synergy-name,
+    .synergy-slot.empty .synergy-effect-value {
+      color: #f4f1ea;
+    }
+
     .plus {
       margin-top: 10px;
       font-size: 24px;
@@ -1196,12 +1203,12 @@
     }
 
     .modal.promotion-modal {
-      width: 600px;
-      height: min(700px, calc(100vh - 40px));
+      width: 500px;
+      height: min(650px, calc(100vh - 40px));
     }
 
     .modal.summary-modal {
-      width: min(500px, calc(100vw - 40px));
+      width: min(400px, calc(100vw - 40px));
       height: min(500px, calc(100vh - 40px));
     }
 
@@ -1611,11 +1618,11 @@
     }
 
     .levelup-hero .promotion-hero-copy {
-      width: 124px;
+      width: 90px;
     }
 
     .levelup-hero .shard-gauge {
-      width: 124px;
+      width: 90px;
       height: 18px;
     }
 
@@ -1923,8 +1930,9 @@
       <h1 class="panel-title visually-hidden">인벤토리</h1>
       <div class="inventory-grid" id="inventoryGrid"></div>
       <div class="draw-panel">
-        <button class="draw-button" type="button" id="drawRelicOnceButton">유물 1회 뽑기</button>
-        <button class="draw-button" type="button" id="drawRelicTenButton">유물 10회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicOnceButton">1회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicTenButton">10회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicHundredButton">100회 뽑기</button>
       </div>
     </section>
 
@@ -1984,7 +1992,7 @@
         grade: "SSR",
         icon: "♨",
         level: 48,
-        maxLevel: 60,
+        maxLevel: 100,
         stars: 3,
         equipEffect: [["치명 폭발", "치명타 발생 시 치명타 피해량의 50%만큼 범위 피해를 준다."]],
         ownedEffect: [["치명타 피해량", "+3.2%"], ["보스 피해량", "+2.0%"]],
@@ -2005,7 +2013,7 @@
         grade: "SR",
         icon: "⬡",
         level: 22,
-        maxLevel: 40,
+        maxLevel: 100,
         stars: 1,
         equipEffect: [["피해 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
         ownedEffect: [["체력", "+1.8%"], ["받는 피해 감소", "+1.2%"]],
@@ -2018,7 +2026,7 @@
         grade: "SR",
         icon: "◇",
         level: 8,
-        maxLevel: 40,
+        maxLevel: 100,
         stars: 1,
         equipEffect: [["처치 예열", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 35% 증가한다."]],
         ownedEffect: [["일반 피해량", "+1.1%"]],
@@ -2039,7 +2047,7 @@
         grade: "SR",
         icon: "ϟ",
         level: 15,
-        maxLevel: 40,
+        maxLevel: 100,
         stars: 3,
         equipEffect: [["연쇄 타격", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 연쇄 피해를 준다."]],
         ownedEffect: [["공격력", "+1.5%"], ["공격 속도", "+0.8%"]],
@@ -2052,7 +2060,7 @@
         grade: "R",
         icon: "⌁",
         level: 5,
-        maxLevel: 20,
+        maxLevel: 100,
         stars: 1,
         equipEffect: [["강철 반격", "피해를 4회 받을 때마다 다음 공격이 공격력 80%의 추가 피해를 준다."]],
         ownedEffect: [["방어력", "+0.8%"], ["받는 피해 감소", "+0.5%"]],
@@ -2073,7 +2081,7 @@
         grade: "N",
         icon: "†",
         level: 3,
-        maxLevel: 20,
+        maxLevel: 100,
         stars: 1,
         equipEffect: [["주문 집중", "6초마다 다음 공격이 공격력 30%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.5%"]],
@@ -2102,6 +2110,42 @@
         grade: "R",
         icon: "✦",
         equipEffect: [["전투 성장", "10초마다 5초 동안 공격력이 12% 증가한다."]],
+        owned: false
+      },
+      {
+        id: "origin_orb",
+        name: "기원의 구슬",
+        grade: "SSR",
+        icon: "◉",
+        equipEffect: [["기원 증폭", "시너지 효과가 3회 발동될 때마다 4초 동안 공격력이 22% 증가한다."]],
+        ownedEffect: [["시너지 피해량", "+3.0%"], ["공격력", "+2.0%"]],
+        owned: false
+      },
+      {
+        id: "storm_eye",
+        name: "폭풍의 눈",
+        grade: "SR",
+        icon: "☈",
+        equipEffect: [["폭풍 추격", "4회 공격할 때마다 가장 가까운 적 3명에게 공격력 38%의 연쇄 피해를 준다."]],
+        ownedEffect: [["공격 속도", "+1.4%"], ["연쇄 피해량", "+1.0%"]],
+        owned: false
+      },
+      {
+        id: "ice_shard",
+        name: "얼음 파편",
+        grade: "R",
+        icon: "❄",
+        equipEffect: [["냉기 압박", "피해를 받은 대상에게 3초 동안 받는 피해 12% 증가 효과를 부여한다."]],
+        ownedEffect: [["일반 피해량", "+0.8%"], ["받는 피해 감소", "+0.5%"]],
+        owned: false
+      },
+      {
+        id: "wooden_charm",
+        name: "나무 부적",
+        grade: "N",
+        icon: "♣",
+        equipEffect: [["가벼운 회복", "8초마다 잃은 체력의 4%를 회복한다."]],
+        ownedEffect: [["체력", "+0.5%"]],
         owned: false
       }
     ];
@@ -2228,28 +2272,28 @@
 
     const gradeDefaults = {
       SSR: {
-        maxLevel: 60,
+        maxLevel: 100,
         stars: 0,
         requiredShards: 25,
         equipEffect: [["결정타", "5회 공격할 때마다 공격력 90%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+3.0%"], ["치명타 피해량", "+2.0%"]]
       },
       SR: {
-        maxLevel: 40,
+        maxLevel: 100,
         stars: 0,
         requiredShards: 20,
         equipEffect: [["방어 반응", "피해를 받을 때 20% 확률로 2초간 최대 체력 10%의 보호막을 생성한다."]],
         ownedEffect: [["체력", "+1.5%"], ["받는 피해 감소", "+1.0%"]]
       },
       R: {
-        maxLevel: 20,
+        maxLevel: 100,
         stars: 0,
         requiredShards: 15,
         equipEffect: [["연속 타격", "4회 공격할 때마다 공격력 45%의 추가 피해를 준다."]],
         ownedEffect: [["공격 속도", "+0.8%"], ["일반 피해량", "+0.5%"]]
       },
       N: {
-        maxLevel: 20,
+        maxLevel: 100,
         stars: 0,
         requiredShards: 10,
         equipEffect: [["집중 공격", "6초마다 다음 공격 피해가 25% 증가한다."]],
@@ -2282,12 +2326,7 @@
       old_coin: [1, 10]
     };
 
-    const upgradeCostByGrade = {
-      SSR: 10,
-      SR: 6,
-      R: 4,
-      N: 2
-    };
+    const baseUpgradeMaterialCost = 10;
 
     let playerUpgradeMaterials = 100;
 
@@ -2303,7 +2342,7 @@
       relic.synergies = relic.synergies ?? [];
       relic.shards = relic.shards ?? shards;
       relic.requiredShards = defaults.requiredShards;
-      relic.requiredUpgradeMaterials = relic.requiredUpgradeMaterials ?? upgradeCostByGrade[relic.grade];
+      relic.requiredUpgradeMaterials = levelUpMaterialCost(relic);
     });
 
     const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye"];
@@ -2327,6 +2366,7 @@
     const inventoryGrid = document.querySelector("#inventoryGrid");
     const drawRelicOnceButton = document.querySelector("#drawRelicOnceButton");
     const drawRelicTenButton = document.querySelector("#drawRelicTenButton");
+    const drawRelicHundredButton = document.querySelector("#drawRelicHundredButton");
     const slotRow = document.querySelector("#slotRow");
     const equipSummary = document.querySelector("#equipSummary");
     const resourceCounter = document.querySelector("#resourceCounter");
@@ -2709,6 +2749,10 @@
       return `${value}${unit}<span class="next-value">(+${delta}${unit})</span>`;
     }
 
+    function renderMetricBeforeAfter(current, next, unit = "") {
+      return `${current}${unit} <span class="next-value">→</span> ${next}${unit}`;
+    }
+
     function upgradeDelta(label, owned = false) {
       if (owned) {
         if (label.includes("효율") || label.includes("속도")) return 0.2;
@@ -2808,12 +2852,18 @@
       return String(value).replace(/^\+/, "");
     }
 
+    function levelUpMaterialCost(relic) {
+      const level = Math.max(1, relic?.level ?? 1);
+      return baseUpgradeMaterialCost + Math.floor(level / 5) * 5;
+    }
+
     function canUpgradeRelic(relic) {
+      const materialCost = levelUpMaterialCost(relic);
       return Boolean(
         relic?.owned &&
         relic.level < relic.maxLevel &&
         relic.shards >= relic.requiredShards &&
-        playerUpgradeMaterials >= relic.requiredUpgradeMaterials
+        playerUpgradeMaterials >= materialCost
       );
     }
 
@@ -2823,9 +2873,11 @@
 
     function upgradeRelic(relic) {
       if (!canUpgradeRelic(relic)) return false;
+      const materialCost = levelUpMaterialCost(relic);
       relic.level += 1;
       relic.shards = Math.max(0, relic.shards - relic.requiredShards);
-      playerUpgradeMaterials = Math.max(0, playerUpgradeMaterials - relic.requiredUpgradeMaterials);
+      playerUpgradeMaterials = Math.max(0, playerUpgradeMaterials - materialCost);
+      relic.requiredUpgradeMaterials = levelUpMaterialCost(relic);
       relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextUpgradeDescription(value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
       return true;
@@ -2855,9 +2907,10 @@
     }
 
     function renderLevelUpMaterials(relic) {
+      const materialCost = levelUpMaterialCost(relic);
       return `
         <span class="levelup-materials">
-          ${renderActionGauge(playerUpgradeMaterials, relic.requiredUpgradeMaterials, "upgrade")}
+          ${renderActionGauge(playerUpgradeMaterials, materialCost, "upgrade")}
         </span>
       `;
     }
@@ -2923,11 +2976,11 @@
             <div class="promotion-meta-grid">
               <div class="promotion-metric-card">
                 <div class="promotion-effect-name">시너지 포인트</div>
-                <div class="promotion-metric-value">${renderMetricValueWithDelta(currentPoints, nextPoints - currentPoints)}</div>
+                <div class="promotion-metric-value">${renderMetricBeforeAfter(currentPoints, nextPoints)}</div>
               </div>
               <div class="promotion-metric-card">
                 <div class="promotion-effect-name">시너지 슬롯</div>
-                <div class="promotion-metric-value">${renderMetricValueWithDelta(currentSlots, nextSlots - currentSlots, "개")}</div>
+                <div class="promotion-metric-value">${renderMetricBeforeAfter(currentSlots, nextSlots, "개")}</div>
               </div>
             </div>
           </div>
@@ -3075,7 +3128,7 @@
           return `
             <button class="synergy-slot locked-slot inactive-relic" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
-                <div class="synergy-icon">⌕</div>
+                <div class="synergy-icon">🔒</div>
                 <div class="synergy-name">빈 슬롯</div>
               </div>
               <div class="synergy-effect-value">${unlockText}</div>
@@ -3087,7 +3140,7 @@
           return `
             <button class="synergy-slot locked-slot ${inactiveRelic}" type="button" data-synergy-index="${index}" disabled>
               <div class="synergy-slot-main">
-                <div class="synergy-icon">⌕</div>
+                <div class="synergy-icon">🔒</div>
                 <div class="synergy-name">빈 슬롯</div>
               </div>
               <div class="synergy-effect-value">${slotUnlockText(index, relic)}</div>
@@ -3124,6 +3177,7 @@
       const upgradeButton = document.querySelector('[data-action="upgrade"]');
       const canUpgrade = canUpgradeRelic(relic);
       const canPreviewUpgrade = canPreviewLevelUp(relic);
+      const materialCost = levelUpMaterialCost(relic);
       const isEquipped = equippedSlots.includes(relic.id);
       levelupButton.innerHTML = `
         ${canUpgrade ? `<span class="notify-dot" aria-hidden="true"></span>` : ""}
@@ -3132,7 +3186,7 @@
       levelupButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
       levelupButton.disabled = !canPreviewUpgrade;
       if (upgradeButton) {
-        upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, playerUpgradeMaterials, "upgrade");
+        upgradeButton.innerHTML = renderActionButtonContent("강화", materialCost, playerUpgradeMaterials, "upgrade");
         upgradeButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
         upgradeButton.disabled = !canPreviewUpgrade;
       }
@@ -3504,7 +3558,7 @@
         .filter((reward) => reward.type === "stone")
         .reduce((total, reward) => total + reward.amount, 0);
       const stoneSummary = stoneAmount ? ` / 강화석 ${stoneAmount}개` : "";
-      showToast(`10회 뽑기 완료: 유물 조각 ${relicRewards}회${stoneSummary}`);
+      showToast(`${count}회 뽑기 완료: 유물 조각 ${relicRewards}회${stoneSummary}`);
     }
 
     inventoryGrid.addEventListener("click", (event) => {
@@ -3521,6 +3575,7 @@
 
     drawRelicOnceButton.addEventListener("click", () => drawTestReward(1));
     drawRelicTenButton.addEventListener("click", () => drawTestReward(10));
+    drawRelicHundredButton.addEventListener("click", () => drawTestReward(100));
 
     slotRow.addEventListener("click", (event) => {
       const slot = event.target.closest("[data-slot-index]");
@@ -3595,8 +3650,13 @@
         const relic = getRelic(selectedRelicId);
         if (levelUpRelic(relic)) {
           triggerGrowthFeedback(relic.id, "upgrade");
-          closeSynergyModal();
           renderAll();
+          modalMode = "levelup";
+          modalTitle.textContent = "유물 레벨업";
+          modalOverlay.querySelector(".modal").classList.add("promotion-modal");
+          renderLevelUpModal();
+          modalOverlay.classList.add("open");
+          modalOverlay.setAttribute("aria-hidden", "false");
           showToast("레벨업되었습니다.");
         }
         return;

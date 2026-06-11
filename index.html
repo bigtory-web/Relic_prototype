@@ -64,32 +64,28 @@
 
     .resource-counter {
       position: absolute;
-      top: 0;
-      right: 20px;
+      top: -34px;
+      right: 28px;
       z-index: 6;
-      min-width: 128px;
-      height: 28px;
-      padding: 0 10px;
+      min-width: 154px;
+      height: 35px;
+      padding: 0 14px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
+      justify-content: space-between;
+      gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.16);
       border-radius: 999px;
       background: rgba(31, 33, 30, 0.92);
       color: #e7e3da;
-      font-size: 12px;
+      font-size: 15px;
       pointer-events: none;
     }
 
     .resource-icon {
       color: #d9d0ff;
-      font-size: 14px;
+      font-size: 17px;
       line-height: 1;
-    }
-
-    .resource-label {
-      color: #aaa69d;
     }
 
     .resource-count {
@@ -878,6 +874,7 @@
 
     .owned-section .effect-desc {
       text-align: right;
+      font-size: 13px;
     }
 
     .stat-section .effect-card {
@@ -1014,26 +1011,14 @@
 
     .synergy-effect-value {
       min-width: 0;
-      color: #c9c6bd;
-      font-size: 12px;
+      color: var(--text);
+      font-size: 14px;
       line-height: 1.35;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       text-align: left;
-    }
-
-    .synergy-slot.normal .synergy-effect-value {
-      color: #d1d8db;
-    }
-
-    .synergy-slot.advanced .synergy-effect-value {
-      color: #ccd6ff;
-    }
-
-    .synergy-slot.rare .synergy-effect-value {
-      color: #ffd4bf;
     }
 
     .synergy-slot.empty .synergy-effect-value,
@@ -1212,6 +1197,7 @@
 
     .modal.promotion-modal {
       width: 600px;
+      height: min(700px, calc(100vh - 40px));
     }
 
     .modal.summary-modal {
@@ -1582,7 +1568,9 @@
 
     .promotion-list {
       margin-top: 12px;
+      height: 100%;
       display: grid;
+      grid-template-rows: auto 1fr auto;
       gap: 14px;
     }
 
@@ -1593,12 +1581,46 @@
       padding: 8px 0 2px;
     }
 
+    .promotion-hero.levelup-hero {
+      justify-items: center;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 0 0;
+    }
+
     .promotion-hero .icon-box {
       width: 72px;
       height: 72px;
       margin: 0;
       border-radius: 16px;
       font-size: 42px;
+    }
+
+    .levelup-hero .icon-box {
+      width: 91px;
+      height: 91px;
+      font-size: 50px;
+    }
+
+    .promotion-hero-copy {
+      width: 96px;
+      min-width: 0;
+      display: grid;
+      justify-items: center;
+      gap: 0;
+    }
+
+    .levelup-hero .promotion-hero-copy {
+      width: 124px;
+    }
+
+    .levelup-hero .shard-gauge {
+      width: 124px;
+      height: 18px;
+    }
+
+    .levelup-hero .shard-label {
+      font-size: 12px;
     }
 
     .promotion-name {
@@ -1630,6 +1652,7 @@
     .promotion-compare {
       display: grid;
       gap: 8px;
+      align-content: start;
     }
 
     .promotion-card {
@@ -1704,12 +1727,16 @@
 
     .promotion-effect-section {
       display: grid;
-      gap: 0;
+      gap: 6px;
     }
 
     .promotion-effect-section .effect-card {
       min-height: 0;
       padding: 9px 12px;
+    }
+
+    .promotion-effect-section.stat-section .effect-desc {
+      font-size: 13px;
     }
 
     .promotion-effect-section .effect-card + .effect-card {
@@ -1724,6 +1751,7 @@
 
     .promotion-effect-section.owned-section .effect-name,
     .promotion-effect-section.owned-section .effect-desc {
+      font-size: 14px;
       line-height: 1.15;
     }
 
@@ -1747,9 +1775,13 @@
       gap: 12px;
     }
 
+    .promotion-meta-grid .promotion-effect-name {
+      font-size: 14px;
+    }
+
     .promotion-metric-value {
       color: #ffffff;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       line-height: 1;
       white-space: nowrap;
@@ -1762,6 +1794,25 @@
       justify-items: center;
       gap: 6px;
       line-height: 1.1;
+    }
+
+    .promotion-confirm-button.levelup-confirm-button {
+      height: 62px;
+    }
+
+    .levelup-confirm-button .action-gauge-label {
+      font-size: 12px;
+    }
+
+    .levelup-materials {
+      width: 100%;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+    }
+
+    .levelup-cancel-button {
+      height: 62px;
     }
 
     .synergy-preview.just-applied {
@@ -1936,7 +1987,7 @@
         maxLevel: 60,
         stars: 3,
         equipEffect: [["치명 폭발", "치명타 발생 시 치명타 피해량의 50%만큼 범위 피해를 준다."]],
-        ownedEffect: [["치명타 피해량", "+3.2%"], ["범위 피해", "+2.0%"]],
+        ownedEffect: [["치명타 피해량", "+3.2%"], ["보스 피해량", "+2.0%"]],
         synergies: ["crit_boost", null, null],
         owned: true
       },
@@ -1957,7 +2008,7 @@
         maxLevel: 40,
         stars: 1,
         equipEffect: [["피해 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
-        ownedEffect: [["체력", "+1.8%"], ["보호막 효율", "+1.2%"]],
+        ownedEffect: [["체력", "+1.8%"], ["받는 피해 감소", "+1.2%"]],
         synergies: ["atk_speed", null],
         owned: true
       },
@@ -1970,7 +2021,7 @@
         maxLevel: 40,
         stars: 1,
         equipEffect: [["처치 예열", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 35% 증가한다."]],
-        ownedEffect: [["처치 피해", "+1.1%"]],
+        ownedEffect: [["일반 피해량", "+1.1%"]],
         synergies: ["kill_power", null],
         owned: true
       },
@@ -1991,7 +2042,7 @@
         maxLevel: 40,
         stars: 3,
         equipEffect: [["연쇄 타격", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 연쇄 피해를 준다."]],
-        ownedEffect: [["연쇄 피해", "+1.5%"], ["공격 속도", "+0.8%"]],
+        ownedEffect: [["공격력", "+1.5%"], ["공격 속도", "+0.8%"]],
         synergies: ["crit_rate", "atk_up", null],
         owned: true
       },
@@ -2004,7 +2055,7 @@
         maxLevel: 20,
         stars: 1,
         equipEffect: [["강철 반격", "피해를 4회 받을 때마다 다음 공격이 공격력 80%의 추가 피해를 준다."]],
-        ownedEffect: [["방어력", "+0.8%"], ["반격 피해", "+0.5%"]],
+        ownedEffect: [["방어력", "+0.8%"], ["받는 피해 감소", "+0.5%"]],
         synergies: ["atk_up", null],
         owned: true
       },
@@ -2025,7 +2076,7 @@
         maxLevel: 20,
         stars: 1,
         equipEffect: [["주문 집중", "6초마다 다음 공격이 공격력 30%의 추가 피해를 준다."]],
-        ownedEffect: [["추가 피해", "+0.5%"]],
+        ownedEffect: [["공격력", "+0.5%"]],
         synergies: ["atk_up", null],
         owned: true
       },
@@ -2181,28 +2232,28 @@
         stars: 0,
         requiredShards: 25,
         equipEffect: [["결정타", "5회 공격할 때마다 공격력 90%의 추가 피해를 준다."]],
-        ownedEffect: [["공격력", "+3.0%"], ["추가 피해", "+2.0%"]]
+        ownedEffect: [["공격력", "+3.0%"], ["치명타 피해량", "+2.0%"]]
       },
       SR: {
         maxLevel: 40,
         stars: 0,
         requiredShards: 20,
         equipEffect: [["방어 반응", "피해를 받을 때 20% 확률로 2초간 최대 체력 10%의 보호막을 생성한다."]],
-        ownedEffect: [["체력", "+1.5%"], ["보호막 효율", "+1.0%"]]
+        ownedEffect: [["체력", "+1.5%"], ["받는 피해 감소", "+1.0%"]]
       },
       R: {
         maxLevel: 20,
         stars: 0,
         requiredShards: 15,
         equipEffect: [["연속 타격", "4회 공격할 때마다 공격력 45%의 추가 피해를 준다."]],
-        ownedEffect: [["공격 속도", "+0.8%"], ["추가 피해", "+0.5%"]]
+        ownedEffect: [["공격 속도", "+0.8%"], ["일반 피해량", "+0.5%"]]
       },
       N: {
         maxLevel: 20,
         stars: 0,
         requiredShards: 10,
         equipEffect: [["집중 공격", "6초마다 다음 공격 피해가 25% 증가한다."]],
-        ownedEffect: [["추가 피해", "+0.5%"]]
+        ownedEffect: [["공격력", "+0.5%"]]
       }
     };
 
@@ -2244,7 +2295,7 @@
       const defaults = gradeDefaults[relic.grade];
       const seed = shardSeed[relic.id] || [0, defaults.requiredShards];
       const shards = Array.isArray(seed) ? seed[0] : seed;
-      relic.level = relic.level ?? 0;
+      relic.level = relic.owned ? Math.max(relic.level ?? 0, 1) : relic.level ?? 0;
       relic.maxLevel = relic.maxLevel ?? defaults.maxLevel;
       relic.stars = relic.stars ?? defaults.stars;
       relic.equipEffect = relic.equipEffect ?? defaults.equipEffect.map((effect) => [...effect]);
@@ -2309,18 +2360,14 @@
       return relic?.grade === "SSR" ? 3 : 2;
     }
 
-    function unlockedSlotCount(relic, stars = relic?.stars || 0) {
+    function unlockedSlotCount(relic, level = relic?.level || 0) {
       const maxSlots = maxSynergySlots(relic);
-      if (stars >= 5) return maxSlots;
-      if (stars >= 3) return Math.min(2, maxSlots);
-      return 1;
-    }
-
-    function requiredStarsForSlot(index, relic) {
-      if (index === 0) return 1;
-      if (index === 1) return 3;
-      if (index === 2 && maxSynergySlots(relic) >= 3) return 5;
-      return null;
+      let count = 0;
+      for (let index = 0; index < maxSlots; index += 1) {
+        const requiredLevel = requiredLevelForSlot(index, relic) || 0;
+        if (level >= requiredLevel) count += 1;
+      }
+      return count;
     }
 
     function requiredLevelForSlot(index, relic) {
@@ -2331,19 +2378,20 @@
     }
 
     function slotUnlockText(index, relic) {
+      if (index === 0) return "획득 시 해금";
       const requiredLevel = requiredLevelForSlot(index, relic);
       if (!requiredLevel) return "획득 시 해금";
       return `${renderLevelLabel(requiredLevel)} 달성 시 해금`;
     }
 
-    function pointCapacity(relic, stars = relic.stars) {
-      if (stars >= 5) return 4;
-      if (stars >= 3) return 3;
+    function pointCapacity(relic, level = relic.level) {
+      if (level >= 30) return 4;
+      if (level >= 15) return 3;
       return 2;
     }
 
-    function activeSynergies(relic, stars = relic.stars) {
-      return normalizeSynergies(relic).slice(0, unlockedSlotCount(relic, stars));
+    function activeSynergies(relic, level = relic.level) {
+      return normalizeSynergies(relic).slice(0, unlockedSlotCount(relic, level));
     }
 
     function usedPoints(relic) {
@@ -2385,7 +2433,7 @@
       if (editingSynergyIndex !== null && previewId !== undefined) {
         list[editingSynergyIndex] = previewId;
       }
-      return Math.min(synergyCountsFromList(list.slice(0, unlockedSlotCount(relic, relic.stars)))[synergyId] || 0, 3);
+      return Math.min(synergyCountsFromList(list.slice(0, unlockedSlotCount(relic, relic.level)))[synergyId] || 0, 3);
     }
 
     function previewEquippedSynergyStage(relic, synergyId, previewId) {
@@ -2393,7 +2441,7 @@
       if (editingSynergyIndex !== null && previewId !== undefined) {
         list[editingSynergyIndex] = previewId;
       }
-      const previewList = list.slice(0, unlockedSlotCount(relic, relic.stars));
+      const previewList = list.slice(0, unlockedSlotCount(relic, relic.level));
 
       if (!equippedSlots.includes(relic.id)) {
         return Math.min((synergyCountsFromList(previewList)[synergyId] || 0), 3);
@@ -2657,6 +2705,10 @@
       return `<span class="next-value">(+${delta}${unit})</span>`;
     }
 
+    function renderMetricValueWithDelta(value, delta, unit = "") {
+      return `${value}${unit}<span class="next-value">(+${delta}${unit})</span>`;
+    }
+
     function upgradeDelta(label, owned = false) {
       if (owned) {
         if (label.includes("효율") || label.includes("속도")) return 0.2;
@@ -2760,13 +2812,19 @@
       return Boolean(
         relic?.owned &&
         relic.level < relic.maxLevel &&
+        relic.shards >= relic.requiredShards &&
         playerUpgradeMaterials >= relic.requiredUpgradeMaterials
       );
+    }
+
+    function canPreviewLevelUp(relic) {
+      return Boolean(relic?.owned && relic.level < relic.maxLevel);
     }
 
     function upgradeRelic(relic) {
       if (!canUpgradeRelic(relic)) return false;
       relic.level += 1;
+      relic.shards = Math.max(0, relic.shards - relic.requiredShards);
       playerUpgradeMaterials = Math.max(0, playerUpgradeMaterials - relic.requiredUpgradeMaterials);
       relic.equipEffect = relic.equipEffect.map(([label, value]) => [label, nextUpgradeDescription(value)]);
       relic.ownedEffect = relic.ownedEffect.map(([label, value]) => [label, nextEffectValue(label, value, true)]);
@@ -2794,6 +2852,14 @@
 
     function renderLevelUpButtonContent() {
       return `<span class="action-label">레벨업</span>`;
+    }
+
+    function renderLevelUpMaterials(relic) {
+      return `
+        <span class="levelup-materials">
+          ${renderActionGauge(playerUpgradeMaterials, relic.requiredUpgradeMaterials, "upgrade")}
+        </span>
+      `;
     }
 
     function renderActionGauge(owned, required, type = "shard") {
@@ -2829,18 +2895,18 @@
       const relic = getRelic(selectedRelicId);
       if (!relic) return;
       const canLevelUp = canUpgradeRelic(relic);
+      const nextLevel = Math.min(relic.level + 1, relic.maxLevel);
+      const currentPoints = pointCapacity(relic, relic.level);
+      const nextPoints = pointCapacity(relic, nextLevel);
+      const currentSlots = unlockedSlotCount(relic, relic.level);
+      const nextSlots = unlockedSlotCount(relic, nextLevel);
 
       synergyList.className = "promotion-list";
       synergyList.innerHTML = `
-        <div class="promotion-hero">
-          ${renderIcon(relic, "", false, false)}
-          <div class="promotion-name">${relic.name}</div>
-          <div class="promotion-stars">
-            <div class="promotion-star-track">
-              <strong>${renderLevelLabel(relic.level)}</strong>
-              <span>&gt;</span>
-              <strong>${renderLevelLabel(Math.min(relic.level + 1, relic.maxLevel))}</strong>
-            </div>
+        <div class="promotion-hero levelup-hero">
+          ${renderIcon(relic, "", false, true)}
+          <div class="promotion-hero-copy">
+            ${renderShardGauge(relic)}
           </div>
         </div>
         <div class="promotion-compare">
@@ -2852,11 +2918,25 @@
             <div class="promotion-card-title">보유 효과</div>
             ${levelUpEffectCards(relic.ownedEffect, true)}
           </div>
+          <div class="promotion-effect-section synergy-growth-section">
+            <div class="promotion-card-title">시너지</div>
+            <div class="promotion-meta-grid">
+              <div class="promotion-metric-card">
+                <div class="promotion-effect-name">시너지 포인트</div>
+                <div class="promotion-metric-value">${renderMetricValueWithDelta(currentPoints, nextPoints - currentPoints)}</div>
+              </div>
+              <div class="promotion-metric-card">
+                <div class="promotion-effect-name">시너지 슬롯</div>
+                <div class="promotion-metric-value">${renderMetricValueWithDelta(currentSlots, nextSlots - currentSlots, "개")}</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-actions">
-          <button class="action-button" type="button" data-modal-action="cancel">취소</button>
-          <button class="action-button promotion-confirm-button" type="button" data-modal-action="levelup-confirm" ${canLevelUp ? "" : "disabled"}>
+          <button class="action-button levelup-cancel-button" type="button" data-modal-action="cancel">취소</button>
+          <button class="action-button promotion-confirm-button levelup-confirm-button" type="button" data-modal-action="levelup-confirm" ${canLevelUp ? "" : "disabled"}>
             ${renderLevelUpButtonContent()}
+            ${renderLevelUpMaterials(relic)}
           </button>
         </div>
       `;
@@ -2866,10 +2946,10 @@
       const relic = getRelic(selectedRelicId);
       if (!relic) return;
       const nextStars = Math.min(relic.stars + 1, maxStars);
-      const currentPoints = pointCapacity(relic, relic.stars);
-      const nextPoints = pointCapacity(relic, nextStars);
-      const currentSlots = unlockedSlotCount(relic, relic.stars);
-      const nextSlots = unlockedSlotCount(relic, nextStars);
+      const currentPoints = pointCapacity(relic, relic.level);
+      const nextPoints = pointCapacity(relic, relic.level);
+      const currentSlots = unlockedSlotCount(relic, relic.level);
+      const nextSlots = unlockedSlotCount(relic, relic.level);
       const canPromote = canConfirmPromotion(relic);
 
       synergyList.className = "promotion-list";
@@ -3043,17 +3123,18 @@
       const levelupButton = document.querySelector('[data-action="levelup"]');
       const upgradeButton = document.querySelector('[data-action="upgrade"]');
       const canUpgrade = canUpgradeRelic(relic);
+      const canPreviewUpgrade = canPreviewLevelUp(relic);
       const isEquipped = equippedSlots.includes(relic.id);
       levelupButton.innerHTML = `
         ${canUpgrade ? `<span class="notify-dot" aria-hidden="true"></span>` : ""}
         ${renderLevelUpButtonContent()}
       `;
       levelupButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
-      levelupButton.disabled = !canUpgrade;
+      levelupButton.disabled = !canPreviewUpgrade;
       if (upgradeButton) {
         upgradeButton.innerHTML = renderActionButtonContent("강화", relic.requiredUpgradeMaterials, playerUpgradeMaterials, "upgrade");
         upgradeButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
-        upgradeButton.disabled = !canUpgrade;
+        upgradeButton.disabled = !canPreviewUpgrade;
       }
       equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
       equipActionButton.textContent = isEquipped ? "장착해제" : "장착";
@@ -3233,7 +3314,7 @@
 
     function openLevelUpModal() {
       const relic = getRelic(selectedRelicId);
-      if (!canUpgradeRelic(relic)) return;
+      if (!canPreviewLevelUp(relic)) return;
       modalMode = "levelup";
       modalTitle.textContent = "유물 레벨업";
       editingSynergyIndex = null;
@@ -3348,7 +3429,6 @@
     function renderResourceCounter() {
       resourceCounter.innerHTML = `
         <span class="resource-icon" aria-hidden="true">${actionGaugeIcon("upgrade")}</span>
-        <span class="resource-label">레벨 강화석</span>
         <span class="resource-count">${playerUpgradeMaterials}</span>
       `;
     }
@@ -3400,6 +3480,7 @@
       relic.shards += amount;
       if (!relic.owned && relic.shards >= relic.requiredShards) {
         relic.owned = true;
+        relic.level = Math.max(relic.level, 1);
         relic.stars = Math.max(relic.stars, 1);
       }
       return { type: "relic", relic, amount };

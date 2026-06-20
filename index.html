@@ -1991,13 +1991,10 @@
         name: "불꽃의 심장",
         grade: "SSR",
         icon: "♨",
-        level: 48,
         maxLevel: 100,
-        stars: 3,
         equipEffect: [["치명 폭발", "치명타 발생 시 치명타 피해량의 50%만큼 범위 피해를 준다."]],
         ownedEffect: [["치명타 피해량", "+3.2%"], ["보스 피해량", "+2.0%"]],
-        synergies: ["crit_boost", null, null],
-        owned: true
+        owned: false
       },
       {
         id: "sun_core",
@@ -2012,26 +2009,20 @@
         name: "서리 방패",
         grade: "SR",
         icon: "⬡",
-        level: 22,
         maxLevel: 100,
-        stars: 1,
         equipEffect: [["피해 보호막", "피해를 받을 때 25% 확률로 3초간 최대 체력 12%의 보호막을 생성한다."]],
         ownedEffect: [["체력", "+1.8%"], ["받는 피해 감소", "+1.2%"]],
-        synergies: ["atk_speed", null],
-        owned: true
+        owned: false
       },
       {
         id: "dark_crystal",
         name: "어둠의 수정",
         grade: "SR",
         icon: "◇",
-        level: 8,
         maxLevel: 100,
-        stars: 1,
         equipEffect: [["처치 예열", "적 처치 시 4초 안에 사용하는 다음 공격 피해가 35% 증가한다."]],
         ownedEffect: [["일반 피해량", "+1.1%"]],
-        synergies: ["kill_power", null],
-        owned: true
+        owned: false
       },
       {
         id: "moon_crown",
@@ -2046,26 +2037,20 @@
         name: "번개의 눈",
         grade: "SR",
         icon: "ϟ",
-        level: 15,
         maxLevel: 100,
-        stars: 3,
         equipEffect: [["연쇄 타격", "3회 공격할 때마다 가장 가까운 적 2명에게 공격력 45%의 연쇄 피해를 준다."]],
         ownedEffect: [["공격력", "+1.5%"], ["공격 속도", "+0.8%"]],
-        synergies: ["crit_rate", "atk_up", null],
-        owned: true
+        owned: false
       },
       {
         id: "steel_heart",
         name: "강철의 심장",
         grade: "R",
         icon: "⌁",
-        level: 5,
         maxLevel: 100,
-        stars: 1,
         equipEffect: [["강철 반격", "피해를 4회 받을 때마다 다음 공격이 공격력 80%의 추가 피해를 준다."]],
         ownedEffect: [["방어력", "+0.8%"], ["받는 피해 감소", "+0.5%"]],
-        synergies: ["atk_up", null],
-        owned: true
+        owned: false
       },
       {
         id: "dragon_scale",
@@ -2080,13 +2065,10 @@
         name: "낡은 지팡이",
         grade: "N",
         icon: "†",
-        level: 3,
         maxLevel: 100,
-        stars: 1,
         equipEffect: [["주문 집중", "6초마다 다음 공격이 공격력 30%의 추가 피해를 준다."]],
         ownedEffect: [["공격력", "+0.5%"]],
-        synergies: ["atk_up", null],
-        owned: true
+        owned: false
       },
       {
         id: "void_lantern",
@@ -2302,33 +2284,33 @@
     };
 
     const shardSeed = {
-      heart_fire: [5, 25],
-      frost_shield: [2, 20],
-      lightning_eye: [1, 20],
-      dark_crystal: [3, 20],
-      steel_heart: [6, 15],
-      old_staff: [4, 10],
+      heart_fire: [0, 25],
+      frost_shield: [0, 20],
+      lightning_eye: [0, 20],
+      dark_crystal: [0, 20],
+      steel_heart: [0, 15],
+      old_staff: [0, 10],
       sun_core: [0, 25],
-      moon_crown: [4, 25],
-      dragon_scale: [2, 15],
-      void_lantern: [1, 10],
+      moon_crown: [0, 25],
+      dragon_scale: [0, 15],
+      void_lantern: [0, 10],
       ancient_hourglass: [0, 10],
-      star_seed: [6, 15],
+      star_seed: [0, 15],
       origin_orb: [0, 25],
-      storm_eye: [5, 20],
-      blood_chalice: [2, 20],
+      storm_eye: [0, 20],
+      blood_chalice: [0, 20],
       forest_totem: [0, 20],
-      ice_shard: [3, 15],
-      bone_ring: [1, 15],
+      ice_shard: [0, 15],
+      bone_ring: [0, 15],
       rusted_medal: [0, 15],
-      wooden_charm: [2, 10],
+      wooden_charm: [0, 10],
       cracked_lens: [0, 10],
-      old_coin: [1, 10]
+      old_coin: [0, 10]
     };
 
     const baseUpgradeMaterialCost = 10;
 
-    let playerUpgradeMaterials = 100;
+    let playerUpgradeMaterials = 0;
 
     relics.forEach((relic) => {
       const defaults = gradeDefaults[relic.grade];
@@ -2345,7 +2327,7 @@
       relic.requiredUpgradeMaterials = levelUpMaterialCost(relic);
     });
 
-    const equippedSlots = ["heart_fire", "frost_shield", "lightning_eye"];
+    const equippedSlots = [null, null, null];
     let selectedRelicId = "heart_fire";
     let selectedSlotIndex = 0;
     let editingSynergyIndex = null;

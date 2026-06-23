@@ -466,9 +466,11 @@
 
     .slot-card.locked {
       cursor: default;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      gap: 8px;
     }
 
     .slot-card.empty-slot {
@@ -484,6 +486,23 @@
       color: #c8c4ba;
       font-size: 28px;
       line-height: 1;
+    }
+
+    .slot-lock-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    .slot-lock-text {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.25;
     }
 
     .slot-card.equip-target {
@@ -2328,6 +2347,7 @@
     });
 
     const equippedSlots = [null, null, null];
+    const equipSlotUnlockRequirements = [0, 8, 12];
     let selectedRelicId = "heart_fire";
     let selectedSlotIndex = 0;
     let editingSynergyIndex = null;
@@ -2383,6 +2403,7 @@
     }
 
     function unlockedSlotCount(relic, level = relic?.level || 0) {
+      if (level <= 0) return 0;
       const maxSlots = maxSynergySlots(relic);
       let count = 0;
       for (let index = 0; index < maxSlots; index += 1) {
@@ -2407,6 +2428,7 @@
     }
 
     function pointCapacity(relic, level = relic.level) {
+      if (level <= 0) return 0;
       if (level >= 30) return 4;
       if (level >= 15) return 3;
       return 2;
@@ -2508,6 +2530,18 @@
 
     function equippedSynergyStage(synergyId) {
       return Math.min(equippedSynergyCounts()[synergyId] || 0, 3);
+    }
+
+    function ownedRelicCount() {
+      return relics.filter((relic) => relic.owned).length;
+    }
+
+    function isEquipSlotUnlocked(index) {
+      return ownedRelicCount() >= (equipSlotUnlockRequirements[index] ?? Infinity);
+    }
+
+    function equipSlotUnlockText(index) {
+      return `보유 ${equipSlotUnlockRequirements[index]}개`;
     }
 
     function plainStageText(text) {
@@ -2673,10 +2707,20 @@
 
     function renderSlots() {
       slotRow.innerHTML = equippedSlots.map((relicId, index) => {
+        const unlocked = isEquipSlotUnlocked(index);
         const relic = relicId ? getRelic(relicId) : null;
         const selected = index === selectedSlotIndex ? "selected" : "";
-        const equipTarget = pendingEquipRelicId ? "equip-target" : "";
+        const equipTarget = pendingEquipRelicId && unlocked ? "equip-target" : "";
         const growthPulse = relic?.id === lastGrowthRelicId ? "growth-pulse" : "";
+
+        if (!unlocked) {
+          return `
+            <button class="slot-card locked" type="button" data-slot-index="${index}" disabled>
+              <div class="slot-lock-icon" aria-hidden="true">🔒</div>
+              <div class="slot-lock-text">${equipSlotUnlockText(index)}</div>
+            </button>
+          `;
+        }
 
         if (!relic) {
           return `
@@ -2851,6 +2895,10 @@
 
     function canPreviewLevelUp(relic) {
       return Boolean(relic?.owned && relic.level < relic.maxLevel);
+    }
+
+    function canEquipRelic(relic) {
+      return Boolean(relic?.owned && relic.level > 0);
     }
 
     function upgradeRelic(relic) {
@@ -3061,7 +3109,7 @@
         `;
       }).join("");
 
-      equipSummary.innerHTML = tokens || `<span class="summary-empty">시너지 없음</span>`;
+      equipSummary.innerHTML = tokens;
     }
 
     function renderDetail() {
@@ -3175,7 +3223,7 @@
       equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
       equipActionButton.textContent = isEquipped ? "장착해제" : "장착";
       equipActionButton.classList.add("equip-action");
-      equipActionButton.disabled = !relic.owned;
+      equipActionButton.disabled = isEquipped ? false : !canEquipRelic(relic);
     }
 
     function renderSynergyOptions() {
@@ -3380,7 +3428,8 @@
 
     function equipRelicToSlot(relicId, slotIndex) {
       const relic = getRelic(relicId);
-      if (!relic?.owned || slotIndex < 0 || slotIndex >= equippedSlots.length) return false;
+      if (!canEquipRelic(relic) || slotIndex < 0 || slotIndex >= equippedSlots.length) return false;
+      if (!isEquipSlotUnlocked(slotIndex)) return false;
       const previousIndex = equippedSlots.indexOf(relicId);
       if (previousIndex >= 0 && previousIndex !== slotIndex) {
         equippedSlots[previousIndex] = null;
@@ -3516,8 +3565,6 @@
       relic.shards += amount;
       if (!relic.owned && relic.shards >= relic.requiredShards) {
         relic.owned = true;
-        relic.level = Math.max(relic.level, 1);
-        relic.stars = Math.max(relic.stars, 1);
       }
       return { type: "relic", relic, amount };
     }

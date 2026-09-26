@@ -1,0 +1,5114 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Relic Prototype</title>
+  <style>
+    :root {
+      --bg: #151615;
+      --panel: #292a28;
+      --panel-soft: #242523;
+      --panel-deep: #20211f;
+      --line: #4a4d49;
+      --line-soft: #383b37;
+      --text: #f3f1eb;
+      --muted: #b8b6ae;
+      --subtle: #85837d;
+      --accent: #1d9e75;
+      --accent-soft: #34c89c;
+      --gold: #f6aa2d;
+      --ssr: #ffe7b8;
+      --sr: #cbe7ff;
+      --r: #d8f0c2;
+      --n: #ece7dc;
+      --danger: #bf705a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .stage {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 450px 240px 1fr;
+      gap: 12px;
+      background: var(--bg);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .panel-title {
+      margin: 0;
+      color: #d0cec7;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
+      border: 0;
+      white-space: nowrap;
+    }
+
+    .inventory {
+      height: 680px;
+      padding: 14px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inventory-grid {
+      min-height: 0;
+      padding-right: 4px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 120px;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .inventory-grid::-webkit-scrollbar,
+    .synergy-icon-grid::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .inventory-grid::-webkit-scrollbar-thumb,
+    .synergy-icon-grid::-webkit-scrollbar-thumb {
+      border-radius: 999px;
+      background: #575a55;
+    }
+
+    .draw-panel {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .draw-button {
+      height: 40px;
+      border: 1px solid rgba(112, 126, 118, 0.42);
+      border-radius: 10px;
+      background: rgba(37, 45, 40, 0.72);
+      color: #c7c9c3;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .draw-button:hover {
+      border-color: rgba(52, 200, 156, 0.42);
+      background: rgba(43, 56, 49, 0.84);
+      color: #e0e4dc;
+    }
+
+    .relic-card,
+    .slot-card,
+    .synergy-option,
+    .action-button {
+      transition: border-color 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .relic-card {
+      position: relative;
+      min-width: 0;
+      padding: 8px 7px 5px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      background: var(--panel-soft);
+      cursor: pointer;
+      text-align: center;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 5px;
+      overflow: hidden;
+    }
+
+    .relic-card:hover,
+    .slot-card:hover,
+    .synergy-option:hover,
+    .action-button:not(:disabled):hover {
+      background: #30322f;
+      border-color: #6b7069;
+    }
+
+    .relic-card.selected,
+    .slot-card.selected {
+      border-color: var(--accent-soft);
+      outline: 1px solid var(--accent);
+    }
+
+    .relic-card.growth-pulse,
+    .slot-card.growth-pulse,
+    .detail-panel.growth-pulse .title-icon {
+      animation: relicGrowthPulse 0.72s ease-out;
+    }
+
+    .slot-card.equip-pulse {
+      animation: relicEquipPulse 0.82s ease-out;
+    }
+
+    .relic-card.locked,
+    .slot-card.locked {
+      opacity: 0.52;
+    }
+
+    .relic-card.locked {
+      cursor: pointer;
+    }
+
+    .equipped-badge {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      z-index: 2;
+      height: 19px;
+      padding: 0 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(44, 214, 161, 0.42);
+      border-radius: 999px;
+      background: rgba(23, 112, 87, 0.82);
+      color: #e8fff7;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .notify-dot {
+      position: absolute;
+      right: 7px;
+      top: 7px;
+      z-index: 4;
+      width: 10px;
+      height: 10px;
+      border: 2px solid var(--panel-soft);
+      border-radius: 50%;
+      background: #ef3b33;
+      box-shadow: 0 0 0 1px rgba(255, 91, 82, 0.45), 0 0 8px rgba(239, 59, 51, 0.45);
+      pointer-events: none;
+    }
+
+    .action-button {
+      position: relative;
+    }
+
+    .action-button .notify-dot {
+      right: 8px;
+      top: 7px;
+      border-color: var(--panel);
+    }
+
+    .relic-card > .notify-dot {
+      right: 20px;
+      top: 12px;
+    }
+
+    .icon-box {
+      position: relative;
+      width: 77px;
+      height: 77px;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #1f2621;
+      font-size: 40px;
+      font-weight: 700;
+    }
+
+    .icon-box.small {
+      width: 74px;
+      height: 70px;
+      margin-bottom: 0;
+      border-radius: 12px;
+      font-size: 33px;
+    }
+
+    .icon-box.lock-icon {
+      background: #222320;
+      color: #777771;
+    }
+
+    .icon-box.unowned {
+      filter: grayscale(0.35) brightness(0.72);
+    }
+
+    .lock-chip {
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(28, 29, 26, 0.76);
+      color: #d0cbc1;
+      font-size: 11px;
+      line-height: 1;
+    }
+
+    .grade-SSR { border-color: #f4b34b; background: linear-gradient(145deg, #fff4d8, var(--ssr)); color: #b86a00; }
+    .grade-SR { border-color: #61aee8; background: linear-gradient(145deg, #eff8ff, var(--sr)); color: #146bb5; }
+    .grade-R { border-color: #8fc66d; background: linear-gradient(145deg, #f4ffe9, var(--r)); color: #347b14; }
+    .grade-N { border-color: #b9aa95; background: linear-gradient(145deg, #f3f0e9, var(--n)); color: #7c4a38; }
+
+    .level-chip {
+      position: absolute;
+      right: 4px;
+      bottom: 4px;
+      min-width: 45px;
+      height: 20px;
+      padding: 0 5px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      background: rgba(28, 29, 26, 0.82);
+      color: #eeeae1;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 1;
+      text-shadow: none;
+    }
+
+    .relic-name {
+      display: block;
+      min-height: 18px;
+      overflow: hidden;
+      color: #eeeae5;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.25;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .shard-gauge {
+      position: relative;
+      width: 76px;
+      height: 15px;
+      margin-top: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #4b4e4a;
+      border-radius: 999px;
+      background: rgba(20, 21, 19, 0.32);
+      overflow: hidden;
+    }
+
+    .shard-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--shard-progress, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(44, 214, 161, 0.35), rgba(44, 214, 161, 0.7));
+    }
+
+    .relic-card.locked .shard-fill {
+      background: linear-gradient(90deg, rgba(125, 130, 120, 0.22), rgba(125, 130, 120, 0.5));
+    }
+
+    .shard-label {
+      position: relative;
+      z-index: 1;
+      color: #ded9cf;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.58);
+    }
+
+    .dots {
+      height: 22px;
+      margin-top: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #4b4e4a;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .dot.filled {
+      border-color: #49c6a1;
+      background: #36b58e;
+    }
+
+    .dot.empty {
+      background: #22231f;
+    }
+
+    .equip-panel {
+      height: 680px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(34, 48, 42, 0.72), rgba(27, 31, 29, 0.94)),
+        var(--panel);
+    }
+
+    .slot-row {
+      height: 436px;
+      display: grid;
+      grid-template-columns: 140px;
+      grid-template-rows: repeat(3, 140px);
+      gap: 8px;
+      align-content: center;
+      align-self: center;
+      justify-content: center;
+    }
+
+    .slot-card {
+      width: 140px;
+      min-width: 140px;
+      height: 140px;
+      padding: 10px;
+      border: 1px solid #4b4e49;
+      border-radius: 12px;
+      background: var(--panel-soft);
+      cursor: pointer;
+      text-align: left;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+
+    .slot-card.locked {
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .slot-card.empty-slot {
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      border-style: dashed;
+      color: #c8c4ba;
+      text-align: center;
+    }
+
+    .slot-empty-plus {
+      color: #c8c4ba;
+      font-size: 29px;
+      line-height: 1;
+    }
+
+    .slot-lock-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      font-size: 18px;
+    }
+
+    .slot-lock-text {
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .slot-card.equip-target {
+      border-color: #5f8fbd;
+      outline: 1px solid #9cc1df;
+      background: rgba(74, 122, 173, 0.16);
+    }
+
+    .slot-main {
+      width: 100%;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 8px;
+    }
+
+    .slot-main .icon-box.small {
+      width: 72px !important;
+      height: 72px !important;
+      min-width: 72px;
+      min-height: 72px;
+      aspect-ratio: 1;
+      box-sizing: border-box;
+      margin: 0;
+      font-size: 44px;
+    }
+
+    .slot-name {
+      display: none;
+      overflow: hidden;
+      color: #f1ede4;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    .star-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .star {
+      color: #50524e;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .star::before {
+      content: "★";
+    }
+
+    .star.on {
+      color: var(--gold);
+    }
+
+    .star.off {
+      color: #50524e;
+    }
+
+    .equip-summary {
+      min-height: 64px;
+      padding-top: 10px;
+      border-top: 1px solid #3f423d;
+      display: grid;
+      grid-template-rows: 52px;
+      align-content: start;
+    }
+
+    .synergy-summary-slots {
+      display: grid;
+      grid-template-columns: repeat(3, 52px);
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .summary-token {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #555852;
+      border-radius: 10px;
+      --summary-grade: var(--accent-soft);
+      background: #30322e;
+      color: #ede8de;
+      font-size: 24px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .summary-token-icon {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      grid-column: 1 / -1;
+      place-items: center;
+      border: 1px solid #676a64;
+      border-radius: 50%;
+      background: #fff1ea;
+      color: #a64f2d;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .summary-token.rare {
+      --summary-grade: #e98048;
+      border-color: rgba(238, 126, 72, 0.72);
+      background: linear-gradient(180deg, rgba(86, 50, 38, 0.56), #30322e);
+      color: #ffe0cf;
+    }
+
+    .summary-token.advanced {
+      --summary-grade: #708cff;
+      border-color: rgba(109, 138, 238, 0.7);
+      background: linear-gradient(180deg, rgba(45, 53, 88, 0.58), #30322e);
+      color: #dfe5ff;
+    }
+
+    .summary-token.normal {
+      --summary-grade: #9aa4ad;
+      border-color: rgba(154, 164, 173, 0.68);
+      background: linear-gradient(180deg, rgba(62, 66, 68, 0.54), #30322e);
+      color: #f0f2f2;
+    }
+
+    .summary-token.empty {
+      border: 2px dashed #718078;
+      background: transparent;
+      color: #aaa69d;
+      font-size: 25px;
+      font-weight: 400;
+    }
+
+    .summary-token:hover {
+      background-color: #383b36;
+      border-color: #747871;
+    }
+
+    .summary-token.selected {
+      outline: 2px solid rgba(255, 255, 255, 0.74);
+      outline-offset: 3px;
+    }
+
+    .summary-token.linked,
+    .summary-token.just-applied {
+      box-shadow: 0 0 0 2px rgba(52, 200, 156, 0.28), 0 0 18px rgba(52, 200, 156, 0.28);
+    }
+
+    .summary-token.just-applied {
+      animation: synergyApplyPulse 0.82s ease-out;
+    }
+
+    .summary-cost {
+      position: absolute;
+      right: -5px;
+      bottom: -5px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 4px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #60645e;
+      border-radius: 999px;
+      background: #252723;
+      color: #f0ece3;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .summary-empty {
+      color: #9b978f;
+      font-size: 13px;
+    }
+
+    .detail-panel {
+      height: 680px;
+      min-height: 0;
+      padding: 16px;
+      display: grid;
+      grid-template-rows: 116px minmax(0, 1fr) 46px;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .detail-title-wrap {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .title-icon .icon-box {
+      width: 77px;
+      height: 77px;
+      margin: 0;
+      font-size: 40px;
+      border-radius: 10px;
+    }
+
+    .title-icon {
+      flex: 0 0 77px;
+      display: grid;
+      justify-items: center;
+      gap: 7px;
+    }
+
+    .detail-title-copy {
+      min-width: 0;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+    }
+
+    .detail-stars {
+      justify-content: flex-start;
+      margin-top: -2px;
+    }
+
+    .detail-stars:empty {
+      display: none;
+    }
+
+    .detail-stars .star {
+      font-size: 16px;
+    }
+
+    .detail-title-meta {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .detail-title-name {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .detail-shard-gauge {
+      width: 200px;
+      height: 18px;
+      justify-self: start;
+    }
+
+    .detail-shard-gauge .shard-gauge {
+      width: 200px;
+      height: 18px;
+    }
+
+    .detail-icon-shard-gauge,
+    .detail-icon-shard-gauge .shard-gauge {
+      width: 0;
+    }
+
+    .detail-icon-shard-gauge .shard-label {
+      display: none;
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .grade-badge,
+    .tag {
+      min-width: 44px;
+      height: 24px;
+      padding: 0 8px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .grade-badge.SSR { background: #fff2d7; color: #b56a00; }
+    .grade-badge.SR { background: #e3f1ff; color: #1c67a7; }
+    .grade-badge.R { background: #e5f4d7; color: #347a13; }
+    .grade-badge.N { background: #eeeeea; color: #6c675f; }
+
+    .stat-block {
+      height: auto;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: 30px minmax(0, 1fr);
+      gap: 8px;
+      align-content: start;
+      overflow: hidden;
+    }
+
+    .detail-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .detail-tab-button {
+      min-width: 86px;
+      height: 29px;
+      padding: 0 10px;
+      border: 0;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      color: var(--subtle);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .detail-tab-button[aria-selected="true"] {
+      border-bottom-color: var(--accent-soft);
+      color: #effff8;
+    }
+
+    .detail-tab-content {
+      min-height: 0;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
+    }
+
+    .relic-effect-tab {
+      display: grid;
+      grid-template-rows: 100px auto;
+      align-content: start;
+      gap: 10px;
+      padding-top: 8px;
+    }
+
+    .relic-effect-tab > .stat-section {
+      height: 100px;
+    }
+
+    .owned-overview {
+      display: grid;
+      gap: 8px;
+    }
+
+    .owned-overview-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .owned-overview-head strong {
+      color: #e5fff5;
+      font-size: 12px;
+    }
+
+    .owned-overview-list {
+      display: grid;
+      gap: 5px;
+    }
+
+    .owned-overview-item {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 9px;
+      border-left: 3px solid var(--accent);
+      background: rgba(38, 51, 45, 0.86);
+      color: #f5f2eb;
+      font-size: 12px;
+    }
+
+    .owned-overview-item strong {
+      color: #8ff0d1;
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .owned-overview-empty {
+      padding: 12px;
+      border: 1px dashed var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .stat-section {
+      min-height: 0;
+      display: grid;
+      align-content: start;
+      gap: 7px;
+    }
+
+    .owned-section {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto;
+      grid-auto-rows: minmax(28px, auto);
+      align-content: start;
+      gap: 5px;
+    }
+
+    .stat-title {
+      width: max-content;
+      padding: 3px 9px;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(135deg, #315f54, #1d4c40);
+      color: #f5f2eb;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .effect-card {
+      display: grid;
+      grid-template-columns: 112px 1fr;
+      gap: 12px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border-left: 3px solid var(--accent);
+      background: rgba(38, 51, 45, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      color: #d8d4cb;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .effect-card.disabled {
+      color: #8f8b84;
+    }
+
+    .effect-name {
+      color: #f5f2eb;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .effect-desc {
+      color: #f5f2eb;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .owned-section .effect-desc {
+      text-align: right;
+      font-size: 13px;
+    }
+
+    .stat-section .effect-card {
+      grid-template-columns: 1fr;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .owned-section .effect-card {
+      grid-template-columns: 1fr auto;
+      min-height: 28px;
+      gap: 12px;
+      padding: 6px 12px;
+      align-items: center;
+    }
+
+    .owned-section .effect-name {
+      white-space: nowrap;
+    }
+
+    .owned-section .effect-desc {
+      white-space: normal;
+      line-height: 1.35;
+    }
+
+    .next-value {
+      color: var(--accent-soft);
+    }
+
+    .synergy-icon {
+      width: 34px;
+      height: 34px;
+      margin: 4px auto 8px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #fff1ea;
+      color: #a64f2d;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .synergy-name {
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.32;
+      color: #ece8df;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+
+    .action-button {
+      height: 42px;
+      border: 1px solid #6a6d67;
+      border-radius: 9px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .actions .action-button {
+      height: 46px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 6px;
+      line-height: 1.1;
+    }
+
+    .action-label {
+      font-size: 14px;
+    }
+
+    .action-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: #c8c4ba;
+    }
+
+    .action-gauge {
+      position: relative;
+      width: 88%;
+      height: 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #4b4e4a;
+      border-radius: 999px;
+      background: rgba(20, 21, 19, 0.34);
+      overflow: hidden;
+    }
+
+    .action-gauge-icon {
+      position: absolute;
+      left: 4px;
+      z-index: 2;
+      width: 15px;
+      height: 15px;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      background: rgba(15, 16, 14, 0.72);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+      color: #f4efe4;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .action-gauge.shard .action-gauge-icon {
+      color: #9ff4dc;
+    }
+
+    .action-gauge-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--action-progress, 0%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(44, 214, 161, 0.35), rgba(44, 214, 161, 0.76));
+    }
+
+    .action-gauge-label {
+      position: relative;
+      z-index: 1;
+      color: #ded9cf;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .action-button:disabled {
+      cursor: default;
+      opacity: 0.45;
+    }
+
+    .action-button:disabled .action-count,
+    .action-button:disabled .action-gauge-label {
+      color: #8f8b84;
+    }
+
+    .action-button:disabled .action-gauge-icon {
+      color: #8f8b84;
+      opacity: 0.8;
+    }
+
+    .action-button:disabled .action-gauge-fill {
+      background: linear-gradient(90deg, rgba(125, 130, 120, 0.2), rgba(125, 130, 120, 0.5));
+    }
+
+    .equip-action {
+      font-size: 14px;
+    }
+
+    .toast {
+      position: absolute;
+      right: 32px;
+      bottom: 24px;
+      padding: 10px 14px;
+      border: 1px solid #5d625b;
+      border-radius: 8px;
+      background: #262823;
+      color: #e8e4da;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.58);
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 840px;
+      height: min(600px, calc(100vh - 40px));
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #282a27;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
+    }
+
+    .modal.promotion-modal {
+      width: min(550px, calc(100vw - 32px));
+      height: min(650px, calc(100vh - 40px));
+    }
+
+    .modal.promotion-modal.levelup-modal {
+      height: min(550px, calc(100vh - 40px));
+    }
+
+    .modal.summary-modal {
+      width: min(400px, calc(100vw - 40px));
+      height: min(500px, calc(100vh - 40px));
+    }
+
+    .modal-head {
+      position: relative;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #41443f;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-synergy-limit {
+      position: absolute;
+      top: 11px;
+      right: 52px;
+      color: #f0ece3;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .close-button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid #60645f;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .synergy-list {
+      --synergy-icon-size: 44px;
+      --synergy-icon-font-size: 24px;
+      --synergy-card-radius: 8px;
+      --synergy-card-padding: 10px 6px 8px;
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 352px 1fr;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 12px;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .synergy-list.common-synergy-list {
+      grid-template-columns: 352px 1fr;
+      grid-template-rows: 124px minmax(0, 1fr) auto;
+    }
+
+    .modal-synergy-slots {
+      grid-column: 1;
+      grid-row: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      justify-content: space-between;
+      padding: 11px;
+      border: 1px solid #4d504b;
+      border-radius: 10px;
+      background:
+        linear-gradient(180deg, rgba(53, 57, 53, 0.32), rgba(31, 33, 30, 0.7)),
+        var(--panel-soft);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+    }
+
+    .modal-synergy-slot {
+      width: 100%;
+      height: 100px;
+      position: relative;
+      padding: var(--synergy-card-padding);
+      border: 1px solid #50534d;
+      border-radius: var(--synergy-card-radius);
+      background: var(--panel-soft);
+      color: #f0ece3;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      grid-template-rows: var(--synergy-icon-size);
+    }
+
+    .modal-synergy-slot::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      border-radius: var(--synergy-card-radius) var(--synergy-card-radius) 0 0;
+      background: #696d67;
+      opacity: 0.9;
+    }
+
+    .modal-synergy-slot.selected {
+      border-color: var(--accent-soft);
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+      background: linear-gradient(180deg, rgba(36, 93, 75, 0.72), rgba(26, 47, 40, 0.98));
+      box-shadow: 0 0 0 2px rgba(52, 200, 156, 0.2), inset 0 0 0 1px rgba(205, 255, 236, 0.16);
+    }
+
+    .modal-synergy-slot.empty {
+      border-style: dashed;
+      color: #aaa69d;
+      background: rgba(31, 33, 30, 0.46);
+    }
+
+    .modal-synergy-slot.empty::before {
+      background: #696d67;
+      opacity: 0.42;
+    }
+
+    .modal-synergy-slot .synergy-icon {
+      width: var(--synergy-icon-size);
+      height: var(--synergy-icon-size);
+      margin: 0;
+      border: 1px solid #676a64;
+      border-radius: 50%;
+      font-size: var(--synergy-icon-font-size);
+    }
+
+    .modal-synergy-slot.empty .synergy-icon {
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #c8c4ba;
+      font-size: var(--synergy-icon-font-size);
+      font-weight: 400;
+    }
+
+    .modal-synergy-slot.rare .synergy-icon {
+      background: #faece7;
+      color: #993c1d;
+    }
+
+    .modal-synergy-slot.rare {
+      border-color: rgba(238, 126, 72, 0.78);
+      background: linear-gradient(180deg, rgba(128, 67, 39, 0.5), rgba(43, 37, 32, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(238, 126, 72, 0.14);
+    }
+
+    .modal-synergy-slot.rare::before {
+      background: #e98048;
+    }
+
+    .modal-synergy-slot.advanced .synergy-icon {
+      background: #eeedfe;
+      color: #534ab7;
+    }
+
+    .modal-synergy-slot.advanced {
+      border-color: rgba(109, 138, 238, 0.78);
+      background: linear-gradient(180deg, rgba(50, 65, 132, 0.5), rgba(34, 37, 49, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(109, 138, 238, 0.14);
+    }
+
+    .modal-synergy-slot.advanced::before {
+      background: #708cff;
+    }
+
+    .modal-synergy-slot.normal .synergy-icon {
+      background: #e7e7e2;
+      color: #5f666a;
+    }
+
+    .modal-synergy-slot.normal {
+      border-color: rgba(142, 151, 158, 0.82);
+      background: linear-gradient(180deg, rgba(72, 78, 84, 0.58), rgba(32, 35, 38, 0.98));
+      box-shadow: inset 0 0 0 1px rgba(192, 202, 210, 0.12);
+    }
+
+    .modal-synergy-slot.normal::before {
+      background: #9aa4ad;
+    }
+
+    .modal-synergy-slot-name {
+      display: none;
+    }
+
+    .modal-synergy-slot-cost {
+      display: none;
+    }
+
+    .synergy-icon-grid {
+      max-height: 430px;
+      padding: 10px;
+      border: 1px solid #4d504b;
+      border-radius: 10px;
+      background: rgba(31, 33, 30, 0.58);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      align-content: start;
+      gap: 8px;
+      overflow-y: auto;
+    }
+
+    .common-synergy-list .synergy-icon-grid {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .common-synergy-list .synergy-preview {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      max-height: none;
+    }
+
+    .common-synergy-list .modal-actions {
+      grid-row: 3;
+    }
+
+    .synergy-pick {
+      position: relative;
+      height: 80px;
+      padding: var(--synergy-card-padding);
+      border: 1px solid #50534d;
+      border-radius: var(--synergy-card-radius);
+      background: var(--panel-soft);
+      cursor: pointer;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 0;
+    }
+
+    .synergy-pick::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      border-radius: var(--synergy-card-radius) var(--synergy-card-radius) 0 0;
+      opacity: 0.9;
+    }
+
+    .synergy-pick:hover:not(:disabled) {
+      border-color: #6b7069;
+      background: #30322f;
+    }
+
+    .synergy-pick.rare {
+      border-color: rgba(238, 126, 72, 0.78);
+      background: linear-gradient(180deg, rgba(128, 67, 39, 0.5), rgba(43, 37, 32, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(238, 126, 72, 0.14);
+    }
+
+    .synergy-pick.rare::before {
+      background: #e98048;
+    }
+
+    .synergy-pick.advanced {
+      border-color: rgba(109, 138, 238, 0.78);
+      background: linear-gradient(180deg, rgba(50, 65, 132, 0.5), rgba(34, 37, 49, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(109, 138, 238, 0.14);
+    }
+
+    .synergy-pick.advanced::before {
+      background: #708cff;
+    }
+
+    .synergy-pick.normal {
+      border-color: rgba(142, 151, 158, 0.82);
+      background: linear-gradient(180deg, rgba(72, 78, 84, 0.58), rgba(32, 35, 38, 0.98));
+      box-shadow: inset 0 0 0 1px rgba(192, 202, 210, 0.12);
+    }
+
+    .synergy-pick.normal::before {
+      background: #9aa4ad;
+    }
+
+    .synergy-pick.preview {
+      border-color: var(--accent-soft);
+      outline: 1px solid var(--accent);
+    }
+
+    .synergy-pick.applied::after,
+    .synergy-pick.equipped-elsewhere::after {
+      content: "✓";
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      height: 16px;
+      min-width: 16px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: rgba(29, 158, 117, 0.18);
+      color: #dff8ef;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 16px;
+    }
+
+    .synergy-pick.unavailable {
+      opacity: 0.42;
+    }
+
+    .synergy-pick:disabled {
+      cursor: default;
+    }
+
+    .synergy-pick .synergy-icon {
+      width: var(--synergy-icon-size);
+      height: var(--synergy-icon-size);
+      margin: 0;
+      border: 1px solid #676a64;
+      border-radius: 50%;
+      font-size: var(--synergy-icon-font-size);
+    }
+
+    .synergy-pick.rare .synergy-icon,
+    .modal-synergy-slot.rare .synergy-icon,
+    .synergy-preview.rare .preview-head .synergy-icon {
+      border-color: rgba(238, 126, 72, 0.72);
+      background: #faece7;
+      color: #993c1d;
+    }
+
+    .synergy-pick.advanced .synergy-icon,
+    .modal-synergy-slot.advanced .synergy-icon,
+    .synergy-preview.advanced .preview-head .synergy-icon {
+      border-color: rgba(109, 138, 238, 0.7);
+      background: #eeedfe;
+      color: #534ab7;
+    }
+
+    .synergy-pick.normal .synergy-icon,
+    .modal-synergy-slot.normal .synergy-icon,
+    .synergy-preview.normal .preview-head .synergy-icon {
+      border-color: rgba(142, 151, 158, 0.68);
+      background: #e7e7e2;
+      color: #5f666a;
+    }
+
+    .pick-name {
+      display: none;
+    }
+
+    .synergy-preview {
+      min-height: 0;
+      max-height: 520px;
+      padding: 14px;
+      border: 1px solid #4d504b;
+      border-radius: 8px;
+      background: var(--panel-soft);
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .preview-head {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #444740;
+    }
+
+    .preview-synergy-card {
+      position: relative;
+      width: 112px;
+      height: 80px;
+      padding: var(--synergy-card-padding);
+      border: 1px solid #50534d;
+      border-radius: var(--synergy-card-radius);
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 0;
+    }
+
+    .preview-synergy-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      border-radius: var(--synergy-card-radius) var(--synergy-card-radius) 0 0;
+      opacity: 0.9;
+    }
+
+    .preview-synergy-card .synergy-icon {
+      width: var(--synergy-icon-size);
+      height: var(--synergy-icon-size);
+      margin: 0;
+      border: 1px solid #676a64;
+      border-radius: 50%;
+      font-size: var(--synergy-icon-font-size);
+    }
+
+    .preview-synergy-card.rare {
+      border-color: rgba(238, 126, 72, 0.78);
+      background: linear-gradient(180deg, rgba(128, 67, 39, 0.5), rgba(43, 37, 32, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(238, 126, 72, 0.14);
+    }
+
+    .preview-synergy-card.rare::before { background: #e98048; }
+    .preview-synergy-card.rare .synergy-icon { border-color: rgba(238, 126, 72, 0.72); background: #faece7; color: #993c1d; }
+
+    .preview-synergy-card.advanced {
+      border-color: rgba(109, 138, 238, 0.78);
+      background: linear-gradient(180deg, rgba(50, 65, 132, 0.5), rgba(34, 37, 49, 0.96));
+      box-shadow: inset 0 0 0 1px rgba(109, 138, 238, 0.14);
+    }
+
+    .preview-synergy-card.advanced::before { background: #708cff; }
+    .preview-synergy-card.advanced .synergy-icon { border-color: rgba(109, 138, 238, 0.7); background: #eeedfe; color: #534ab7; }
+
+    .preview-synergy-card.normal {
+      border-color: rgba(142, 151, 158, 0.82);
+      background: linear-gradient(180deg, rgba(72, 78, 84, 0.58), rgba(32, 35, 38, 0.98));
+      box-shadow: inset 0 0 0 1px rgba(192, 202, 210, 0.12);
+    }
+
+    .preview-synergy-card.normal::before { background: #9aa4ad; }
+    .preview-synergy-card.normal .synergy-icon { border-color: rgba(142, 151, 158, 0.68); background: #e7e7e2; color: #5f666a; }
+
+
+    .preview-title {
+      min-width: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .option-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .preview-cost {
+      color: #f1eee5;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .stage-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .stage-effect {
+      min-height: 58px;
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 8px;
+      align-items: center;
+      border: 1px solid #444740;
+      border-radius: 6px;
+      color: #8e8b83;
+      font-size: 12px;
+      line-height: 1.3;
+    }
+
+    .stage-effect.active {
+      border-color: rgba(52, 200, 156, 0.55);
+      background: rgba(29, 158, 117, 0.13);
+      color: #e8f7ef;
+    }
+
+    .stage-effect.previous {
+      color: #a5a199;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .stage-effect.future {
+      color: #76736d;
+    }
+
+    .stage-effect.just-active {
+      animation: stageActivePulse 0.8s ease-out;
+    }
+
+    .stage-label {
+      color: #c7c3bb;
+      font-weight: 600;
+    }
+
+    .stage-copy {
+      display: grid;
+      gap: 3px;
+    }
+
+    .stage-line.adjustment {
+      color: inherit;
+    }
+
+    .stage-effect.active .stage-line.adjustment {
+      color: #bcecdc;
+    }
+
+    .cost-note {
+      color: #9f9b92;
+      font-size: 12px;
+    }
+
+    .modal-actions {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .synergy-effect-preview {
+      padding: 14px;
+      border-left: 3px solid var(--accent);
+      background: rgba(38, 51, 45, 0.86);
+      color: #f5f2eb;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .modal-actions .action-button:only-child {
+      grid-column: 1 / -1;
+    }
+
+    .promotion-list {
+      margin-top: 12px;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+    }
+
+    .promotion-hero {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      padding: 8px 0 2px;
+    }
+
+    .promotion-hero.levelup-hero {
+      grid-template-columns: 77px minmax(0, 1fr);
+      justify-items: stretch;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 0 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    }
+
+    .promotion-hero .icon-box {
+      width: 72px;
+      height: 72px;
+      margin: 0;
+      border-radius: 16px;
+      font-size: 42px;
+    }
+
+    .levelup-hero .icon-box {
+      width: 77px;
+      height: 77px;
+      font-size: 40px;
+    }
+
+    .levelup-hero-icon {
+      position: relative;
+      width: 77px;
+      height: 77px;
+    }
+
+    .levelup-hero.growth-pulse .levelup-hero-icon .icon-box {
+      animation: relicGrowthPulse 0.72s ease-out;
+    }
+
+    .levelup-hero.growth-pulse .levelup-hero-icon::before,
+    .levelup-hero.growth-pulse .levelup-hero-icon::after {
+      position: absolute;
+      z-index: 2;
+      color: #ffe7a3;
+      content: "✦";
+      font-size: 20px;
+      line-height: 1;
+      pointer-events: none;
+      animation: levelUpSparkle 0.72s ease-out both;
+    }
+
+    .levelup-hero.growth-pulse .levelup-hero-icon::before {
+      top: -7px;
+      right: -8px;
+    }
+
+    .levelup-hero.growth-pulse .levelup-hero-icon::after {
+      bottom: 2px;
+      left: -9px;
+      font-size: 15px;
+      animation-delay: 0.1s;
+    }
+
+    .promotion-hero-copy {
+      width: 96px;
+      min-width: 0;
+      display: grid;
+      justify-items: center;
+      gap: 0;
+    }
+
+    .levelup-hero .promotion-hero-copy {
+      width: auto;
+      min-width: 0;
+      justify-items: stretch;
+      gap: 6px;
+    }
+
+    .levelup-hero .shard-gauge {
+      width: 200px;
+      height: 18px;
+    }
+
+    .levelup-hero .shard-label {
+      font-size: 12px;
+    }
+
+    .levelup-hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .levelup-hero-meta .grade-badge {
+      min-width: 36px;
+      height: 22px;
+      padding: 0 6px;
+      font-size: 12px;
+    }
+
+    .levelup-hero-name {
+      color: #f5f2eb;
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .promotion-name {
+      margin-top: -2px;
+      color: #f5f2eb;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .promotion-stars {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      color: #f4f0e7;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .promotion-star-track {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promotion-star-track .star {
+      font-size: 16px;
+    }
+
+    .promotion-compare {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .promotion-card {
+      min-height: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .promotion-card-title {
+      width: max-content;
+      padding: 3px 9px;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(135deg, #315f54, #1d4c40);
+      color: #f1ede4;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .promotion-row {
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 10px;
+      color: #d7d3ca;
+      font-size: 13px;
+      align-items: center;
+    }
+
+    .promotion-row.compact {
+      grid-template-columns: 1fr;
+    }
+
+    .promotion-card.inline {
+      padding: 10px 12px;
+      border: 1px solid rgba(52, 200, 156, 0.18);
+      border-left: 3px solid var(--accent);
+      border-radius: 0;
+      background: rgba(38, 51, 45, 0.86);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      grid-template-columns: max-content 1fr;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .promotion-card.inline .promotion-row {
+      justify-items: end;
+    }
+
+    .promotion-change {
+      color: var(--accent-soft);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .promotion-effect-name {
+      color: #f5f2eb;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .promotion-change.text {
+      color: #d7d3ca;
+      font-weight: 500;
+      line-height: 1.35;
+      white-space: normal;
+    }
+
+    .promotion-inline-change {
+      color: var(--accent-soft);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .promotion-effect-section {
+      display: grid;
+      gap: 6px;
+    }
+
+    .promotion-effect-section .effect-card {
+      min-height: 0;
+      padding: 9px 12px;
+    }
+
+    .promotion-effect-section.stat-section .effect-desc {
+      font-size: 13px;
+    }
+
+    .promotion-effect-section .effect-card + .effect-card {
+      margin-top: 6px;
+    }
+
+    .promotion-effect-section.owned-section .effect-card {
+      min-height: 0;
+      padding: 7px 12px;
+      align-items: center;
+    }
+
+    .promotion-effect-section.owned-section {
+      gap: 5px;
+    }
+
+    .promotion-effect-section.owned-section .effect-card + .effect-card {
+      margin-top: 0;
+    }
+
+    .promotion-effect-section.owned-section .effect-name,
+    .promotion-effect-section.owned-section .effect-desc {
+      font-size: 14px;
+      line-height: 1.15;
+    }
+
+    .promotion-confirm-button {
+      height: 46px;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 6px;
+      line-height: 1.1;
+    }
+
+    .promotion-confirm-button.levelup-confirm-button {
+      height: 46px;
+      border-color: rgba(242, 177, 72, 0.72);
+      background: linear-gradient(180deg, rgba(128, 86, 24, 0.68), rgba(62, 43, 20, 0.96));
+      color: #ffe6ae;
+      box-shadow: inset 0 0 0 1px rgba(255, 224, 159, 0.08);
+    }
+
+    .promotion-list .modal-actions .action-button {
+      height: 46px;
+    }
+
+    .promotion-confirm-button.levelup-confirm-button:not(:disabled):hover {
+      border-color: rgba(255, 198, 92, 0.9);
+      background: linear-gradient(180deg, rgba(151, 100, 25, 0.76), rgba(72, 49, 20, 0.98));
+    }
+
+    .levelup-cancel-button {
+      height: 62px;
+    }
+
+    .synergy-preview.just-applied {
+      animation: modalApplyPulse 0.72s ease-out;
+    }
+
+    .action-button.action-success {
+      animation: actionSuccessPulse 0.7s ease-out;
+    }
+
+    @keyframes synergyApplyPulse {
+      0% {
+        transform: scale(0.92);
+        box-shadow: 0 0 0 0 rgba(52, 200, 156, 0.48), 0 0 0 rgba(52, 200, 156, 0);
+      }
+      48% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 5px rgba(52, 200, 156, 0.18), 0 0 22px rgba(52, 200, 156, 0.4);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes stageActivePulse {
+      0% {
+        border-color: rgba(52, 200, 156, 0.28);
+        background: rgba(29, 158, 117, 0.05);
+      }
+      45% {
+        border-color: rgba(52, 200, 156, 0.82);
+        background: rgba(29, 158, 117, 0.22);
+      }
+      100% {
+        border-color: rgba(52, 200, 156, 0.55);
+        background: rgba(29, 158, 117, 0.13);
+      }
+    }
+
+    @keyframes modalApplyPulse {
+      0% {
+        box-shadow: inset 0 0 0 0 rgba(52, 200, 156, 0);
+      }
+      45% {
+        box-shadow: inset 0 0 0 1px rgba(52, 200, 156, 0.38), 0 0 24px rgba(52, 200, 156, 0.16);
+      }
+      100% {
+        box-shadow: inset 0 0 0 0 rgba(52, 200, 156, 0);
+      }
+    }
+
+    @keyframes relicGrowthPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255, 184, 79, 0);
+        transform: translateY(0);
+      }
+      42% {
+        box-shadow: 0 0 0 3px rgba(255, 184, 79, 0.25), 0 0 24px rgba(255, 184, 79, 0.22);
+        transform: translateY(-2px);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255, 184, 79, 0);
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes relicEquipPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(105, 166, 219, 0);
+        transform: scale(1);
+      }
+      42% {
+        box-shadow: 0 0 0 3px rgba(105, 166, 219, 0.42), 0 0 22px rgba(105, 166, 219, 0.28);
+        transform: scale(1.035);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(105, 166, 219, 0);
+        transform: scale(1);
+      }
+    }
+
+    @keyframes levelUpSparkle {
+      0% {
+        opacity: 0;
+        transform: scale(0.4) rotate(-18deg);
+      }
+      40% {
+        opacity: 1;
+        transform: scale(1.18) rotate(8deg);
+        text-shadow: 0 0 10px rgba(255, 216, 116, 0.86);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(0.8) rotate(24deg) translateY(-8px);
+      }
+    }
+
+    @keyframes actionSuccessPulse {
+      0% {
+        border-color: rgba(52, 200, 156, 0.35);
+        background: transparent;
+      }
+      45% {
+        border-color: rgba(52, 200, 156, 0.86);
+        background: rgba(35, 117, 91, 0.2);
+      }
+      100% {
+        border-color: #6a6d67;
+        background: transparent;
+      }
+    }
+
+    .tag.rare { background: #faece7; color: #993c1d; }
+    .tag.advanced { background: #eeedfe; color: #534ab7; }
+    .tag.normal { background: #e7e7e2; color: #6d6a64; }
+
+    .locked-label {
+      margin-top: 7px;
+      color: #c3c0b8;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .require-label {
+      margin-top: 8px;
+      color: #d8d4ca;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* Player-facing layout pass */
+    body {
+      overflow: auto;
+    }
+
+    button:focus-visible {
+      outline: 2px solid #8ff0d1;
+      outline-offset: 3px;
+    }
+
+    .stage {
+      width: min(1360px, 100%);
+      min-height: min(800px, 100vh);
+      height: auto;
+      padding: 20px;
+      grid-template-columns: minmax(430px, 470px) minmax(238px, 260px) minmax(350px, 1fr);
+      align-items: stretch;
+    }
+
+    .inventory,
+    .equip-panel,
+    .detail-panel {
+      height: min(720px, calc(100vh - 40px));
+      min-height: 650px;
+    }
+
+    .panel-heading {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .panel-kicker,
+    .section-caption,
+    .instant-note {
+      color: #92968f;
+      font-size: 12px;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: auto;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .inventory-grade-group {
+      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      background: rgba(20, 22, 20, 0.2);
+    }
+
+    .inventory-grade-head {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3px 5px;
+      color: #a9ada6;
+      font-size: 11px;
+    }
+
+    .inventory-grade-label {
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    .inventory-grade-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .relic-card {
+      min-height: 99px;
+      grid-template-rows: 56px 16px 15px;
+      gap: 3px;
+    }
+
+    .relic-card .icon-box {
+      width: 56px;
+      height: 56px;
+      font-size: 30px;
+    }
+
+    .relic-card.grade-card-N { background: linear-gradient(180deg, rgba(126, 122, 112, .14), var(--panel-soft)); }
+    .relic-card.grade-card-R { background: linear-gradient(180deg, rgba(72, 118, 54, .18), var(--panel-soft)); }
+    .relic-card.grade-card-SR { background: linear-gradient(180deg, rgba(48, 101, 144, .2), var(--panel-soft)); }
+    .relic-card.grade-card-SSR { background: linear-gradient(180deg, rgba(154, 101, 24, .2), var(--panel-soft)); }
+
+    .relic-card.equipped {
+      box-shadow: inset 0 0 0 1px rgba(52, 200, 156, .22);
+    }
+
+    .relic-card.selected {
+      outline-width: 2px;
+      outline-offset: 1px;
+    }
+
+    .relic-card.locked {
+      opacity: 1;
+    }
+
+    .relic-card.locked .icon-box {
+      filter: grayscale(.55) brightness(.58);
+      opacity: .65;
+    }
+
+    .relic-card.locked .relic-name,
+    .relic-card.locked .shard-gauge {
+      opacity: .82;
+    }
+
+    .equip-panel {
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .equip-section-title {
+      margin: 0 0 7px;
+      color: #d9d7d0;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .equip-heading-hint {
+      min-height: 16px;
+      color: #75dbbb;
+      font-size: 11px;
+      line-height: 1.3;
+      text-align: right;
+    }
+
+    .slot-row {
+      width: 100%;
+      height: auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, minmax(104px, 1fr));
+      gap: 7px;
+      align-content: stretch;
+    }
+
+    .slot-card {
+      width: 100%;
+      min-width: 0;
+      height: auto;
+      min-height: 104px;
+    }
+
+    .slot-card.empty-slot {
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .slot-empty-label,
+    .slot-lock-text {
+      color: #aaa9a2;
+      font-size: 11px;
+    }
+
+    .equip-summary {
+      min-height: 154px;
+      padding-top: 9px;
+      grid-template-rows: auto 1fr;
+      gap: 7px;
+    }
+
+    .synergy-summary-slots {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .summary-token {
+      width: 100%;
+      height: 51px;
+      grid-template-columns: 28px 1fr;
+      gap: 7px;
+      padding: 0 9px;
+      text-align: left;
+      font-size: 19px;
+    }
+
+    .summary-name {
+      overflow: hidden;
+      color: #eeeae2;
+      font-size: 11px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .point-1 { --point-color: #9aa9b7; --point-bg: rgba(91, 110, 126, .3); }
+    .point-2 { --point-color: #6ca7ee; --point-bg: rgba(46, 91, 151, .36); }
+    .point-3 { --point-color: #b18af1; --point-bg: rgba(92, 61, 140, .4); }
+
+    .summary-token.point-1,
+    .summary-token.point-2,
+    .summary-token.point-3,
+    .modal-synergy-slot.point-1,
+    .modal-synergy-slot.point-2,
+    .modal-synergy-slot.point-3,
+    .synergy-pick.point-1,
+    .synergy-pick.point-2,
+    .synergy-pick.point-3,
+    .synergy-preview.point-1,
+    .synergy-preview.point-2,
+    .synergy-preview.point-3 {
+      border-color: color-mix(in srgb, var(--point-color) 68%, #4d504b);
+      background: linear-gradient(180deg, var(--point-bg), rgba(35, 37, 34, .96));
+    }
+
+    .preview-synergy-card.point-1,
+    .preview-synergy-card.point-2,
+    .preview-synergy-card.point-3 {
+      border-color: var(--point-color);
+      background: linear-gradient(180deg, var(--point-bg), rgba(35, 37, 34, .96));
+    }
+
+    .modal-synergy-slot.point-1::before,
+    .modal-synergy-slot.point-2::before,
+    .modal-synergy-slot.point-3::before,
+    .synergy-pick.point-1::before,
+    .synergy-pick.point-2::before,
+    .synergy-pick.point-3::before {
+      background: var(--point-color);
+    }
+
+    .summary-token.empty {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+
+    .detail-state-badge {
+      height: 22px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #555a54;
+      border-radius: 999px;
+      color: #c8c8c1;
+      font-size: 11px;
+    }
+
+    .detail-state-badge.equipped {
+      border-color: rgba(52, 200, 156, .5);
+      background: rgba(29, 158, 117, .18);
+      color: #dff8ef;
+    }
+
+    .detail-action-hint {
+      min-height: 18px;
+      color: #aaa79f;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .detail-panel { grid-template-rows: 116px minmax(0, 1fr) 46px; }
+    .detail-panel.owned-tab-active { grid-template-rows: 116px minmax(0, 1fr); }
+
+    .modal {
+      width: min(920px, calc(100vw - 32px));
+      height: min(650px, calc(100vh - 32px));
+    }
+
+    .modal-head {
+      justify-content: flex-start;
+      padding-right: 42px;
+    }
+
+    .modal-title-block {
+      display: grid;
+      gap: 2px;
+    }
+
+    .modal-synergy-limit {
+      position: static;
+      margin-left: auto;
+      display: grid;
+      justify-items: end;
+      gap: 1px;
+    }
+
+    .point-budget-main { color: #f2eee5; font-weight: 800; }
+    .point-budget-sub { color: #999d96; font-size: 11px; font-weight: 500; }
+
+    .synergy-list.common-synergy-list {
+      grid-template-columns: minmax(380px, 1.05fr) minmax(330px, .95fr);
+      grid-template-rows: 108px minmax(0, 1fr) auto;
+    }
+
+    .modal-synergy-slots {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+      padding: 8px;
+    }
+
+    .modal-synergy-slot {
+      height: 90px;
+      grid-template-rows: 40px 16px;
+      gap: 4px;
+      padding: 7px 5px;
+    }
+
+    .modal-synergy-slot .synergy-icon {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+
+    .modal-synergy-slot-name,
+    .pick-name {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      color: #ebe8e0;
+      font-size: 11px;
+      font-weight: 700;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .synergy-icon-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .synergy-pick {
+      height: 88px;
+      grid-template-rows: 44px 16px;
+      gap: 5px;
+    }
+
+    .synergy-pick.preview {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .synergy-pick:disabled {
+      opacity: .45;
+    }
+
+    .synergy-preview {
+      grid-template-rows: auto auto auto 1fr;
+    }
+
+    .point-stepper {
+      width: min(260px, 100%);
+      min-height: 48px;
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      border: 1px solid #555a54;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #20221f;
+    }
+
+    .point-stepper button {
+      width: 48px;
+      height: 48px;
+      border: 0;
+      background: rgba(255,255,255,.035);
+      color: #f1eee5;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    .point-stepper button:disabled {
+      color: #666a64;
+      cursor: default;
+    }
+
+    .point-stepper-value {
+      display: grid;
+      justify-items: center;
+      gap: 1px;
+      color: #f3f0e8;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .point-stepper-value small,
+    .fixed-cost-note {
+      color: #959990;
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .modal-actions.immediate-actions {
+      grid-template-columns: minmax(120px, .4fr) minmax(180px, 1fr);
+    }
+
+    .remove-synergy-button {
+      color: #e0b2a6;
+      border-color: rgba(191, 112, 90, .45);
+    }
+
+    @media (max-width: 1099px) {
+      .stage {
+        grid-template-columns: minmax(400px, 1fr) 250px;
+        grid-template-rows: auto auto;
+        min-height: 100vh;
+      }
+      .inventory, .equip-panel { height: 700px; }
+      .detail-panel {
+        grid-column: 1 / -1;
+        width: 100%;
+        height: 620px;
+      }
+    }
+
+    @media (max-width: 719px) {
+      html, body { overflow: auto; }
+      body { display: block; }
+      .stage {
+        width: 100%;
+        padding: 10px 10px 16px;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .inventory, .equip-panel, .detail-panel {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+      }
+      .inventory-grid { max-height: none; overflow: visible; }
+      .equip-panel { min-height: 650px; }
+      .detail-panel { grid-column: 1; min-height: 620px; }
+      .modal { height: calc(100vh - 16px); padding: 12px; }
+      .modal-head { align-items: flex-start; }
+      .synergy-list.common-synergy-list {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto minmax(240px, auto) auto;
+        overflow-y: auto;
+        padding-right: 3px;
+      }
+      .modal-synergy-slots { grid-column: 1; grid-row: 1; }
+      .common-synergy-list .synergy-icon-grid { grid-column: 1; grid-row: 2; max-height: none; }
+      .common-synergy-list .synergy-preview { grid-column: 1; grid-row: 3; overflow: visible; }
+      .common-synergy-list .modal-actions { grid-column: 1; grid-row: 4; }
+      .preview-head { grid-template-columns: 80px 1fr auto; }
+      .preview-synergy-card { width: 80px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* Compact, icon-first inventory and three-slot synergy layout */
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 140px;
+      gap: 8px;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: scroll;
+      scrollbar-gutter: stable;
+    }
+
+    .relic-card {
+      height: 140px;
+      min-height: 140px;
+      padding: 8px 7px 5px;
+      grid-template-rows: none;
+      gap: 5px;
+    }
+
+    .relic-card .icon-box {
+      width: 77px;
+      height: 77px;
+      font-size: 40px;
+    }
+
+    .relic-name,
+    .summary-name {
+      display: none;
+    }
+
+    .relic-card.grade-card-N,
+    .relic-card.grade-card-R,
+    .relic-card.grade-card-SR,
+    .relic-card.grade-card-SSR {
+      background: var(--panel-soft);
+    }
+
+    .equipped-badge {
+      width: 19px;
+      min-width: 0;
+      height: 19px;
+      padding: 0;
+      font-size: 12px;
+    }
+
+    .equip-panel {
+      position: relative;
+      grid-template-rows: auto 1fr auto;
+      gap: 10px;
+    }
+
+    .loadout-presets {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      width: 100%;
+    }
+
+    .loadout-preset-button {
+      min-width: 0;
+      height: 38px;
+      border: 1px solid #48534d;
+      border-radius: 8px;
+      background: rgba(30, 36, 33, .78);
+      color: #aeb8b1;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color .16s ease, background .16s ease, color .16s ease;
+    }
+
+    .loadout-preset-button:hover {
+      border-color: rgba(73, 198, 161, .72);
+      color: #e7f5ee;
+    }
+
+    .loadout-preset-button.active {
+      border-color: #49c6a1;
+      background: rgba(43, 104, 82, .42);
+      color: #e9fff6;
+      box-shadow: inset 0 0 0 1px rgba(73, 198, 161, .2);
+    }
+
+    .equip-heading-hint {
+      display: none;
+    }
+
+    .equip-heading-hint:not(:empty) {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      z-index: 3;
+      display: block;
+      padding: 7px 8px;
+      border: 1px solid rgba(52, 200, 156, .38);
+      border-radius: 7px;
+      background: rgba(24, 54, 45, .94);
+      color: #dff8ef;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .slot-row {
+      width: auto;
+      height: 436px;
+      grid-template-columns: 120px;
+      grid-template-rows: repeat(3, 120px);
+      gap: 8px;
+      align-content: center;
+      align-self: center;
+      justify-content: center;
+    }
+
+    .slot-card {
+      width: 120px;
+      min-width: 120px;
+      height: 120px;
+      min-height: 120px;
+    }
+
+    .equip-summary {
+      min-height: 64px;
+      padding-top: 10px;
+      grid-template-rows: 52px;
+      gap: 0;
+    }
+
+    .synergy-summary-slots {
+      grid-template-columns: repeat(3, 52px);
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .summary-token {
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      display: inline-grid;
+      grid-template-columns: 1fr;
+      place-items: center;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .modal-synergy-slots {
+      grid-template-columns: repeat(3, 100px);
+      justify-content: space-between;
+    }
+
+    @media (max-width: 719px) {
+      .inventory-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: 108px;
+      }
+      .relic-card {
+        height: 108px;
+        min-height: 108px;
+      }
+      .relic-card .icon-box {
+        width: 66px;
+        height: 66px;
+        font-size: 34px;
+      }
+      .slot-row {
+        height: 436px;
+      }
+    }
+
+    /* Minimal modal copy and action hierarchy */
+    .modal-head {
+      justify-content: center;
+      padding-right: 0;
+    }
+
+    .modal-synergy-limit {
+      position: absolute;
+      top: 11px;
+      right: 52px;
+      margin-left: 0;
+      display: block;
+    }
+
+    .modal-synergy-slot {
+      grid-template-rows: 1fr;
+    }
+
+    .modal-synergy-slot.empty {
+      grid-template-rows: 1fr;
+      place-items: center;
+    }
+
+    .modal-synergy-slot .synergy-icon,
+    .modal-synergy-slot.empty .synergy-icon {
+      align-self: center;
+      justify-self: center;
+    }
+
+    .modal-synergy-slot-name,
+    .modal-synergy-slot-cost,
+    .preview-synergy-card .pick-name,
+    .fixed-cost-note,
+    .point-stepper-value small,
+    .point-budget-sub {
+      display: none;
+    }
+
+    .synergy-effect-row {
+      display: flex;
+      align-items: stretch;
+      gap: 10px;
+    }
+
+    .synergy-effect-row .synergy-effect-preview {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .synergy-effect-row .point-stepper {
+      flex: 0 0 164px;
+      width: 164px;
+      min-height: 0;
+      align-self: stretch;
+    }
+
+    .synergy-effect-row .point-stepper button {
+      width: 44px;
+      height: auto;
+      min-height: 48px;
+    }
+
+    .point-stepper-value {
+      font-size: 18px;
+    }
+
+    .actions .action-button.levelup-action {
+      border-color: rgba(242, 177, 72, .62);
+      background: linear-gradient(180deg, rgba(128, 86, 24, .48), rgba(51, 41, 24, .9));
+      color: #ffe5b0;
+    }
+
+    .actions .action-button.equip-action:not(.unequip-action):not(.cancel-equip-action) {
+      border-color: rgba(52, 200, 156, .62);
+      background: linear-gradient(180deg, rgba(28, 112, 82, .55), rgba(27, 52, 43, .92));
+      color: #ddfff2;
+    }
+
+    .actions .action-button.unequip-action {
+      border-color: rgba(205, 111, 91, .62);
+      background: linear-gradient(180deg, rgba(120, 61, 49, .48), rgba(53, 34, 31, .92));
+      color: #ffdcd3;
+    }
+
+    .actions .action-button.cancel-equip-action {
+      border-color: rgba(154, 163, 154, .5);
+      background: rgba(51, 54, 50, .86);
+      color: #d8d8d1;
+    }
+
+    @media (max-width: 719px) {
+      .synergy-effect-row {
+        flex-direction: column;
+      }
+      .synergy-effect-row .point-stepper {
+        width: 100%;
+        flex-basis: 48px;
+      }
+    }
+
+    /* Direct-investment synergy picker */
+    .synergy-list.common-synergy-list {
+      grid-template-columns: 1fr;
+      grid-template-rows: 100px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .modal-synergy-slots {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .synergy-invest-grid {
+      grid-column: 1;
+      grid-row: 2;
+      min-height: 0;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: start;
+      gap: 10px;
+      overflow-y: auto;
+      border: 1px solid #4d504b;
+      border-radius: 10px;
+      background: rgba(31, 33, 30, .58);
+    }
+
+    .synergy-invest-card {
+      position: relative;
+      min-height: 112px;
+      padding: 12px;
+      border: 1px solid #50534d;
+      border-radius: 9px;
+      background: var(--panel-soft);
+    }
+
+    .synergy-invest-card.current {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    .synergy-invest-card.unavailable {
+      opacity: .52;
+    }
+
+    .invest-card-head {
+      min-height: 44px;
+      padding-right: 92px;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 9px;
+      align-items: center;
+    }
+
+    .invest-card-head .synergy-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #676a64;
+      border-radius: 50%;
+      background: #eeedfe;
+      color: #534ab7;
+      font-size: 23px;
+    }
+
+    .invest-card-title {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .invest-card-title strong {
+      overflow: hidden;
+      color: #f0ece3;
+      font-size: 14px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .invest-card-title span {
+      color: #aab1aa;
+      font-size: 11px;
+    }
+
+    .invest-points {
+      color: var(--point-color, #c8c4ba);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .invest-card-effect {
+      margin-top: 10px;
+      padding: 8px 10px;
+      border-left: 3px solid var(--point-color, #858b83);
+      background: rgba(21, 26, 23, .64);
+      color: #e7e4dc;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .invest-card-controls {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      overflow: hidden;
+      border: 1px solid #5b6059;
+      border-radius: 7px;
+    }
+
+    .invest-card-controls button {
+      width: 38px;
+      height: 38px;
+      border: 0;
+      border-left: 1px solid #5b6059;
+      background: rgba(255, 255, 255, .045);
+      color: #f1eee6;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .invest-card-controls button:first-child {
+      border-left: 0;
+    }
+
+    .invest-card-controls button:disabled {
+      color: #60645e;
+      cursor: default;
+    }
+
+    @media (max-width: 719px) {
+      .synergy-list.common-synergy-list {
+        grid-template-rows: 92px minmax(0, 1fr);
+      }
+      .synergy-invest-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .synergy-invest-card {
+        min-height: 126px;
+        padding: 10px;
+      }
+      .invest-card-head {
+        padding-right: 0;
+        grid-template-columns: 40px minmax(0, 1fr);
+      }
+      .invest-card-controls {
+        position: static;
+        width: max-content;
+        margin: 8px 0 0 auto;
+      }
+    }
+
+    /* Uniform, square investment cards */
+    .synergy-invest-grid {
+      padding: 12px;
+      gap: 12px;
+      border-radius: 0;
+      background: #20221f;
+    }
+
+    .synergy-invest-grid::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .synergy-invest-grid::-webkit-scrollbar-track {
+      background: #20221f;
+    }
+
+    .synergy-invest-grid::-webkit-scrollbar-thumb {
+      border: 2px solid #20221f;
+      border-radius: 999px;
+      background: #6a6e68;
+    }
+
+    .synergy-invest-card,
+    .synergy-invest-card.point-1,
+    .synergy-invest-card.point-2,
+    .synergy-invest-card.point-3,
+    .synergy-invest-card.current,
+    .synergy-invest-card.equipped-elsewhere {
+      min-height: 102px;
+      overflow: hidden;
+      border: 1px solid #4d514b;
+      border-radius: 0;
+      outline: 0;
+      background: #292b29;
+      box-shadow: none;
+      opacity: 1;
+    }
+
+    .synergy-invest-card.unavailable {
+      opacity: .62;
+    }
+
+    .invest-card-head {
+      min-height: 40px;
+      padding-right: 86px;
+      grid-template-columns: 40px minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .invest-card-head .synergy-icon {
+      width: 40px;
+      height: 40px;
+      border-color: #737870;
+      border-radius: 4px;
+      background: #e7e7e2;
+      color: #5f666a;
+      font-size: 21px;
+    }
+
+    .invest-card-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .invest-card-title strong,
+    .invest-points {
+      color: #e9e6de;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .invest-status {
+      flex: 0 0 auto;
+      padding: 2px 5px;
+      border: 1px solid #6c716a;
+      border-radius: 0;
+      background: #343734;
+      color: #d9ded7;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .invest-card-effect {
+      width: 100%;
+      min-height: 34px;
+      margin: 8px 0 0;
+      padding: 8px 9px;
+      overflow: hidden;
+      border: 1px solid #3f443f;
+      border-left: 3px solid #777d75;
+      background: #202421;
+      color: #e4e1d9;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.25;
+      text-overflow: ellipsis;
+    }
+
+    .invest-card-controls {
+      top: 10px;
+      right: 10px;
+      border-color: #5d625b;
+      border-radius: 0;
+    }
+
+    .invest-card-controls button {
+      width: 36px;
+      height: 36px;
+      border-color: #5d625b;
+      border-radius: 0;
+      font-family: inherit;
+      font-size: 18px;
+    }
+
+    @media (max-width: 719px) {
+      .synergy-invest-grid {
+        padding: 8px;
+        gap: 8px;
+      }
+      .synergy-invest-card {
+        min-height: 112px;
+      }
+    }
+
+    /* Restored selection-and-preview modal */
+    .modal:not(.promotion-modal) {
+      width: min(640px, calc(100vw - 32px));
+      height: min(550px, calc(100vh - 32px));
+    }
+
+    .synergy-list.common-synergy-list.restored-synergy-list {
+      grid-template-columns: 250px minmax(0, 1fr);
+      grid-template-rows: 103px minmax(0, 1fr) auto;
+      gap: 12px;
+    }
+
+    .restored-synergy-list .modal-synergy-slots {
+      grid-column: 1;
+      grid-row: 1;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 70px;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px;
+      border: 1px solid #565b55;
+      background: transparent;
+    }
+
+    .restored-synergy-list .modal-synergy-slots-head {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #aaa69d;
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1;
+    }
+
+    .restored-synergy-list .modal-synergy-slots-row {
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .restored-synergy-list .modal-synergy-slot {
+      width: 70px;
+      height: 70px;
+      border-style: solid;
+    }
+
+    .restored-synergy-list .modal-synergy-slot.empty {
+      border-style: dashed;
+    }
+
+    .restored-synergy-list .modal-synergy-slot::before {
+      display: none;
+    }
+
+    .restored-synergy-list .synergy-icon-grid {
+      grid-column: 1;
+      grid-row: 2;
+      max-height: none;
+      display: grid;
+      grid-template-columns: repeat(3, 70px);
+      grid-auto-rows: 70px;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .restored-synergy-list .synergy-pick {
+      width: 70px;
+      height: 70px;
+      grid-template-rows: 1fr;
+      place-items: center;
+    }
+
+    .restored-synergy-list .synergy-pick::before {
+      display: none;
+    }
+
+    .restored-synergy-list .synergy-pick .synergy-icon,
+    .restored-synergy-list .modal-synergy-slot .synergy-icon,
+    .restored-synergy-list .preview-synergy-card .synergy-icon {
+      width: 31px;
+      height: 31px;
+      font-size: 17px;
+    }
+
+    .restored-synergy-list .synergy-pick.applied,
+    .restored-synergy-list .synergy-pick.equipped-elsewhere {
+      box-shadow: inset 0 0 0 999px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(93, 219, 173, 0.2);
+      opacity: 1;
+    }
+
+    .restored-synergy-list .synergy-pick.applied::after,
+    .restored-synergy-list .synergy-pick.equipped-elsewhere::after {
+      display: grid;
+      place-items: center;
+      right: auto;
+    }
+
+    .restored-synergy-list .synergy-preview {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      display: grid;
+      align-self: stretch;
+      height: 100%;
+      min-height: 0;
+      max-height: none;
+      padding: 12px;
+      border: 1px solid #565b55;
+      border-radius: 10px;
+      background: transparent;
+      overflow: visible;
+    }
+
+    .restored-synergy-list .modal-actions {
+      grid-column: 1 / -1;
+      grid-row: 3;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .restored-synergy-list .preview-head {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #565b55;
+    }
+
+    .restored-synergy-list .preview-synergy-card {
+      width: 70px;
+      height: 70px;
+    }
+
+    .restored-synergy-list .preview-title .option-title {
+      font-size: 14px;
+    }
+
+    .restored-synergy-list .synergy-effect-preview {
+      font-size: 11px;
+    }
+
+    .restored-synergy-list .modal-actions [data-modal-action="done"] {
+      border-color: rgba(52, 200, 156, .62);
+      background: linear-gradient(180deg, rgba(28, 112, 82, .55), rgba(27, 52, 43, .92));
+      color: #ddfff2;
+    }
+
+    .restored-synergy-list .modal-actions [data-modal-action="remove"] {
+      border-color: rgba(205, 111, 91, .62);
+      background: linear-gradient(180deg, rgba(120, 61, 49, .48), rgba(53, 34, 31, .92));
+      color: #ffdcd3;
+    }
+
+    .preview-head .preview-point-stepper {
+      width: auto;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      align-self: center;
+    }
+
+    .preview-head .preview-point-stepper button {
+      width: 32px;
+      min-height: 36px;
+      height: 36px;
+      border: 1px solid #555a54;
+      border-radius: 7px;
+      background: #20221f;
+      font-size: 18px;
+    }
+
+    .preview-head .preview-point-stepper .point-stepper-value {
+      min-width: 32px;
+      font-size: 13px;
+      font-weight: 500;
+      order: 0;
+    }
+
+    .preview-head .fixed-point-stepper {
+      width: 100px;
+      justify-content: flex-end;
+    }
+
+    .preview-head .preview-point-stepper button:first-child {
+      order: 1;
+    }
+
+    .preview-head .preview-point-stepper button:last-child {
+      order: 2;
+    }
+
+    .restored-synergy-list .preview-head {
+      padding: 8px;
+      border: 0;
+      border-bottom: 1px solid #565b55;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .modal-synergy-limit,
+    .point-budget-main {
+      font-weight: 500;
+    }
+
+    @media (max-width: 719px) {
+      .modal:not(.promotion-modal) { height: calc(100vh - 16px); }
+      .synergy-list.common-synergy-list.restored-synergy-list {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+      }
+      .restored-synergy-list .modal-synergy-slots { grid-column: 1; grid-row: 1; }
+      .restored-synergy-list .synergy-icon-grid { grid-column: 1; grid-row: 2; }
+      .restored-synergy-list .synergy-preview { grid-column: 1; grid-row: 3; border-left: 0; padding-left: 0; }
+      .restored-synergy-list .modal-actions { grid-column: 1; grid-row: 4; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage" aria-label="유물 시스템 프로토타입">
+    <section class="panel inventory" aria-label="인벤토리">
+      <h1 class="panel-title visually-hidden">인벤토리</h1>
+      <div class="inventory-grid" id="inventoryGrid"></div>
+      <div class="draw-panel">
+        <button class="draw-button" type="button" id="drawRelicOnceButton">1회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicTenButton">10회 뽑기</button>
+        <button class="draw-button" type="button" id="drawRelicHundredButton">100회 뽑기</button>
+      </div>
+    </section>
+
+    <section class="panel equip-panel" aria-label="장착 슬롯">
+      <h2 class="panel-title visually-hidden">장착 슬롯</h2>
+      <div class="loadout-presets" id="loadoutPresets" role="group" aria-label="장착 프리셋">
+        <button class="loadout-preset-button" type="button" data-loadout-preset="0" aria-pressed="true">1</button>
+        <button class="loadout-preset-button" type="button" data-loadout-preset="1" aria-pressed="false">2</button>
+        <button class="loadout-preset-button" type="button" data-loadout-preset="2" aria-pressed="false">3</button>
+      </div>
+      <div class="slot-row" id="slotRow"></div>
+      <div class="equip-summary" id="equipSummary" aria-label="공용 시너지 선택"></div>
+    </section>
+
+    <section class="panel detail-panel" aria-label="유물 상세 정보">
+      <div class="detail-header">
+        <div class="detail-title-wrap">
+          <div class="title-icon" id="detailIcon"></div>
+          <div class="detail-title-copy">
+            <div class="detail-title-meta" id="detailStatus"></div>
+            <h2 class="detail-title-name" id="detailName">불꽃의 심장</h2>
+            <div id="detailShardGauge"></div>
+            <div class="star-row detail-stars" id="detailStars"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-block" id="statBlock"></div>
+
+      <div class="actions" id="detailActions">
+        <button class="action-button" type="button" data-action="levelup">레벨업</button>
+        <button class="action-button" type="button" data-action="unequip" id="equipActionButton">장착해제</button>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modalTitle">시너지 선택</h2>
+        <span class="modal-synergy-limit" id="modalSynergyLimit"></span>
+        <button class="close-button" type="button" id="closeModal" aria-label="닫기">×</button>
+      </div>
+      <div class="synergy-list" id="synergyList"></div>
+    </section>
+  </div>
+
+  <script>
+    const relics = [
+      {
+        "id": "ancient_hourglass",
+        "name": "별빛 부스터",
+        "grade": "N",
+        "icon": "⌛",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "별빛 부스터",
+            "적 처치할 때마다 공격 속도가 1.3% 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "frost_shield",
+        "name": "서리 장막",
+        "grade": "N",
+        "icon": "⬡",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "서리 장막",
+            "전투 시작 시 최대 체력 2%의 보호막을 얻는다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "moon_crown",
+        "name": "월광의 왕관",
+        "grade": "N",
+        "icon": "☾",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "월광의 왕관",
+            "2회 공격마다 치명타 확률이 0.7%p 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "battle_seed",
+        "name": "전투의 씨앗",
+        "grade": "R",
+        "icon": "✦",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "전투의 씨앗",
+            "치명타 발생 시 치명타 피해량이 3.4% 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "ice_shard",
+        "name": "빙결 파편",
+        "grade": "R",
+        "icon": "❄",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "빙결 파편",
+            "공격 시 공격력 115%의 추가 피해를 준다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "dragon_scale",
+        "name": "용린의 힘",
+        "grade": "R",
+        "icon": "◈",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "용린의 힘",
+            "5회 공격마다 공격력이 2.5% 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "lightning_eye",
+        "name": "번개의 눈",
+        "grade": "SR",
+        "icon": "ϟ",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "번개의 눈",
+            "피격 시 5초간 최대 체력 1%의 보호막을 얻는다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "heart_fire",
+        "name": "불꽃의 심장",
+        "grade": "SR",
+        "icon": "♨",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "불꽃의 심장",
+            "3초간 매초마다 주변 적에게 공격력 215%의 추가 피해를 준다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "wooden_charm",
+        "name": "나무 부적",
+        "grade": "SR",
+        "icon": "♣",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "나무 부적",
+            "2초마다 더블 공격 확률이 1.7%p 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "sun_core",
+        "name": "연격의 핵",
+        "grade": "SSR",
+        "icon": "☉",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "연격의 핵",
+            "더블 공격 시 공격력이 2.3% 증가한다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "void_lantern",
+        "name": "공허의 등불",
+        "grade": "SSR",
+        "icon": "◐",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "공허의 등불",
+            "10회 공격마다 공격력 220%의 추가 피해를 준다."
+          ]
+        ],
+        "owned": false
+      },
+      {
+        "id": "counter_scar",
+        "name": "수호의 성흔",
+        "grade": "SSR",
+        "icon": "⌁",
+        "maxLevel": 50,
+        "equipEffect": [
+          [
+            "수호의 성흔",
+            "20초마다 5초간 최대 체력 3.5%의 보호막을 얻는다."
+          ]
+        ],
+        "owned": false
+      }
+    ];
+
+    const synergies = [
+      {
+        "id": "atk_up",
+        "name": "맹공",
+        "costMode": "investable",
+        "minPoints": 1,
+        "maxPoints": 3,
+        "icon": "▲",
+        "cost": 1,
+        "effect": "포인트당 공격력 +5%",
+        "stages": [
+          "공격력 +5%",
+          "공격력 +10%",
+          "공격력 +15%"
+        ]
+      },
+      {
+        "id": "atk_speed",
+        "name": "신속",
+        "costMode": "investable",
+        "minPoints": 1,
+        "maxPoints": 3,
+        "icon": "↟",
+        "cost": 1,
+        "effect": "공격 속도 +6.5% / +11.5% / +16.5%",
+        "stages": [
+          "공격 속도 +6.5%",
+          "공격 속도 +11.5%",
+          "공격 속도 +16.5%"
+        ]
+      },
+      {
+        "id": "toughness",
+        "name": "강타",
+        "costMode": "investable",
+        "minPoints": 1,
+        "maxPoints": 3,
+        "icon": "♥",
+        "cost": 1,
+        "effect": "치명타 확률 +6%p / +11.2%p / +17%p",
+        "stages": [
+          "치명타 확률 +6%p",
+          "치명타 확률 +11.2%p",
+          "치명타 확률 +17%p"
+        ]
+      },
+      {
+        "id": "kill_power",
+        "name": "처형",
+        "costMode": "fixed",
+        "minPoints": 2,
+        "maxPoints": 2,
+        "icon": "✧",
+        "cost": 2,
+        "effect": "체력 50% 이하인 대상에게 주는 피해 +80%",
+        "stages": [
+          "체력 50% 이하인 대상에게 주는 피해 +80%",
+          "체력 50% 이하인 대상에게 주는 피해 +80%"
+        ]
+      },
+      {
+        "id": "rage",
+        "name": "분노",
+        "costMode": "fixed",
+        "minPoints": 2,
+        "maxPoints": 2,
+        "icon": "☄",
+        "cost": 2,
+        "effect": "내 체력이 70% 이상일 때 주는 피해 +45%",
+        "stages": [
+          "내 체력이 70% 이상일 때 주는 피해 +45%",
+          "내 체력이 70% 이상일 때 주는 피해 +45%"
+        ]
+      },
+      {
+        "id": "weakness_focus",
+        "name": "예리",
+        "costMode": "fixed",
+        "minPoints": 2,
+        "maxPoints": 2,
+        "icon": "◎",
+        "cost": 2,
+        "effect": "치명타 확률 3%당 치명타 피해량 +0.85%",
+        "stages": [
+          "치명타 확률 3%당 치명타 피해량 +0.85%",
+          "치명타 확률 3%당 치명타 피해량 +0.85%"
+        ]
+      },
+      {
+        "id": "weak_point",
+        "name": "반격",
+        "costMode": "fixed",
+        "minPoints": 3,
+        "maxPoints": 3,
+        "icon": "☆",
+        "cost": 3,
+        "effect": "보호막 보유 시 공격력 +120%",
+        "stages": [
+          "보호막 보유 시 공격력 +120%",
+          "보호막 보유 시 공격력 +120%",
+          "보호막 보유 시 공격력 +120%"
+        ]
+      },
+      {
+        "id": "rupture",
+        "name": "파열",
+        "costMode": "fixed",
+        "minPoints": 3,
+        "maxPoints": 3,
+        "icon": "◇",
+        "cost": 3,
+        "effect": "유물의 추가 피해량 +50%",
+        "stages": [
+          "유물의 추가 피해량 +50%",
+          "유물의 추가 피해량 +50%",
+          "유물의 추가 피해량 +50%"
+        ]
+      },
+      {
+        "id": "chain",
+        "name": "연쇄",
+        "costMode": "fixed",
+        "minPoints": 3,
+        "maxPoints": 3,
+        "icon": "↯",
+        "cost": 3,
+        "effect": "더블 공격의 두 번째 공격 피해 +51%",
+        "stages": [
+          "더블 공격의 두 번째 공격 피해 +51%",
+          "더블 공격의 두 번째 공격 피해 +51%",
+          "더블 공격의 두 번째 공격 피해 +51%"
+        ]
+      }
+    ];
+
+    const gradeDefaults = {
+      SSR: {
+        maxLevel: 50,
+        stars: 0,
+        requiredShards: 25,
+        equipEffect: [["결정타", "5회 공격할 때마다 공격력 90%의 추가 피해를 준다."]],
+        ownedEffect: []
+      },
+      SR: {
+        maxLevel: 50,
+        stars: 0,
+        requiredShards: 20,
+        equipEffect: [["방어 반응", "피해를 받을 때 20% 확률로 2초간 최대 체력 10%의 보호막을 생성한다."]],
+        ownedEffect: []
+      },
+      R: {
+        maxLevel: 50,
+        stars: 0,
+        requiredShards: 15,
+        equipEffect: [["연속 타격", "4회 공격할 때마다 공격력 45%의 추가 피해를 준다."]],
+        ownedEffect: []
+      },
+      N: {
+        maxLevel: 50,
+        stars: 0,
+        requiredShards: 10,
+        equipEffect: [["집중 공격", "6초마다 다음 공격 피해가 25% 증가한다."]],
+        ownedEffect: []
+      }
+    };
+
+    const shardSeed = {
+      "ancient_hourglass": [
+        0,
+        10
+      ],
+      "frost_shield": [
+        0,
+        10
+      ],
+      "moon_crown": [
+        0,
+        10
+      ],
+      "battle_seed": [
+        0,
+        15
+      ],
+      "ice_shard": [
+        0,
+        15
+      ],
+      "dragon_scale": [
+        0,
+        15
+      ],
+      "lightning_eye": [
+        0,
+        20
+      ],
+      "heart_fire": [
+        0,
+        20
+      ],
+      "wooden_charm": [
+        0,
+        20
+      ],
+      "sun_core": [
+        0,
+        25
+      ],
+      "void_lantern": [
+        0,
+        25
+      ],
+      "counter_scar": [
+        0,
+        25
+      ]
+    };
+
+    const maxLevelEffectGrowth = 0.4;
+    const ownedMaxLevelEffectGrowth = 2;
+    const levelOneMultiplier = 1 + ownedMaxLevelEffectGrowth / 50;
+    const previousOwnedLevelOneMultiplier = 1.06;
+    const upgradedOwnedBase = (previousLevelOneValue) => previousLevelOneValue * 1.8 / previousOwnedLevelOneMultiplier;
+    const ownedEffectProfiles = {
+      ancient_hourglass: [{ label: "일반 몬스터 피해", base: upgradedOwnedBase(1.0), perStar: 0.16, unit: "percent" }],
+      frost_shield: [{ label: "일반 공격력", base: upgradedOwnedBase(0.8), perStar: 0.13, unit: "percent" }],
+      moon_crown: [{ label: "치명타 확률", base: upgradedOwnedBase(0.3), perStar: 0.05, unit: "point" }],
+      battle_seed: [{ label: "치명타 피해량", base: upgradedOwnedBase(1.3), perStar: 0.24, unit: "percent" }],
+      ice_shard: [{ label: "공격력", base: upgradedOwnedBase(1.2), perStar: 0.22, unit: "percent" }],
+      dragon_scale: [{ label: "최대 체력", base: upgradedOwnedBase(2.0), perStar: 0.32, unit: "percent" }],
+      lightning_eye: [{ label: "최대 체력", base: upgradedOwnedBase(2.2), perStar: 0.56, unit: "percent" }],
+      heart_fire: [
+        { label: "공격력", base: upgradedOwnedBase(1.6), perStar: 0.33, unit: "percent" },
+        { label: "보스 피해", base: upgradedOwnedBase(1.6), perStar: 0.33, unit: "percent" }
+      ],
+      wooden_charm: [
+        { label: "공격 속도", base: upgradedOwnedBase(1.0), perStar: 0.19, unit: "percent" },
+        { label: "치명타 피해량", base: upgradedOwnedBase(1.6), perStar: 0.33, unit: "percent" }
+      ],
+      sun_core: [
+        { label: "일반 공격력", base: upgradedOwnedBase(2.0), perStar: 0.32, unit: "percent" },
+        { label: "공격 속도", base: upgradedOwnedBase(1.2), perStar: 0.19, unit: "percent" }
+      ],
+      void_lantern: [
+        { label: "공격력", base: upgradedOwnedBase(2.4), perStar: 0.41, unit: "percent" },
+        { label: "치명타 확률", base: upgradedOwnedBase(0.6), perStar: 0.17, unit: "point" }
+      ],
+      counter_scar: [{ label: "최대 체력", base: upgradedOwnedBase(3.0), perStar: 0.69, unit: "percent" }]
+    };
+
+    relics.forEach((relic) => {
+      const defaults = gradeDefaults[relic.grade];
+      const seed = shardSeed[relic.id] || [0, defaults.requiredShards];
+      const shards = Array.isArray(seed) ? seed[0] : seed;
+      relic.maxLevel = relic.maxLevel ?? defaults.maxLevel;
+      relic.level = Math.min(relic.maxLevel, relic.owned ? Math.max(relic.level ?? 0, 1) : relic.level ?? 0);
+      relic.stars = relic.stars ?? defaults.stars;
+      relic.equipEffect = relic.equipEffect ?? defaults.equipEffect.map((effect) => [...effect]);
+      relic.ownedEffectProfile = ownedEffectProfiles[relic.id] ?? defaults.ownedEffect;
+      relic.baseEquipEffect = relic.equipEffect.map((effect) => [...effect]);
+      applyRelicLevelEffects(relic);
+      relic.shards = relic.shards ?? shards;
+      relic.requiredShards = defaults.requiredShards;
+    });
+
+    const equippedSlots = [null, null, null];
+    const equipSlotUnlockRequirements = [0, 8, 12];
+    const synergyPointCap = 6;
+    const synergySelectionCap = 3;
+    let selectedSynergyIds = Array(synergySelectionCap).fill(null);
+    let selectedSynergyPointsById = {};
+    const loadoutPresets = Array.from({ length: 3 }, (_, index) => ({
+      equippedSlots: index === 0 ? [...equippedSlots] : Array(equippedSlots.length).fill(null),
+      synergyIds: index === 0 ? [...selectedSynergyIds] : Array(synergySelectionCap).fill(null),
+      synergyPointsById: {}
+    }));
+    let activeLoadoutPreset = 0;
+    let selectedRelicId = "heart_fire";
+    let selectedSlotIndex = 0;
+    let editingSynergyIndex = null;
+    let selectedSynergyPreviewId = null;
+    let pendingSynergyId = null;
+    let pendingSynergyPoints = null;
+    let previewTouchedInModal = false;
+    let pendingEquipRelicId = null;
+    let modalMode = "edit";
+    let toastTimer = null;
+    let keepModalOpenDuringApply = false;
+    let lastAppliedSynergyId = null;
+    let lastAppliedSynergyIndex = null;
+    let lastGrowthRelicId = null;
+    let lastEquipRelicId = null;
+    let lastActionFeedback = null;
+    let feedbackTimer = null;
+
+    const inventoryGrid = document.querySelector("#inventoryGrid");
+    const drawRelicOnceButton = document.querySelector("#drawRelicOnceButton");
+    const drawRelicTenButton = document.querySelector("#drawRelicTenButton");
+    const drawRelicHundredButton = document.querySelector("#drawRelicHundredButton");
+    const slotRow = document.querySelector("#slotRow");
+    const equipSummary = document.querySelector("#equipSummary");
+    const loadoutPresetsElement = document.querySelector("#loadoutPresets");
+    const detailPanel = document.querySelector(".detail-panel");
+    const detailName = document.querySelector("#detailName");
+    const detailIcon = document.querySelector("#detailIcon");
+    const detailStatus = document.querySelector("#detailStatus");
+    const detailShardGauge = document.querySelector("#detailShardGauge");
+    const detailStars = document.querySelector("#detailStars");
+    const statBlock = document.querySelector("#statBlock");
+    const detailActions = document.querySelector("#detailActions");
+    const modalOverlay = document.querySelector("#modalOverlay");
+    const modalTitle = document.querySelector("#modalTitle");
+    const modalSynergyLimit = document.querySelector("#modalSynergyLimit");
+    const synergyList = document.querySelector("#synergyList");
+    const closeModal = document.querySelector("#closeModal");
+    const toast = document.querySelector("#toast");
+    const equipActionButton = document.querySelector("#equipActionButton");
+    let lastModalFocus = null;
+    let detailTab = "relic";
+
+    function getRelic(id) {
+      return relics.find((relic) => relic.id === id);
+    }
+
+    function getSynergy(id) {
+      return synergies.find((synergy) => synergy.id === id);
+    }
+
+    const maxStars = 5;
+
+    function selectedSynergyPoints(ids = selectedSynergyIds) {
+      return ids.reduce((total, id) => {
+        const synergy = getSynergy(id);
+        return total + (synergy ? (selectedSynergyPointsById[id] ?? synergy.minPoints ?? synergy.cost) : 0);
+      }, 0);
+    }
+
+    function selectedPointsFor(synergy) {
+      return selectedSynergyPointsById[synergy.id] ?? synergy.minPoints ?? synergy.cost;
+    }
+
+    function pendingPointsFor(synergy) {
+      if (!synergy) return 0;
+      return pendingSynergyId === synergy.id && pendingSynergyPoints !== null
+        ? pendingSynergyPoints
+        : selectedPointsFor(synergy);
+    }
+
+    function synergyEffectFor(synergy, points = selectedPointsFor(synergy)) {
+      if (synergy.costMode !== "investable") return synergy.effect;
+      return synergy.stages[points - 1] || synergy.effect;
+    }
+
+    function synergyPointClass(synergy, points = selectedPointsFor(synergy)) {
+      const value = Math.max(1, Math.min(3, points || synergy.cost || 1));
+      return `point-${value}`;
+    }
+
+    function updateSynergySlot(index, synergyId, points = null) {
+      if (index < 0 || index >= synergySelectionCap) return { ok: false, reason: "잘못된 슬롯입니다." };
+      const previousId = selectedSynergyIds[index];
+      const otherIds = selectedSynergyIds.filter((id, slotIndex) => slotIndex !== index && id);
+      if (synergyId && otherIds.includes(synergyId)) return { ok: false, reason: "다른 슬롯에 장착 중입니다." };
+
+      const synergy = synergyId ? getSynergy(synergyId) : null;
+      const nextPoints = synergy
+        ? Math.max(synergy.minPoints || synergy.cost, Math.min(synergy.maxPoints || synergy.cost, points ?? selectedSynergyPointsById[synergyId] ?? synergy.minPoints ?? synergy.cost))
+        : 0;
+      if (synergy && selectedSynergyPoints(otherIds) + nextPoints > synergyPointCap) {
+        return { ok: false, reason: "남은 시너지 포인트가 부족합니다." };
+      }
+
+      selectedSynergyIds[index] = synergyId || null;
+      if (previousId && previousId !== synergyId && !selectedSynergyIds.includes(previousId)) delete selectedSynergyPointsById[previousId];
+      if (synergy) selectedSynergyPointsById[synergyId] = nextPoints;
+      saveActiveLoadoutPreset();
+      return { ok: true, points: nextPoints };
+    }
+
+    function saveActiveLoadoutPreset() {
+      loadoutPresets[activeLoadoutPreset] = {
+        equippedSlots: [...equippedSlots],
+        synergyIds: [...selectedSynergyIds],
+        synergyPointsById: { ...selectedSynergyPointsById }
+      };
+    }
+
+    function renderLoadoutPresets() {
+      loadoutPresetsElement.querySelectorAll("[data-loadout-preset]").forEach((button) => {
+        const isActive = Number(button.dataset.loadoutPreset) === activeLoadoutPreset;
+        button.classList.toggle("active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+      });
+    }
+
+    function switchLoadoutPreset(index) {
+      if (!Number.isInteger(index) || index < 0 || index >= loadoutPresets.length || index === activeLoadoutPreset) return;
+      saveActiveLoadoutPreset();
+      activeLoadoutPreset = index;
+      const preset = loadoutPresets[index];
+      equippedSlots.splice(0, equippedSlots.length, ...preset.equippedSlots);
+      selectedSynergyIds = [...preset.synergyIds];
+      selectedSynergyPointsById = { ...preset.synergyPointsById };
+      selectedSlotIndex = Math.max(0, equippedSlots.findIndex(Boolean));
+      if (equippedSlots[selectedSlotIndex]) selectedRelicId = equippedSlots[selectedSlotIndex];
+      pendingEquipRelicId = null;
+      editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+      pendingSynergyPoints = null;
+      previewTouchedInModal = false;
+      renderAll();
+      showToast(`${index + 1}번 프리셋을 불러왔습니다.`);
+    }
+
+    function synergyIdsWithoutEditingSlot() {
+      return selectedSynergyIds.filter((id, index) => index !== editingSynergyIndex && id);
+    }
+
+    function synergiesByGrade() {
+      return [...synergies];
+    }
+
+    function ownedRelicCount() {
+      return relics.filter((relic) => relic.owned).length;
+    }
+
+    function isEquipSlotUnlocked(index) {
+      return ownedRelicCount() >= (equipSlotUnlockRequirements[index] ?? Infinity);
+    }
+
+    function equipSlotUnlockText(index) {
+      return `${equipSlotUnlockRequirements[index]}개 보유`;
+    }
+
+    function renderStars(count = 0) {
+      return Array.from({ length: 5 }, (_, index) => {
+        const className = index < count ? "star on" : "star off";
+        return `<span class="${className}"></span>`;
+      }).join("");
+    }
+
+    function renderLevelLabel(level) {
+      return `Lv. ${level}`;
+    }
+
+    function renderIcon(relic, sizeClass = "", showStars = false, showLevel = true) {
+      if (!relic.owned) {
+        return `
+          <div class="icon-box ${sizeClass} grade-${relic.grade} unowned">
+            <span>${relic.icon}</span>
+            ${showLevel ? `<span class="level-chip">${renderLevelLabel(relic.level)}</span>` : ""}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="icon-box ${sizeClass} grade-${relic.grade}">
+          <span>${relic.icon}</span>
+          ${showLevel ? `<span class="level-chip">${renderLevelLabel(relic.level)}</span>` : ""}
+        </div>
+      `;
+    }
+
+    function shardProgress(relic) {
+      if (!relic.requiredShards) return 0;
+      return Math.min(100, Math.round((relic.shards / relic.requiredShards) * 100));
+    }
+
+    function renderShardGauge(relic) {
+      return `
+        <span class="shard-gauge" aria-label="조각 ${relic.shards}/${relic.requiredShards}">
+          <span class="shard-fill" style="--shard-progress: ${shardProgress(relic)}%;"></span>
+          <span class="shard-label">${relic.shards}/${relic.requiredShards}</span>
+        </span>
+      `;
+    }
+
+    function renderInventory() {
+      const gradeOrder = { N: 0, R: 1, SR: 2, SSR: 3 };
+      const sortedRelics = relics
+        .map((relic, index) => ({ relic, index }))
+        .sort((a, b) => {
+          const gradeDiff = gradeOrder[a.relic.grade] - gradeOrder[b.relic.grade];
+          return gradeDiff || a.index - b.index;
+        })
+        .map(({ relic }) => relic);
+
+      const renderRelicCard = (relic) => {
+        const selected = relic.id === selectedRelicId ? "selected" : "";
+        const locked = relic.owned ? "" : "locked";
+        const equipped = equippedSlots.includes(relic.id);
+        const equippedClass = equipped ? "equipped" : "";
+        const growthPulse = relic.id === lastGrowthRelicId ? "growth-pulse" : "";
+        const levelUpNotice = canUpgradeRelic(relic) ? `<span class="notify-dot" aria-hidden="true"></span>` : "";
+
+        return `
+          <button class="relic-card grade-card-${relic.grade} ${selected} ${locked} ${equippedClass} ${growthPulse}" type="button" data-relic-id="${relic.id}" aria-pressed="${selected ? "true" : "false"}">
+            ${equipped ? `<span class="equipped-badge" aria-label="장착 중">✓</span>` : ""}
+            ${levelUpNotice}
+            ${renderIcon(relic, "", true)}
+            ${renderShardGauge(relic)}
+          </button>
+        `;
+      };
+
+      inventoryGrid.innerHTML = sortedRelics.map(renderRelicCard).join("");
+    }
+
+    function renderSlots() {
+      slotRow.innerHTML = equippedSlots.map((relicId, index) => {
+        const unlocked = isEquipSlotUnlocked(index);
+        const relic = relicId ? getRelic(relicId) : null;
+        const selected = index === selectedSlotIndex ? "selected" : "";
+        const equipTarget = pendingEquipRelicId && unlocked ? "equip-target" : "";
+        const growthPulse = relic?.id === lastGrowthRelicId ? "growth-pulse" : "";
+        const equipPulse = relic?.id === lastEquipRelicId ? "equip-pulse" : "";
+
+        if (!unlocked) {
+          return `
+            <button class="slot-card locked" type="button" data-slot-index="${index}" data-locked="true" aria-label="잠긴 장착 슬롯">
+              <div class="slot-lock-icon" aria-hidden="true">🔒</div>
+              <div class="slot-lock-text">${equipSlotUnlockText(index)} 시 해금</div>
+            </button>
+          `;
+        }
+
+        if (!relic) {
+          return `
+            <button class="slot-card empty-slot ${selected} ${equipTarget}" type="button" data-slot-index="${index}">
+              <div class="slot-empty-plus">+</div>
+            </button>
+          `;
+        }
+
+        return `
+          <button class="slot-card ${selected} ${equipTarget} ${growthPulse} ${equipPulse}" type="button" data-slot-index="${index}">
+            <div class="slot-main">
+              ${renderIcon(relic, "small", true)}
+            </div>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function parsePercent(value) {
+      return Number(String(value).replace(/[+%]/g, ""));
+    }
+
+    function isPercentValue(value) {
+      return /%/.test(String(value));
+    }
+
+    function formatPercent(value) {
+      const rounded = Math.round(value * 10) / 10;
+      const text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+      return `+${text}%`;
+    }
+
+    function formatPlainPercent(value) {
+      const rounded = Math.round(value * 10) / 10;
+      const text = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+      return `${text}%`;
+    }
+
+    function renderDeltaBadge(delta) {
+      if (!delta) return "";
+      return `<span class="next-value">(+${formatPlainPercent(delta)})</span>`;
+    }
+
+    function descriptionPercentMatches(value) {
+      return [...String(value).matchAll(/(\d+(?:\.\d+)?)%/g)];
+    }
+
+    function targetDescriptionPercent(value) {
+      const matches = descriptionPercentMatches(value);
+      return matches[matches.length - 1] || null;
+    }
+
+    function replaceTargetDescriptionPercent(value, render) {
+      const text = String(value);
+      const target = targetDescriptionPercent(text);
+      if (!target) return text;
+
+      const before = text.slice(0, target.index);
+      const after = text.slice(target.index + target[0].length);
+      return `${before}${render(target[0], parseFloat(target[1]))}${after}`;
+    }
+
+    function nextPromotionDescription(value) {
+      return replaceTargetDescriptionPercent(value, (match) => `${match}${renderDeltaBadge(5)}`);
+    }
+
+    function bumpDescriptionPercent(value, delta) {
+      return replaceTargetDescriptionPercent(value, (match, amount) => formatPlainPercent(amount + delta));
+    }
+
+    function nextPromotionDescriptionValue(value) {
+      return bumpDescriptionPercent(value, 5);
+    }
+
+    function levelGrowthRatio(level, maxLevel = 50) {
+      const safeMaxLevel = Math.max(1, Number(maxLevel) || 50);
+      const safeLevel = Math.min(safeMaxLevel, Math.max(0, Number(level) || 0));
+      return maxLevelEffectGrowth * safeLevel / safeMaxLevel;
+    }
+
+    function formatGrowthPercent(value, signed = false, precision = 2) {
+      const multiplier = 10 ** precision;
+      const rounded = Math.round(Number(value) * multiplier) / multiplier;
+      const text = rounded
+        .toFixed(precision)
+        .replace(/(\.\d*?[1-9])0+$/, "$1")
+        .replace(/\.0+$/, "");
+      return `${signed && rounded >= 0 ? "+" : ""}${text}%`;
+    }
+
+    function scaledLevelPercent(amount, level, maxLevel) {
+      return amount * (1 + levelGrowthRatio(level, maxLevel));
+    }
+
+    function levelScaledDescription(value, level, maxLevel) {
+      return replaceTargetDescriptionPercent(value, (match, amount) => formatGrowthPercent(scaledLevelPercent(amount, level, maxLevel)));
+    }
+
+    function ownedEffectAmount(effect, relic, stars = relic.stars, level = relic.level) {
+      const safeLevel = Math.min(relic.maxLevel, Math.max(0, Number(level) || 0));
+      return (effect.base + effect.perStar * stars) * (1 + ownedMaxLevelEffectGrowth * safeLevel / relic.maxLevel);
+    }
+
+    function formatOwnedEffect(effect, amount, signed = true, precision = 2) {
+      const multiplier = 10 ** precision;
+      const rounded = Math.round(Number(amount) * multiplier) / multiplier;
+      const text = rounded
+        .toFixed(precision)
+        .replace(/(\.\d*?[1-9])0+$/, "$1")
+        .replace(/\.0+$/, "");
+      return `${signed && rounded >= 0 ? "+" : ""}${text}${effect.unit === "point" ? "%p" : "%"}`;
+    }
+
+    function ownedEffectValue(effect, relic) {
+      return formatOwnedEffect(effect, ownedEffectAmount(effect, relic));
+    }
+
+    function ownedPromotionDelta(effect, relic) {
+      const nextStars = Math.min(maxStars, relic.stars + 1);
+      return ownedEffectAmount(effect, relic, nextStars) - ownedEffectAmount(effect, relic);
+    }
+
+    function ownedLevelDelta(effect, relic) {
+      const nextLevel = Math.min(relic.maxLevel, relic.level + 1);
+      return ownedEffectAmount(effect, relic, relic.stars, nextLevel) - ownedEffectAmount(effect, relic);
+    }
+
+    function applyRelicLevelEffects(relic) {
+      relic.equipEffect = relic.baseEquipEffect.map(([label, value]) => [label, levelScaledDescription(value, relic.level, relic.maxLevel)]);
+      relic.ownedEffect = relic.ownedEffectProfile.map((effect) => [effect.label, ownedEffectValue(effect, relic)]);
+    }
+
+    function renderGrowthDeltaBadge(delta, unit = "percent") {
+      if (!Number.isFinite(delta) || Math.abs(delta) < 0.000001) return "";
+      const precision = Math.abs(delta) < 0.01 ? 3 : 2;
+      const display = formatOwnedEffect({ unit }, delta, false, precision);
+      return `<span class="next-value">(+${display})</span>`;
+    }
+
+    function renderDescriptionWithNext(value, relic) {
+      const nextLevel = Math.min(relic.maxLevel, relic.level + 1);
+      return replaceTargetDescriptionPercent(value, (match, amount) => {
+        const current = scaledLevelPercent(amount, relic.level, relic.maxLevel);
+        const next = scaledLevelPercent(amount, nextLevel, relic.maxLevel);
+        return `${formatGrowthPercent(current)}${renderGrowthDeltaBadge(next - current)}`;
+      });
+    }
+
+    function renderOwnedPromotionValue(effect, relic) {
+      return `${ownedEffectValue(effect, relic)}${renderGrowthDeltaBadge(ownedPromotionDelta(effect, relic), effect.unit)}`;
+    }
+
+    function renderOwnedValueWithNext(effect, relic) {
+      return `${ownedEffectValue(effect, relic)}${renderGrowthDeltaBadge(ownedLevelDelta(effect, relic), effect.unit)}`;
+    }
+
+    function ownedEffectLabel(label) {
+      return label;
+    }
+
+    function displayOwnedEffectValue(value) {
+      return String(value).replace(/^\+/, "");
+    }
+
+    function canUpgradeRelic(relic) {
+      return Boolean(
+        relic?.owned &&
+        relic.level < relic.maxLevel &&
+        relic.shards >= relic.requiredShards
+      );
+    }
+
+    function canPreviewLevelUp(relic) {
+      return Boolean(relic?.owned && relic.level < relic.maxLevel);
+    }
+
+    function canEquipRelic(relic) {
+      return Boolean(relic?.owned && relic.level > 0);
+    }
+
+    function upgradeRelic(relic) {
+      if (!canUpgradeRelic(relic)) return false;
+      relic.level += 1;
+      relic.shards = Math.max(0, relic.shards - relic.requiredShards);
+      applyRelicLevelEffects(relic);
+      return true;
+    }
+
+    function levelUpRelic(relic) {
+      return upgradeRelic(relic);
+    }
+
+    function canConfirmPromotion(relic) {
+      return Boolean(relic?.owned && relic.stars < maxStars && relic.shards >= relic.requiredShards);
+    }
+
+    function actionGaugeIcon() {
+      return "◆";
+    }
+
+    function renderLevelUpButtonContent() {
+      return `<span class="action-label">레벨업</span>`;
+    }
+
+    function renderActionGauge(owned, required, type = "shard") {
+      const progress = required > 0 ? Math.min((owned / required) * 100, 100) : 0;
+      return `
+        <span class="action-gauge ${type}" aria-label="${owned}/${required}">
+          <span class="action-gauge-icon" aria-hidden="true">${actionGaugeIcon(type)}</span>
+          <span class="action-gauge-fill" style="--action-progress: ${progress}%;"></span>
+          <span class="action-gauge-label">${owned}/${required}</span>
+        </span>
+      `;
+    }
+
+    function promotionEffectCards(effects, relic = null) {
+      if (relic) {
+        return relic.ownedEffectProfile.map((effect) => `
+          <div class="effect-card">
+            <span class="effect-name">${ownedEffectLabel(effect.label)}</span>
+            <span class="effect-desc">${renderOwnedPromotionValue(effect, relic)}</span>
+          </div>
+        `).join("");
+      }
+      return effects.map(([label, value]) => `
+        <div class="effect-card">
+          <span class="effect-name">${label}</span>
+          <span class="effect-desc">${nextPromotionDescription(value)}</span>
+        </div>
+      `).join("");
+    }
+
+    function levelUpEffectCards(relic, owned = false) {
+      if (owned) {
+        return relic.ownedEffectProfile.map((effect) => `
+          <div class="effect-card">
+            <span class="effect-name">${ownedEffectLabel(effect.label)}</span>
+            <span class="effect-desc">${renderOwnedValueWithNext(effect, relic)}</span>
+          </div>
+        `).join("");
+      }
+      return relic.baseEquipEffect.map(([label, value]) => `
+        <div class="effect-card">
+          <span class="effect-desc">${renderDescriptionWithNext(value, relic)}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderLevelUpModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic) return;
+      const canLevelUp = canUpgradeRelic(relic);
+      const growthFeedback = relic.id === lastGrowthRelicId && lastActionFeedback === "upgrade" ? "growth-pulse" : "";
+
+      synergyList.className = "promotion-list";
+      synergyList.innerHTML = `
+        <div class="promotion-hero levelup-hero ${growthFeedback}">
+          <div class="levelup-hero-icon">
+            ${renderIcon(relic, "", false, true)}
+          </div>
+          <div class="promotion-hero-copy">
+            <div class="levelup-hero-meta"><span class="grade-badge ${relic.grade}">${relic.grade}</span><span>${renderLevelLabel(relic.level)} / ${relic.maxLevel}</span></div>
+            <div class="levelup-hero-name">${relic.name}</div>
+            ${renderShardGauge(relic)}
+          </div>
+        </div>
+        <div class="promotion-compare">
+          <div class="promotion-effect-section stat-section">
+            <div class="promotion-card-title">장착 효과</div>
+            ${levelUpEffectCards(relic)}
+          </div>
+          <div class="promotion-effect-section owned-section">
+            <div class="promotion-card-title">보유 효과</div>
+            ${levelUpEffectCards(relic, true)}
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="action-button levelup-cancel-button" type="button" data-modal-action="cancel">취소</button>
+          <button class="action-button promotion-confirm-button levelup-confirm-button" type="button" data-modal-action="levelup-confirm" ${canLevelUp ? "" : "disabled"}>
+            ${renderLevelUpButtonContent()}
+          </button>
+        </div>
+      `;
+    }
+
+    function renderPromotionModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic) return;
+      const nextStars = Math.min(relic.stars + 1, maxStars);
+      const canPromote = canConfirmPromotion(relic);
+
+      synergyList.className = "promotion-list";
+      synergyList.innerHTML = `
+        <div class="promotion-hero">
+          ${renderIcon(relic, "", false, false)}
+          <div class="promotion-name">${relic.name}</div>
+          <div class="promotion-stars">
+            <div class="promotion-star-track">
+              <div class="star-row">${renderStars(relic.stars)}</div>
+              <span>&gt;</span>
+              <div class="star-row">${renderStars(nextStars)}</div>
+            </div>
+          </div>
+        </div>
+        <div class="promotion-compare">
+          <div class="promotion-effect-section stat-section">
+            <div class="promotion-card-title">장착 효과</div>
+            ${promotionEffectCards(relic.equipEffect)}
+          </div>
+          <div class="promotion-effect-section owned-section">
+            <div class="promotion-card-title">보유 효과</div>
+            ${promotionEffectCards([], relic)}
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="action-button" type="button" data-modal-action="cancel">취소</button>
+          <button class="action-button promotion-confirm-button" type="button" data-modal-action="promote-confirm" ${canPromote ? "" : "disabled"}>
+            <span class="action-label">승급</span>
+            ${renderActionGauge(relic.shards, relic.requiredShards, "shard")}
+          </button>
+        </div>
+      `;
+    }
+
+    function applyPromotion() {
+      const relic = getRelic(selectedRelicId);
+      if (!canConfirmPromotion(relic)) return;
+      relic.shards -= relic.requiredShards;
+      relic.stars = Math.min(relic.stars + 1, maxStars);
+      relic.baseEquipEffect = relic.baseEquipEffect.map(([label, value]) => [label, nextPromotionDescriptionValue(value)]);
+      applyRelicLevelEffects(relic);
+      triggerGrowthFeedback(relic.id, "promote");
+      closeSynergyModal();
+      renderAll();
+      showToast("승급되었습니다.");
+    }
+
+    function renderEquipSummary() {
+      const slots = Array.from({ length: synergySelectionCap }, (_, index) => {
+        const synergy = getSynergy(selectedSynergyIds[index]);
+        if (!synergy) {
+          return `
+            <button class="summary-token empty" type="button" data-common-synergy-index="${index}" aria-label="공용 시너지 선택">
+              <span aria-hidden="true">+</span>
+            </button>
+          `;
+        }
+        const selected = index === editingSynergyIndex ? "selected" : "";
+        const justApplied = synergy.id === lastAppliedSynergyId && index === lastAppliedSynergyIndex ? "just-applied" : "";
+        const pointClass = synergyPointClass(synergy);
+        return `
+          <button class="summary-token ${pointClass} ${selected} ${justApplied}" type="button" data-common-synergy-index="${index}" aria-label="${synergy.name}, ${selectedPointsFor(synergy)}포인트, ${synergyEffectFor(synergy)}" title="${synergy.name}: ${synergyEffectFor(synergy)}">
+            <span class="summary-token-icon" aria-hidden="true">${synergy.icon}</span>
+          </button>
+        `;
+      }).join("");
+
+      equipSummary.innerHTML = `
+        <div class="synergy-summary-slots">${slots}</div>
+      `;
+    }
+
+    function renderDetail() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic) return;
+      const isEquipped = equippedSlots.includes(relic.id);
+
+      detailPanel.classList.toggle("growth-pulse", relic.id === lastGrowthRelicId);
+      detailIcon.innerHTML = renderIcon(relic, "", true, true);
+      detailName.textContent = relic.name;
+      detailStars.innerHTML = "";
+      detailShardGauge.innerHTML = `<div class="detail-shard-gauge">${renderShardGauge(relic)}</div>`;
+      detailStatus.innerHTML = `
+        <span class="grade-badge ${relic.grade}">${relic.grade}</span>
+        <span>${renderLevelLabel(relic.level)} / ${relic.maxLevel}</span>
+      `;
+      const equipRows = relic.equipEffect.map(([, value]) => `
+        <div class="effect-card ${relic.owned ? "" : "disabled"}">
+          <span class="effect-desc">${value}</span>
+        </div>
+      `).join("");
+      const ownedRows = relic.ownedEffect.map(([label, value]) => `
+        <div class="effect-card ${relic.owned ? "" : "disabled"}">
+          <span class="effect-name">${ownedEffectLabel(label)}</span>
+          <span class="effect-desc">${displayOwnedEffectValue(value)}</span>
+        </div>
+      `).join("");
+
+      const currentTotals = ownedEffectTotals();
+      const maxLevelTotals = ownedEffectTotals((ownedRelic) => ownedRelic.maxLevel);
+      const maxTotalsByLabel = new Map(maxLevelTotals.map((effect) => [effect.label, effect]));
+      const ownedCount = relics.filter((item) => item.owned).length;
+      const overviewRows = currentTotals.length
+        ? currentTotals.map((effect) => {
+          const maxEffect = maxTotalsByLabel.get(effect.label) || effect;
+          return `<div class="owned-overview-item"><span>${effect.label}</span><strong>현재 ${formatOwnedEffect(effect, effect.amount)} · Lv.50 ${formatOwnedEffect(maxEffect, maxEffect.amount)}</strong></div>`;
+        }).join("")
+        : `<div class="owned-overview-empty">보유한 유물이 없습니다. 유물을 획득하면 보유 효과가 이 탭에 누적됩니다.</div>`;
+      const tabBar = `
+        <div class="detail-tabs" role="tablist" aria-label="상세 정보 탭">
+          <button class="detail-tab-button" type="button" role="tab" data-detail-tab="relic" aria-selected="${detailTab === "relic"}">유물 효과</button>
+          <button class="detail-tab-button" type="button" role="tab" data-detail-tab="owned" aria-selected="${detailTab === "owned"}">보유 효과</button>
+        </div>
+      `;
+      const content = detailTab === "owned"
+        ? `<div class="detail-tab-content"><div class="owned-overview"><div class="owned-overview-head"><strong>계정 보유 효과</strong><span>획득 ${ownedCount} / ${relics.length} · Lv.50 기준 포함</span></div><div class="owned-overview-list">${overviewRows}</div></div></div>`
+        : `<div class="detail-tab-content relic-effect-tab"><div class="stat-section"><div class="stat-title">장착 효과</div>${equipRows}</div><div class="owned-section"><div class="stat-title">보유 효과</div>${ownedRows}</div></div>`;
+      statBlock.innerHTML = `${tabBar}${content}`;
+      detailActions.hidden = detailTab === "owned";
+      detailPanel.classList.toggle("owned-tab-active", detailTab === "owned");
+
+      const levelupButton = document.querySelector('[data-action="levelup"]');
+      const canUpgrade = canUpgradeRelic(relic);
+      const canPreviewUpgrade = canPreviewLevelUp(relic);
+      levelupButton.innerHTML = `
+        ${canUpgrade ? `<span class="notify-dot" aria-hidden="true"></span>` : ""}
+        ${renderLevelUpButtonContent()}
+      `;
+      levelupButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
+      levelupButton.classList.add("levelup-action");
+      levelupButton.disabled = !canPreviewUpgrade;
+      const isSelectingEquipSlot = pendingEquipRelicId === relic.id;
+      equipActionButton.dataset.action = isSelectingEquipSlot ? "cancel-equip" : isEquipped ? "unequip" : "equip";
+      equipActionButton.textContent = isSelectingEquipSlot ? "장착 취소" : isEquipped ? "장착 해제" : "장착";
+      equipActionButton.classList.add("equip-action");
+      equipActionButton.classList.toggle("unequip-action", isEquipped);
+      equipActionButton.classList.toggle("cancel-equip-action", isSelectingEquipSlot);
+      equipActionButton.disabled = isSelectingEquipSlot || isEquipped ? false : !canEquipRelic(relic);
+    }
+
+    function renderSynergyOptions() {
+      synergyList.className = "synergy-list common-synergy-list restored-synergy-list";
+      const selectedPoints = selectedSynergyPoints();
+      modalSynergyLimit.innerHTML = "";
+      const currentId = selectedSynergyIds[editingSynergyIndex] || null;
+      const selectedInOtherSlots = new Set(synergyIdsWithoutEditingSlot());
+      const remaining = synergyPointCap - selectedSynergyPoints([...selectedInOtherSlots]);
+      const previewId = selectedSynergyPreviewId;
+      const previewSynergy = previewId ? getSynergy(previewId) : null;
+      const previewPoints = previewSynergy ? pendingPointsFor(previewSynergy) : 0;
+      // The modal preview replaces the currently equipped value; it must not be
+      // counted twice when deciding whether one more point still fits.
+      const equippedSlotSynergy = currentId ? getSynergy(currentId) : null;
+      const committedPreviewPoints = equippedSlotSynergy
+        ? selectedPointsFor(equippedSlotSynergy)
+        : 0;
+      const previewTotalPoints = selectedPoints - committedPreviewPoints + previewPoints;
+
+      const selectedSlots = Array.from({ length: synergySelectionCap }, (_, index) => {
+        const synergy = getSynergy(selectedSynergyIds[index]);
+        const selected = index === editingSynergyIndex ? "selected" : "";
+        if (!synergy) {
+          return `
+          <button class="modal-synergy-slot empty ${selected}" type="button" data-modal-synergy-slot-index="${index}" aria-label="비어 있는 공용 시너지 슬롯 ${index + 1}">
+              <span class="synergy-icon" aria-hidden="true">+</span>
+            </button>
+          `;
+        }
+        return `
+          <button class="modal-synergy-slot ${synergyPointClass(synergy)} ${selected}" type="button" data-modal-synergy-slot-index="${index}" aria-label="공용 시너지 슬롯 ${index + 1}: ${synergy.name}">
+            <span class="synergy-icon" aria-hidden="true">${synergy.icon}</span>
+          </button>
+        `;
+      }).join("");
+
+      const iconGrid = synergiesByGrade().map((synergy) => {
+        const isPreview = synergy.id === previewId;
+        const isApplied = synergy.id === currentId;
+        const isSelectedElsewhere = selectedInOtherSlots.has(synergy.id);
+        const desiredPoints = isPreview ? pendingPointsFor(synergy) : isApplied ? selectedPointsFor(synergy) : synergy.minPoints || synergy.cost;
+        const unavailable = desiredPoints > remaining;
+        const classes = [
+          "synergy-pick",
+          synergyPointClass(synergy, desiredPoints),
+          isPreview ? "preview" : "",
+          isApplied ? "applied" : "",
+          isSelectedElsewhere ? "equipped-elsewhere" : "",
+          unavailable ? "unavailable" : ""
+        ].filter(Boolean).join(" ");
+        return `
+          <button class="${classes}" type="button" data-preview-synergy-id="${synergy.id}" aria-label="${synergy.name} 시너지" ${unavailable ? "disabled" : ""}>
+            <div class="synergy-icon">${synergy.icon}</div>
+          </button>
+        `;
+      }).join("");
+
+      const previewPointClass = previewSynergy ? synergyPointClass(previewSynergy, previewPoints) : "";
+      const previewIsCurrent = Boolean(previewSynergy && previewSynergy.id === currentId && previewPoints === selectedPointsFor(previewSynergy));
+      const previewHtml = previewSynergy ? `
+        <div class="synergy-preview ${previewPointClass}">
+          <div class="preview-head">
+            <div class="preview-synergy-card ${previewPointClass}" aria-hidden="true">
+              <div class="synergy-icon">${previewSynergy.icon}</div>
+            </div>
+            <div class="preview-title"><div class="option-title"><span>${previewSynergy.name}</span></div></div>
+            ${previewSynergy.costMode === "investable" ? `<div class="point-stepper preview-point-stepper" role="group" aria-label="${previewSynergy.name} 포인트 조절"><button type="button" data-synergy-points="decrease" aria-label="포인트 감소" ${previewPoints <= previewSynergy.minPoints ? "disabled" : ""}>−</button><span class="point-stepper-value">${previewPoints}</span><button type="button" data-synergy-points="increase" aria-label="포인트 증가" ${previewPoints >= previewSynergy.maxPoints || previewTotalPoints >= synergyPointCap ? "disabled" : ""}>+</button></div>` : `<div class="point-stepper preview-point-stepper fixed-point-stepper" aria-label="${previewSynergy.name} 포인트"><button type="button" aria-label="포인트 감소" disabled>−</button><span class="point-stepper-value">${previewPoints}</span><button type="button" aria-label="포인트 증가" disabled>+</button></div>`}
+          </div>
+          <div class="synergy-effect-preview">${synergyEffectFor(previewSynergy, previewPoints)}</div>
+        </div>
+      ` : `<div class="synergy-preview" aria-hidden="true"></div>`;
+
+      synergyList.innerHTML = `
+        <div class="modal-synergy-slots">
+          <div class="modal-synergy-slots-head"><span>장착 시너지</span><span>${Math.max(selectedPoints, previewTotalPoints)} / ${synergyPointCap}pt</span></div>
+          <div class="modal-synergy-slots-row">${selectedSlots}</div>
+        </div>
+        <div class="synergy-icon-grid">${iconGrid}</div>
+        ${previewHtml}
+        <div class="modal-actions immediate-actions">
+          <button class="action-button" type="button" data-modal-action="cancel">닫기</button>
+          <button class="action-button ${previewIsCurrent ? "remove-synergy-button" : ""}" type="button" data-modal-action="${previewIsCurrent ? "remove" : "done"}">${previewIsCurrent ? "장착 해제" : "장착"}</button>
+        </div>
+      `;
+    }
+
+    function openModal(index) {
+      if (index < 0 || index >= synergySelectionCap) return;
+      lastModalFocus = document.activeElement;
+      modalMode = "edit";
+      modalTitle.textContent = "시너지 선택";
+      editingSynergyIndex = index;
+      const currentId = selectedSynergyIds[editingSynergyIndex] || null;
+      const selectedInOtherSlots = new Set(synergyIdsWithoutEditingSlot());
+      const remaining = synergyPointCap - selectedSynergyPoints([...selectedInOtherSlots]);
+      const firstAvailable = synergiesByGrade().find((synergy) => synergy.cost <= remaining && !selectedInOtherSlots.has(synergy.id))?.id || null;
+      selectedSynergyPreviewId = currentId || firstAvailable;
+      pendingSynergyId = currentId || firstAvailable;
+      pendingSynergyPoints = pendingSynergyId ? selectedPointsFor(getSynergy(pendingSynergyId)) : null;
+      previewTouchedInModal = false;
+      modalOverlay.querySelector(".modal").classList.remove("promotion-modal", "levelup-modal");
+      renderSynergyOptions();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => synergyList.querySelector(".modal-synergy-slot.selected")?.focus());
+    }
+
+    function openPromotionModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!relic?.owned || relic.stars >= maxStars) return;
+      lastModalFocus = document.activeElement;
+      modalMode = "promote";
+      modalTitle.textContent = "유물 승급";
+      modalSynergyLimit.textContent = "";
+      editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+      pendingSynergyPoints = null;
+      previewTouchedInModal = false;
+      modalOverlay.querySelector(".modal").classList.add("promotion-modal");
+      modalOverlay.querySelector(".modal").classList.remove("levelup-modal");
+      renderPromotionModal();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function openLevelUpModal() {
+      const relic = getRelic(selectedRelicId);
+      if (!canPreviewLevelUp(relic)) return;
+      lastModalFocus = document.activeElement;
+      modalMode = "levelup";
+      modalTitle.textContent = "유물 레벨업";
+      modalSynergyLimit.textContent = "";
+      editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+      pendingSynergyPoints = null;
+      previewTouchedInModal = false;
+      modalOverlay.querySelector(".modal").classList.add("promotion-modal", "levelup-modal");
+      renderLevelUpModal();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSynergyModal() {
+      if (keepModalOpenDuringApply) return;
+      modalOverlay.classList.remove("open");
+      modalOverlay.setAttribute("aria-hidden", "true");
+      modalTitle.textContent = "시너지 선택";
+      modalSynergyLimit.textContent = "";
+      synergyList.className = "synergy-list";
+      modalOverlay.querySelector(".modal").classList.remove("promotion-modal", "levelup-modal");
+      modalMode = "edit";
+      editingSynergyIndex = null;
+      selectedSynergyPreviewId = null;
+      pendingSynergyId = null;
+      pendingSynergyPoints = null;
+      previewTouchedInModal = false;
+      if (lastModalFocus instanceof HTMLElement) lastModalFocus.focus();
+      lastModalFocus = null;
+    }
+
+    function equipRelicToSlot(relicId, slotIndex) {
+      const relic = getRelic(relicId);
+      if (!canEquipRelic(relic) || slotIndex < 0 || slotIndex >= equippedSlots.length) return false;
+      if (!isEquipSlotUnlocked(slotIndex)) return false;
+      const previousIndex = equippedSlots.indexOf(relicId);
+      if (previousIndex >= 0 && previousIndex !== slotIndex) {
+        equippedSlots[previousIndex] = null;
+      }
+      equippedSlots[slotIndex] = relicId;
+      selectedRelicId = relicId;
+      selectedSlotIndex = slotIndex;
+      pendingEquipRelicId = null;
+      saveActiveLoadoutPreset();
+      return true;
+    }
+
+    function unequipRelic(relicId) {
+      const slotIndex = equippedSlots.indexOf(relicId);
+      if (slotIndex < 0) return false;
+      equippedSlots[slotIndex] = null;
+      selectedRelicId = relicId;
+      selectedSlotIndex = -1;
+      pendingEquipRelicId = null;
+      saveActiveLoadoutPreset();
+      return true;
+    }
+
+    function applyPendingSynergy() {
+      if (editingSynergyIndex === null || !pendingSynergyId) return;
+      const otherIds = synergyIdsWithoutEditingSlot();
+      const pendingSynergy = getSynergy(pendingSynergyId);
+      if (!pendingSynergy || otherIds.includes(pendingSynergyId)) return;
+      const points = pendingSynergyPoints ?? (pendingSynergy.minPoints || pendingSynergy.cost);
+      const result = updateSynergySlot(editingSynergyIndex, pendingSynergyId, points);
+      if (!result.ok) return;
+      const appliedId = pendingSynergyId;
+      keepModalOpenDuringApply = true;
+      triggerSynergyFeedback(appliedId, editingSynergyIndex);
+      renderAll();
+      selectedSynergyPreviewId = appliedId;
+      pendingSynergyId = appliedId;
+      pendingSynergyPoints = selectedPointsFor(pendingSynergy);
+      previewTouchedInModal = false;
+      renderSynergyOptions();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+      showToast("시너지가 적용되었습니다.");
+      setTimeout(() => {
+        keepModalOpenDuringApply = false;
+      }, 0);
+    }
+
+    function removeEditingSynergy() {
+      if (editingSynergyIndex === null || !selectedSynergyIds[editingSynergyIndex]) return;
+      const removedId = selectedSynergyIds[editingSynergyIndex];
+      updateSynergySlot(editingSynergyIndex, null);
+      lastAppliedSynergyId = null;
+      lastAppliedSynergyIndex = null;
+      renderAll();
+      const selectedInOtherSlots = new Set(synergyIdsWithoutEditingSlot());
+      const remaining = synergyPointCap - selectedSynergyPoints([...selectedInOtherSlots]);
+      const firstAvailable = synergiesByGrade().find((synergy) => synergy.cost <= remaining && !selectedInOtherSlots.has(synergy.id))?.id || null;
+      selectedSynergyPreviewId = firstAvailable;
+      pendingSynergyId = firstAvailable;
+      pendingSynergyPoints = firstAvailable ? selectedPointsFor(getSynergy(firstAvailable)) : null;
+      renderSynergyOptions();
+      modalOverlay.classList.add("open");
+      modalOverlay.setAttribute("aria-hidden", "false");
+      showToast("공용 시너지가 해제되었습니다.");
+    }
+
+    function clearFeedbackLater() {
+      clearTimeout(feedbackTimer);
+      feedbackTimer = setTimeout(() => {
+        lastAppliedSynergyId = null;
+        lastAppliedSynergyIndex = null;
+        lastGrowthRelicId = null;
+        lastEquipRelicId = null;
+        lastActionFeedback = null;
+        renderAll();
+        if (modalOverlay.classList.contains("open")) {
+          if (modalMode === "edit") renderSynergyOptions();
+        }
+      }, 900);
+    }
+
+    function triggerSynergyFeedback(synergyId, index) {
+      lastAppliedSynergyId = synergyId;
+      lastAppliedSynergyIndex = index;
+      clearFeedbackLater();
+    }
+
+    function triggerGrowthFeedback(relicId, action) {
+      lastGrowthRelicId = relicId;
+      lastActionFeedback = action;
+      clearFeedbackLater();
+    }
+
+    function triggerEquipFeedback(relicId) {
+      lastEquipRelicId = relicId;
+      clearFeedbackLater();
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add("show");
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 1600);
+    }
+
+    function renderAll() {
+      renderInventory();
+      renderSlots();
+      renderEquipSummary();
+      renderLoadoutPresets();
+      renderDetail();
+    }
+
+    function ownedEffectTotals(levelForRelic = (relic) => relic.level) {
+      const totals = new Map();
+      relics.filter((relic) => relic.owned).forEach((relic) => {
+        relic.ownedEffectProfile.forEach((effect) => {
+          const current = totals.get(effect.label) || { ...effect, amount: 0 };
+          current.amount += ownedEffectAmount(effect, relic, relic.stars, levelForRelic(relic));
+          totals.set(effect.label, current);
+        });
+      });
+      return [...totals.values()];
+    }
+
+    function pickWeighted(items) {
+      const total = items.reduce((sum, item) => sum + item.weight, 0);
+      let roll = Math.random() * total;
+      for (const item of items) {
+        roll -= item.weight;
+        if (roll <= 0) return item;
+      }
+      return items[items.length - 1];
+    }
+
+    function drawSingleReward() {
+      const grade = pickWeighted([
+        { grade: "N", weight: 45 },
+        { grade: "R", weight: 30 },
+        { grade: "SR", weight: 18 },
+        { grade: "SSR", weight: 7 }
+      ]).grade;
+      const candidates = relics.filter((relic) => relic.grade === grade);
+      const relic = candidates[Math.floor(Math.random() * candidates.length)];
+      const shardAmountByGrade = { N: 3, R: 3, SR: 2, SSR: 1 };
+      const amount = shardAmountByGrade[grade] || 1;
+      relic.shards += amount;
+      if (!relic.owned && relic.shards >= relic.requiredShards) {
+        relic.owned = true;
+      }
+      return { type: "relic", relic, amount };
+    }
+
+    function drawTestReward(count = 1) {
+      const rewards = Array.from({ length: count }, drawSingleReward);
+      renderAll();
+      if (count === 1) {
+        const reward = rewards[0];
+        showToast(`${reward.relic.grade} ${reward.relic.name} 조각 ${reward.amount}개 획득`);
+        return;
+      }
+      showToast(`${count}회 뽑기 완료: 유물 조각 ${rewards.length}회`);
+    }
+
+    inventoryGrid.addEventListener("click", (event) => {
+      const card = event.target.closest("[data-relic-id]");
+      if (!card) return;
+      const relic = getRelic(card.dataset.relicId);
+      if (!relic) return;
+      pendingEquipRelicId = null;
+      selectedRelicId = relic.id;
+      const slotIndex = equippedSlots.indexOf(relic.id);
+      selectedSlotIndex = slotIndex >= 0 ? slotIndex : -1;
+      renderAll();
+    });
+
+    drawRelicOnceButton.addEventListener("click", () => drawTestReward(1));
+    drawRelicTenButton.addEventListener("click", () => drawTestReward(10));
+    drawRelicHundredButton.addEventListener("click", () => drawTestReward(100));
+
+    loadoutPresetsElement.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-loadout-preset]");
+      if (!button) return;
+      switchLoadoutPreset(Number(button.dataset.loadoutPreset));
+    });
+
+    slotRow.addEventListener("click", (event) => {
+      const slot = event.target.closest("[data-slot-index]");
+      if (!slot || slot.disabled) return;
+      const slotIndex = Number(slot.dataset.slotIndex);
+      if (slot.dataset.locked === "true") {
+        showToast(`${equipSlotUnlockText(slotIndex)} 시 해금됩니다.`);
+        return;
+      }
+      if (pendingEquipRelicId) {
+        const relicIdToEquip = pendingEquipRelicId;
+        if (equipRelicToSlot(relicIdToEquip, slotIndex)) {
+          triggerEquipFeedback(relicIdToEquip);
+          renderAll();
+          showToast("장착되었습니다.");
+        }
+        return;
+      }
+      selectedSlotIndex = slotIndex;
+      if (equippedSlots[selectedSlotIndex]) {
+        selectedRelicId = equippedSlots[selectedSlotIndex];
+      }
+      renderAll();
+    });
+
+    equipSummary.addEventListener("click", (event) => {
+      const token = event.target.closest("[data-common-synergy-index]");
+      if (!token) return;
+      openModal(Number(token.dataset.commonSynergyIndex));
+    });
+
+    synergyList.addEventListener("click", (event) => {
+      const pointButton = event.target.closest("[data-synergy-points]");
+      if (modalMode === "edit" && pointButton && !pointButton.disabled) {
+        const synergy = getSynergy(selectedSynergyPreviewId);
+        if (!synergy || synergy.costMode !== "investable") return;
+        const currentPoints = pendingPointsFor(synergy);
+        const next = pointButton.dataset.synergyPoints === "increase" ? currentPoints + 1 : currentPoints - 1;
+        const otherPoints = selectedSynergyPoints(synergyIdsWithoutEditingSlot());
+        if (next < synergy.minPoints || next > synergy.maxPoints || otherPoints + next > synergyPointCap) {
+          showToast("남은 시너지 포인트가 부족합니다.");
+          return;
+        }
+        pendingSynergyPoints = next;
+        renderSynergyOptions();
+        showToast(`${synergy.name} 포인트를 조정했습니다.`);
+        return;
+      }
+
+      const adjustButton = event.target.closest("[data-synergy-adjust]");
+      if (modalMode === "edit" && adjustButton && !adjustButton.disabled) {
+        const synergy = getSynergy(adjustButton.dataset.synergyId);
+        if (!synergy) return;
+        const isCurrent = selectedSynergyIds[editingSynergyIndex] === synergy.id;
+        const isIncrease = adjustButton.dataset.synergyAdjust === "increase";
+        let result;
+        let message;
+
+        if (isIncrease) {
+          const nextPoints = isCurrent ? selectedPointsFor(synergy) + 1 : synergy.minPoints || synergy.cost;
+          result = updateSynergySlot(editingSynergyIndex, synergy.id, nextPoints);
+          message = isCurrent ? `${synergy.name} 포인트를 투자했습니다.` : `${synergy.name} 시너지를 장착했습니다.`;
+        } else if (isCurrent && synergy.costMode === "investable" && selectedPointsFor(synergy) > synergy.minPoints) {
+          result = updateSynergySlot(editingSynergyIndex, synergy.id, selectedPointsFor(synergy) - 1);
+          message = `${synergy.name} 포인트를 낮췄습니다.`;
+        } else if (isCurrent) {
+          result = updateSynergySlot(editingSynergyIndex, null);
+          message = `${synergy.name} 시너지를 해제했습니다.`;
+        } else {
+          return;
+        }
+
+        if (!result.ok) {
+          showToast(result.reason);
+          return;
+        }
+        selectedSynergyPreviewId = selectedSynergyIds[editingSynergyIndex] || null;
+        pendingSynergyId = selectedSynergyPreviewId;
+        triggerSynergyFeedback(synergy.id, editingSynergyIndex);
+        renderAll();
+        renderSynergyOptions();
+        showToast(message);
+        return;
+      }
+      const selectedSlotButton = event.target.closest("[data-modal-synergy-slot-index]");
+      if (modalMode === "edit" && selectedSlotButton) {
+        editingSynergyIndex = Number(selectedSlotButton.dataset.modalSynergySlotIndex);
+        const currentId = selectedSynergyIds[editingSynergyIndex] || null;
+        const selectedInOtherSlots = new Set(synergyIdsWithoutEditingSlot());
+        const remaining = synergyPointCap - selectedSynergyPoints([...selectedInOtherSlots]);
+        const firstAvailable = synergiesByGrade().find((synergy) => synergy.cost <= remaining && !selectedInOtherSlots.has(synergy.id))?.id || null;
+        selectedSynergyPreviewId = currentId || firstAvailable;
+        pendingSynergyId = currentId || firstAvailable;
+        pendingSynergyPoints = pendingSynergyId ? selectedPointsFor(getSynergy(pendingSynergyId)) : null;
+        renderSynergyOptions();
+        return;
+      }
+
+      const previewButton = event.target.closest("[data-preview-synergy-id]");
+      if (modalMode === "edit" && previewButton) {
+        const synergy = getSynergy(previewButton.dataset.previewSynergyId);
+        if (!synergy) return;
+        selectedSynergyPreviewId = synergy.id;
+        pendingSynergyId = synergy.id;
+        pendingSynergyPoints = synergy.minPoints || synergy.cost;
+        previewTouchedInModal = true;
+        renderSynergyOptions();
+        return;
+      }
+
+      const actionButton = event.target.closest("[data-modal-action]");
+      if (!actionButton || actionButton.disabled) return;
+      if (actionButton.dataset.modalAction === "cancel") {
+        closeSynergyModal();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "done") {
+        applyPendingSynergy();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "remove") {
+        removeEditingSynergy();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "toggle") {
+        event.preventDefault();
+        event.stopPropagation();
+        if (selectedSynergyIds[editingSynergyIndex] === pendingSynergyId) removeEditingSynergy();
+        else applyPendingSynergy();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "promote-confirm") {
+        applyPromotion();
+        return;
+      }
+      if (actionButton.dataset.modalAction === "levelup-confirm") {
+        const relic = getRelic(selectedRelicId);
+        if (levelUpRelic(relic)) {
+          triggerGrowthFeedback(relic.id, "upgrade");
+          renderAll();
+          modalMode = "levelup";
+          modalTitle.textContent = "유물 레벨업";
+          modalOverlay.querySelector(".modal").classList.add("promotion-modal", "levelup-modal");
+          renderLevelUpModal();
+          modalOverlay.classList.add("open");
+          modalOverlay.setAttribute("aria-hidden", "false");
+          showToast("레벨업되었습니다.");
+        }
+        return;
+      }
+    });
+
+    closeModal.addEventListener("click", closeSynergyModal);
+
+    modalOverlay.addEventListener("click", (event) => {
+      if (event.target === modalOverlay) {
+        closeSynergyModal();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modalOverlay.classList.contains("open")) {
+        closeSynergyModal();
+        return;
+      }
+      if (event.key === "Tab" && modalOverlay.classList.contains("open")) {
+        const focusable = [...modalOverlay.querySelectorAll('button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])')]
+          .filter((element) => element.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    document.querySelector(".actions").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-action]");
+      if (!button || button.disabled) return;
+      const relic = getRelic(selectedRelicId);
+      if (button.dataset.action === "levelup") {
+        openLevelUpModal();
+        return;
+      }
+      if (button.dataset.action === "promote") {
+        openPromotionModal();
+        return;
+      }
+      if (button.dataset.action === "equip") {
+        if (relic?.owned) {
+          pendingEquipRelicId = relic.id;
+          renderSlots();
+          renderDetail();
+          showToast("장착할 슬롯을 선택하세요.");
+        }
+        return;
+      }
+      if (button.dataset.action === "cancel-equip") {
+        pendingEquipRelicId = null;
+        renderAll();
+        showToast("장착 선택을 취소했습니다.");
+        return;
+      }
+      if (button.dataset.action === "unequip") {
+        if (unequipRelic(relic.id)) {
+          renderAll();
+          showToast("장착해제되었습니다.");
+        }
+      }
+    });
+
+    statBlock.addEventListener("click", (event) => {
+      const tab = event.target.closest("[data-detail-tab]");
+      if (!tab || tab.dataset.detailTab === detailTab) return;
+      detailTab = tab.dataset.detailTab;
+      renderDetail();
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>

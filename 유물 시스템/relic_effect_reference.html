@@ -531,8 +531,8 @@
 
     .simulator-loadout-head #simulator-apply {
       order: 2;
-      align-self: flex-start;
-      height: 35px;
+      align-self: center;
+      height: 23px;
     }
 
     .simulator-apply {
@@ -2407,6 +2407,7 @@
 
     .full-build-composition { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 6px; font-size: 10px; }
     .full-build-composition-item { display: block; min-width: 0; padding: 2px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    .full-build-synergy-summary { grid-column: 1 / -1; padding-bottom: 2px; color: var(--muted); font-size: 9px; }
     .full-build-composition-item:last-child { border-bottom: 0; }
     .full-build-relic-end { border-bottom: 1px solid var(--line); padding-bottom: 3px; }
     .full-build-synergy-start { border-top: 0; padding-top: 2px; }
@@ -2470,7 +2471,7 @@
     .full-build-detail-components th.full-build-profile-boss { color: #593d82; background: #f1eef8; }
     .full-build-detail-components tbody tr.full-build-component-relic > td { border-bottom: 1px solid var(--line); }
     .full-build-detail-components tbody tr.full-build-component-synergy > td { border-bottom: 1px solid var(--line); }
-    /* 유물 묶음이 끝나고 시너지 묶음으로 넘어가는 경계는 단일 강조선으로 구분한다. */
+    /* 유물 묶음이 끝나고 특성 묶음으로 넘어가는 경계는 단일 강조선으로 구분한다. */
     .full-build-detail-components tbody tr.full-build-component-relic-end > td { border-bottom: 3px solid #5d8f85; }
     .full-build-detail-components .full-build-detail-type-col { width: 58px !important; }
     .full-build-detail-components th:nth-child(1), .full-build-detail-components td:nth-child(1) { width: 58px !important; min-width: 58px; padding-right: 6px; padding-left: 6px; }
@@ -2586,7 +2587,7 @@
       vertical-align: middle;
     }
 
-    /* 각 효과·시너지 행의 끝을 전 열에서 같은 이중선으로 구분한다. */
+    /* 각 효과·특성 행의 끝을 전 열에서 같은 이중선으로 구분한다. */
     .balance-audit-table tbody > tr:not(.balance-group-row):not(.balance-repeat-head) > td {
       border-bottom: 1px solid var(--line);
     }
@@ -2614,9 +2615,9 @@
     }
 
     .balance-audit-table th:first-child,
-    .balance-audit-table td:first-child { width: 34%; }
+    .balance-audit-table td:first-child { width: 40%; }
     .balance-audit-table th:nth-child(2), .balance-audit-table td:nth-child(2) { width: 12%; }
-    .balance-audit-table th:nth-child(3), .balance-audit-table td:nth-child(3) { width: 14%; }
+    .balance-audit-table th:nth-child(3), .balance-audit-table td:nth-child(3) { width: 8%; }
     .balance-audit-table th:nth-child(4), .balance-audit-table td:nth-child(4) { width: 14%; }
     .balance-audit-table th:nth-child(5), .balance-audit-table td:nth-child(5) { width: 14%; }
     .balance-audit-table th:nth-child(6), .balance-audit-table td:nth-child(6) { width: 16%; }
@@ -3078,7 +3079,7 @@
       border-bottom: 3px double #9eb5b0 !important;
     }
 
-    /* 단일 단계 고정 시너지는 다음 시너지와 일반선으로만 구분한다. */
+    /* 단일 단계 고정 특성는 다음 특성와 일반선으로만 구분한다. */
     .balance-audit-table tbody tr.balance-synergy-group-5.balance-synergy-group-end > td,
     .balance-audit-table tbody tr.balance-synergy-group-7.balance-synergy-group-end > td,
     .balance-audit-table tbody tr.balance-synergy-group-8.balance-synergy-group-end > td,
@@ -3093,8 +3094,8 @@
       border-bottom: 3px double #9eb5b0 !important;
     }
 
-    /* 동일 시너지의 1/2/3pt 단계 사이는 유물 행과 같은 굵은 실선으로 나눈다.
-       다음 시너지로 넘어가는 마지막 단계는 위의 이중선이 우선 적용된다. */
+    /* 동일 특성의 1/2/3pt 단계 사이는 유물 행과 같은 굵은 실선으로 나눈다.
+       다음 특성로 넘어가는 마지막 단계는 위의 이중선이 우선 적용된다. */
     .balance-audit-table tbody tr.balance-synergy-group:not(.balance-synergy-group-end) > td {
       border-bottom: 2px solid #c4d1cd !important;
     }
@@ -3103,7 +3104,7 @@
       border-left: 4px solid #7e9f93;
     }
 
-    /* 행 배경은 표 본문과 통일하고, 등급·시너지 구분은 배지와 좌측선만 사용한다. */
+    /* 행 배경은 표 본문과 통일하고, 등급·특성 구분은 배지와 좌측선만 사용한다. */
     tr.balance-relic-grade-n > td:first-child { border-left: 4px solid var(--n-line) !important; }
     tr.balance-relic-grade-r > td:first-child { border-left: 4px solid var(--r-line) !important; }
     tr.balance-relic-grade-sr > td:first-child { border-left: 4px solid var(--sr-line) !important; }
@@ -3343,7 +3344,7 @@
       min-width: 100%;
     }
 
-    /* 시너지 입력 예시만 카드 너비에 맞춘다. 리스트 표의 스크롤은 유지한다. */
+    /* 특성 입력 예시만 카드 너비에 맞춘다. 리스트 표의 스크롤은 유지한다. */
     #input-rules-panel #synergy-effect-table .input-example-wrap {
       overflow: visible;
     }
@@ -3444,7 +3445,7 @@
       max-width: none;
     }
 
-    /* 시너지 리스트도 시너지 효과 표와 동일한 열 폭을 유지한다. */
+    /* 특성 리스트도 특성 효과 표와 동일한 열 폭을 유지한다. */
     #effect-list-panel .effect-list-table.synergy-list-table th:nth-child(2),
     #effect-list-panel .effect-list-table.synergy-list-table td:nth-child(2) { width: 126px !important; }
     #effect-list-panel .effect-list-table.synergy-list-table th:nth-child(3),
@@ -4522,7 +4523,7 @@
       font-size: 11px;
     }
 
-    /* 유물 표와 시너지 표 사이의 구분선은 흰 여백에 묻히지 않게 직접 표시한다. */
+    /* 유물 표와 특성 표 사이의 구분선은 흰 여백에 묻히지 않게 직접 표시한다. */
     .balance-audit-table .balance-group-row-synergy th {
       border-top: 4px solid var(--paper);
       box-shadow: none;
@@ -5157,7 +5158,7 @@
       font-size: 12px;
     }
 
-    /* 시뮬레이터의 유물/시너지 선택 영역만 표기 크기를 맞춘다. */
+    /* 시뮬레이터의 유물/특성 선택 영역만 표기 크기를 맞춘다. */
     #simulator-equip-column .simulator-equip-list .section-head,
     #simulator-equip-column .simulator-equip-list .section-head h2 {
       font-size: 12px;
@@ -5635,7 +5636,7 @@
       }
 
     }
-  </style>
+</style>
 </head>
 <body>
   <div class="page-progress" aria-hidden="true">
@@ -5657,7 +5658,7 @@
       </div>
       <div class="section-body">
         <div class="tab-panel" id="input-rules-panel" role="tabpanel" aria-labelledby="input-rules-tab">
-          <div class="feature-context-intro">- 유물 장착 효과와 시너지 효과의 입력 데이터 구조를 확인한다.<br>- 각 필드의 의미와 효과 설명을 함께 확인한다.</div>
+          <div class="feature-context-intro">- 유물 장착 효과와 특성 효과의 입력 데이터 구조를 확인한다.<br>- 각 필드의 의미와 효과 설명을 함께 확인한다.</div>
           <div class="types-group">
             <div class="grid">
           <article class="card" id="relic-effect-table">
@@ -5701,7 +5702,7 @@
             </div>
           </article>
           <article class="card synergy-example-card" id="synergy-effect-table">
-            <h3 class="section-title-with-link">시너지 효과 테이블<a class="section-jump-link" href="#effect-list-panel" data-open-tab="effect-list-panel">시너지 리스트로 이동</a></h3>
+            <h3 class="section-title-with-link">특성 효과 테이블<a class="section-jump-link" href="#effect-list-panel" data-open-tab="effect-list-panel">특성 리스트로 이동</a></h3>
             <div class="table-wrap input-example-wrap">
               <table class="matrix-table input-example-table synergy-example-table">
                 <thead>
@@ -5746,7 +5747,7 @@
             <ul class="section-list">
               <li>전투가 시작되면 항상 적용되는 효과(Always)를 먼저 반영한다.</li>
               <li>공격, 피격, 처치, 전투 시작, 주기, 더블 공격, 치명타, 체력, 보호막 상황이 발생하면 해당 조건(ConditionType)을 확인한다.</li>
-              <li>누적 조건(KillStack, AttackCount, CritHitStack, SelfAttackStack, IntervalStack)은 유물 또는 시너지별로 따로 관리한다.</li>
+              <li>누적 조건(KillStack, AttackCount, CritHitStack, SelfAttackStack, IntervalStack)은 유물 또는 특성별로 따로 관리한다.</li>
               <li>조건을 만족한 효과는 정해진 처리 결과(ResultType)에 따라 적용한다.</li>
               <li>공격 대상이 필요한 효과는 다음 공격이 발생할 때 그 공격 대상에게 적용한다.</li>
               <li>횟수나 시간이 필요한 조건은 효과가 발동한 뒤 다시 처음부터 계산한다.</li>
@@ -5759,7 +5760,7 @@
               <h3>ConditionType 정의</h3>
               <button class="return-button" type="button" data-return-button hidden>원래 위치로</button>
             </div>
-            <p class="definition-intro">- ConditionType은 유물과 시너지 효과가 언제 발동할지 정하는 조건이다.<br>- 입력한 ConditionType에 맞춰 Value1·Value2와 관련 필드 값을 입력한다. 조건별 입력 필드는 아래 표에서 확인한다.</p>
+            <p class="definition-intro">- ConditionType은 유물과 특성 효과가 언제 발동할지 정하는 조건이다.<br>- 입력한 ConditionType에 맞춰 Value1·Value2와 관련 필드 값을 입력한다. 조건별 입력 필드는 아래 표에서 확인한다.</p>
             <div class="table-wrap">
               <table class="matrix-table types-table">
                 <thead>
@@ -5835,9 +5836,9 @@
                 <button class="simulation-mode-button" type="button" role="tab" aria-selected="false" data-simulation-mode="audit">밸런스 검사</button>
                 <button class="simulation-mode-button" type="button" role="tab" aria-selected="false" data-simulation-mode="full-build-audit">대표 조합 비교</button>
               </div>
-              <div class="simulation-context-intro" id="build-simulation-intro">- 장착 테스트는 유물과 시너지를 조합해 장착 전후 전투 결과를 비교한다.<br>- 선택한 효과의 기여도와 핵심 전투 지표를 확인한다.</div>
-              <div class="simulation-context-intro" id="full-build-audit-intro" hidden>- 대표 조합 비교는 능력치별 최고 유물·시너지 조합과 가치 순위를 비교한다.<br>- 개별 효과 검사에서 드러나지 않는 조합의 공격·생존 가치와 증폭을 확인한다.</div>
-              <div class="simulation-context-intro" id="balance-audit-intro" hidden>- 밸런스 검사는 모든 유물과 시너지의 전투 결과를 점검한다.<br>- 일반전과 보스전 기준의 전투 가치와 판단 가치를 비교해 밸런스를 확인한다.</div>
+              <div class="simulation-context-intro" id="build-simulation-intro">- 장착 테스트는 유물과 특성를 조합해 장착 전후 전투 결과를 비교한다.<br>- 선택한 효과의 기여도와 핵심 전투 지표를 확인한다.<br>- 특성는 장착 유물당 최대 2개, 유물 등급별 포인트 예산 안에서 선택한다.</div>
+              <div class="simulation-context-intro" id="full-build-audit-intro" hidden>- 대표 조합 비교는 유물 3개의 등급별 포인트 예산 안에서 특성 최대 6개를 구성해 능력치별 최고 조합과 가치 순위를 비교한다.<br>- 특성는 개별 유물에 배정하지 않고 전체 포인트 예산 기준으로 계산한다.</div>
+              <div class="simulation-context-intro" id="balance-audit-intro" hidden>- 밸런스 검사는 모든 유물과 특성의 전투 결과를 점검한다.<br>- 일반전과 보스전 기준의 전투 가치와 판단 가치를 비교해 밸런스를 확인한다.</div>
               <div class="damage-contribution-host" id="damage-contribution-host" aria-live="polite" hidden></div>
               <div class="simulator-loadout-panel" id="build-simulation-panel" hidden>
                 <div class="simulator-loadout-head">
@@ -5869,7 +5870,7 @@
                   <div class="full-build-audit-toolbar">
                     <div class="full-build-audit-summary" id="full-build-audit-summary" aria-live="polite"></div>
                   </div>
-                  <div id="full-build-audit-result" aria-live="polite"><div class="combination-build-empty">대표 조합 비교 버튼을 누르면 유물 3개와 시너지 3개의 대표 조합을 계산합니다.</div></div>
+                  <div id="full-build-audit-result" aria-live="polite"><div class="combination-build-empty">대표 조합 비교 버튼을 누르면 유물 3개의 포인트 예산 안에서 특성 최대 6개 조합을 계산합니다.</div></div>
                 </div>
               </section>
               <section id="balance-audit" class="simulation-audit-panel" hidden>
@@ -5899,7 +5900,7 @@
           </article>
         </div>
         <div class="tab-panel" id="effect-list-panel" role="tabpanel" aria-labelledby="effect-list-tab" hidden>
-          <div class="feature-context-intro">- 전체 유물과 시너지 효과의 입력값을 한눈에 확인한다.</div>
+          <div class="feature-context-intro">- 전체 유물과 특성 효과의 입력값을 한눈에 확인한다.</div>
           <div class="types-group">
           <div class="grid">
             <article class="card">
@@ -5912,7 +5913,7 @@
               </div>
             </article>
             <article class="card">
-              <h3 class="section-title-with-link">시너지 효과 테이블<a class="section-jump-link" href="#input-rules-panel" data-open-tab="input-rules-panel">시너지 효과 테이블로 이동</a></h3>
+              <h3 class="section-title-with-link">특성 효과 테이블<a class="section-jump-link" href="#input-rules-panel" data-open-tab="input-rules-panel">특성 효과 테이블로 이동</a></h3>
               <div class="table-wrap input-example-wrap">
                 <table class="matrix-table input-example-table effect-list-table synergy-example-table synergy-list-table">
                   <thead><tr><th>ID</th><th>Name</th><th>Group</th><th>Step</th><th>Point</th><th>ConditionType</th><th>StatType</th><th>Value1</th><th>Value2</th><th>Duration</th><th>설명</th></tr></thead>
@@ -5964,16 +5965,16 @@
     ];
 
     const synergyFieldDefinitions = [
-      { name: "ID", type: "int", meaning: "시너지 단계 ID", example: "2000 = 첫 단계", note: "- 각 시너지 단계의 고유 ID를 입력한다.<br>- 그룹을 구분할 수 있도록 시작 ID는 2000부터 10 단위로 입력하고, 같은 그룹의 다음 단계는 1씩 증가시킨다." },
-      { name: "Name", type: "string", meaning: "시너지 이름", example: "synergy_assault", note: "- 스트링 키를 입력한다.<br>- 설명 텍스트는 Name 뒤에 <code>_desc</code>를 붙인 키(예: <code>synergy_assault_desc</code>)를 참조한다." },
-      { name: "Group", type: "int", meaning: "시너지 그룹 ID", example: "1 = 맹공", note: "- 같은 시너지의 단계들을 묶는 그룹 번호를 입력한다." },
-      { name: "Step", type: "int", meaning: "그룹 내 단계", example: "2 = 두 번째 단계", note: "- 시너지 단계가 있을 경우 그룹 안에서 해당 단계 번호를 입력한다." },
-      { name: "Point", type: "int", meaning: "필요 포인트", example: "3 = 3pt", note: "- 장착에 필요한 포인트를 입력한다." },
+      { name: "ID", type: "int", meaning: "특성 단계 ID", example: "2000 = 첫 단계", note: "- 각 특성 단계의 고유 ID를 입력한다.<br>- 그룹을 구분할 수 있도록 시작 ID는 2000부터 10 단위로 입력하고, 같은 그룹의 다음 단계는 1씩 증가시킨다." },
+      { name: "Name", type: "string", meaning: "특성 이름", example: "synergy_assault", note: "- 스트링 키를 입력한다.<br>- 설명 텍스트는 Name 뒤에 <code>_desc</code>를 붙인 키(예: <code>synergy_assault_desc</code>)를 참조한다." },
+      { name: "Group", type: "int", meaning: "특성 그룹 ID", example: "1 = 맹공", note: "- 같은 특성의 단계들을 묶는 그룹 번호를 입력한다." },
+      { name: "Step", type: "int", meaning: "그룹 내 단계", example: "2 = 두 번째 단계", note: "- 특성 단계가 있을 경우 그룹 안에서 해당 단계 번호를 입력한다." },
+      { name: "Point", type: "int", meaning: "필요 포인트", example: "3 = 3pt", note: "- 해당 단계까지의 총 투자 포인트를 입력한다. 1pt 계열은 1/2/3, 2pt 계열은 2/4/6, 3pt 계열은 3/6/9다." },
       { name: "ConditionType", type: "string", meaning: "발동 조건", example: "TargetHp = 대상 체력", note: "- 효과가 언제 발동하는지 입력한다.<br>- <a href=\"#equip-effect-type-definitions\">아래 ConditionType 정의</a> 참고." },
       { name: "StatType", type: "string", meaning: "버프 타입", example: "Attack = 공격력", note: "- 변경되는 능력치를 입력한다.<br>- <a href=\"#stat-type-definitions\">아래 StatType 정의</a> 참고." },
       { name: "Value1", type: "float", meaning: "결과 수치", example: "0.60 = 60%", note: "- 효과가 얼마나 적용되는지 입력한다." },
       { name: "Value2", type: "float", meaning: "조건 보조값", example: "0.30 = 30%", note: "- ConditionType에 따라 체력 비율·확률 단계 같은 조건값을 입력한다.<br>- 조건값이 필요 없으면 0을 입력한다." },
-      { name: "Duration", type: "float", meaning: "유지 시간", example: "0 = 지속시간 없음", note: "- 시너지 효과가 정해진 시간 동안 유지될 때 초 단위로 입력한다.<br>- 현재 시너지 효과는 모두 0을 사용한다." }
+      { name: "Duration", type: "float", meaning: "유지 시간", example: "0 = 지속시간 없음", note: "- 특성 효과가 정해진 시간 동안 유지될 때 초 단위로 입력한다.<br>- 현재 특성 효과는 모두 0을 사용한다." }
     ];
 
     const resultDefinitions = [
@@ -6027,9 +6028,9 @@
         "targetType": "Self",
         "resultType": "Stat",
         "statType": "CritChance",
-        "inputs": "Value1=0.007 / Value2=2 / Duration=0 / Cooldown=0 / TargetCount=1 / MaxStack=10",
+        "inputs": "Value1=0.006 / Value2=2 / Duration=0 / Cooldown=0 / TargetCount=1 / MaxStack=10",
         "effectName": "월광의 왕관",
-        "effectDesc": "2회 공격마다 치명타 확률이 0.7%p 증가한다."
+        "effectDesc": "2회 공격마다 치명타 확률이 0.6%p 증가한다."
       },
       {
         "id": 1102,
@@ -6087,9 +6088,9 @@
         "targetType": "Target",
         "resultType": "DamageOverTime",
         "statType": "0",
-        "inputs": "Value1=2.15 / Value2=0 / Duration=3 / Tick=1 / Cooldown=15 / TargetCount=3 / MaxStack=0",
+        "inputs": "Value1=1.6 / Value2=0 / Duration=3 / Tick=1 / Cooldown=15 / TargetCount=3 / MaxStack=0",
         "effectName": "불꽃의 심장",
-        "effectDesc": "3초간 매초마다 주변 적에게 공격력 215%의 추가 피해를 준다."
+        "effectDesc": "3초간 매초마다 주변 적에게 공격력 160%의 추가 피해를 준다."
       },
       {
         "id": 1204,
@@ -6147,7 +6148,7 @@
       {
         "groupId": 1,
         "name": "맹공",
-        "icon": "⚔",
+        "icon": "▲",
         "costMode": "investable",
         "minPoints": 1,
         "maxPoints": 3,
@@ -6159,7 +6160,20 @@
           "statType": "Attack",
           "effect": "포인트당 공격력 +5%",
           "inputs": "Value1=0.05 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
-        }
+        },
+        "cost": 1,
+        "stageEffects": [
+          "공격력 +5%",
+          "공격력 +10%",
+          "공격력 +15%"
+        ],
+        "investmentValues": [
+          0.05,
+          0.1,
+          0.15
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "Ver2 단계별 효과 반영. 현재 단계 체계 재검증 전."
       },
       {
         "groupId": 2,
@@ -6181,12 +6195,20 @@
           0.065,
           0.115,
           0.165
-        ]
+        ],
+        "cost": 1,
+        "stageEffects": [
+          "공격 속도 +6.5%",
+          "공격 속도 +11.5%",
+          "공격 속도 +16.5%"
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "Ver2 단계별 효과 반영. 현재 단계 체계 재검증 전."
       },
       {
         "groupId": 3,
         "name": "강타",
-        "icon": "†",
+        "icon": "♥",
         "costMode": "investable",
         "minPoints": 1,
         "maxPoints": 3,
@@ -6201,15 +6223,23 @@
         },
         "investmentValues": [
           0.06,
-          0.112,
+          0.11199999999999999,
           0.17
-        ]
+        ],
+        "cost": 1,
+        "stageEffects": [
+          "치명타 확률 +6%p",
+          "치명타 확률 +11.2%p",
+          "치명타 확률 +17%p"
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "Ver2 단계별 효과 반영. 현재 단계 체계 재검증 전."
       },
       {
         "groupId": 5,
         "name": "처형",
-        "icon": "◇",
-        "costMode": "fixed",
+        "icon": "✧",
+        "costMode": "investable",
         "cost": 2,
         "effect": {
           "id": 2050,
@@ -6219,13 +6249,27 @@
           "statType": "DamageDealt",
           "effect": "체력 50% 이하인 대상에게 주는 피해 +80%",
           "inputs": "Value1=0.8 / Value2=0.5 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
-        }
+        },
+        "minPoints": 2,
+        "maxPoints": 6,
+        "stageEffects": [
+          "체력 50% 이하인 대상에게 주는 피해 +80%",
+          "체력 50% 이하인 대상에게 주는 피해 +120%",
+          "체력 50% 이하인 대상에게 주는 피해 +160%"
+        ],
+        "investmentValues": [
+          0.8,
+          1.2,
+          1.6
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "Ver2 단계별 효과 반영. 현재 단계 체계 재검증 전."
       },
       {
         "groupId": 7,
         "name": "반격",
-        "icon": "Ⅱ",
-        "costMode": "fixed",
+        "icon": "☆",
+        "costMode": "investable",
         "cost": 3,
         "effect": {
           "id": 2070,
@@ -6237,13 +6281,25 @@
           "inputs": "Value1=1.2 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
         },
         "calibrationStatus": "provisional",
-        "calibrationNote": "성흔에서 이전한 시작값. 보호막 조합 감사 전 최종 확정하지 않는다."
+        "calibrationNote": "Ver2 단계별 효과 반영. 현재 단계 체계 재검증 전.",
+        "minPoints": 3,
+        "maxPoints": 9,
+        "stageEffects": [
+          "보호막 보유 시 공격력 +120%",
+          "보호막 보유 시 공격력 +180%",
+          "보호막 보유 시 공격력 +240%"
+        ],
+        "investmentValues": [
+          1.2,
+          1.8,
+          2.4
+        ]
       },
       {
         "groupId": 8,
         "name": "파열",
-        "icon": "✹",
-        "costMode": "fixed",
+        "icon": "◇",
+        "costMode": "investable",
         "cost": 3,
         "effect": {
           "id": 2080,
@@ -6251,17 +6307,29 @@
           "targetType": "Self",
           "resultType": "Stat",
           "statType": "ExtraDamage",
-          "effect": "유물의 추가 피해량 +50%",
-          "inputs": "Value1=0.5 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
+          "effect": "유물의 추가 피해량 +45%",
+          "inputs": "Value1=0.45 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
         },
-        "calibrationStatus": "verified",
-        "calibrationNote": "보스전 추가 피해 조합 기준 3pt 목표 범위로 조정했다."
+        "calibrationStatus": "provisional",
+        "calibrationNote": "2026-10-06: 60초·256시드 주력 전장 개별 판단 목표 통과. 전체 조합은 미검증.",
+        "minPoints": 3,
+        "maxPoints": 9,
+        "stageEffects": [
+          "유물의 추가 피해량 +45%",
+          "유물의 추가 피해량 +150%",
+          "유물의 추가 피해량 +410%"
+        ],
+        "investmentValues": [
+          0.45,
+          1.5,
+          4.1
+        ]
       },
       {
         "groupId": 11,
         "name": "분노",
-        "icon": "♨",
-        "costMode": "fixed",
+        "icon": "☄",
+        "costMode": "investable",
         "cost": 2,
         "effect": {
           "id": 2110,
@@ -6271,13 +6339,27 @@
           "statType": "DamageDealt",
           "effect": "내 체력이 70% 이상일 때 주는 피해 +45%",
           "inputs": "Value1=0.45 / Value2=0.7 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
-        }
+        },
+        "minPoints": 2,
+        "maxPoints": 6,
+        "stageEffects": [
+          "내 체력이 70% 이상일 때 주는 피해 +45%",
+          "내 체력이 70% 이상일 때 주는 피해 +95%",
+          "내 체력이 70% 이상일 때 주는 피해 +145%"
+        ],
+        "investmentValues": [
+          0.45,
+          0.95,
+          1.45
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "2026-10-06: 60초·256시드 주력 전장 개별 판단 목표 통과. 전체 조합은 미검증."
       },
       {
         "groupId": 12,
         "name": "예리",
         "icon": "◎",
-        "costMode": "fixed",
+        "costMode": "investable",
         "cost": 2,
         "effect": {
           "id": 2120,
@@ -6287,13 +6369,27 @@
           "statType": "CritDamage",
           "effect": "치명타 확률 3%당 치명타 피해량 +0.85%",
           "inputs": "Value1=0.0085 / Value2=0.03 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
-        }
+        },
+        "minPoints": 2,
+        "maxPoints": 6,
+        "stageEffects": [
+          "치명타 확률 3%당 치명타 피해량 +0.85%",
+          "치명타 확률 3%당 치명타 피해량 +1.7%",
+          "치명타 확률 3%당 치명타 피해량 +2.6%"
+        ],
+        "investmentValues": [
+          0.0085,
+          0.017,
+          0.026
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "2026-10-06: 60초·256시드 주력 전장 개별 판단 목표 통과. 전체 조합은 미검증."
       },
       {
         "groupId": 10,
         "name": "연쇄",
         "icon": "↯",
-        "costMode": "fixed",
+        "costMode": "investable",
         "cost": 3,
         "effect": {
           "id": 2100,
@@ -6303,7 +6399,21 @@
           "statType": "DoubleAttackDamage",
           "effect": "더블 공격의 두 번째 공격 피해 +51%",
           "inputs": "Value1=0.51 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
-        }
+        },
+        "minPoints": 3,
+        "maxPoints": 9,
+        "stageEffects": [
+          "더블 공격의 두 번째 공격 피해 +51%",
+          "더블 공격의 두 번째 공격 피해 +132.5%",
+          "더블 공격의 두 번째 공격 피해 +350%"
+        ],
+        "investmentValues": [
+          0.51,
+          1.325,
+          3.5
+        ],
+        "calibrationStatus": "provisional",
+        "calibrationNote": "2026-10-06: 60초·256시드 주력 전장 개별 판단 목표 통과. 전체 조합은 미검증."
       }
     ];
 
@@ -6314,8 +6424,8 @@
       { groupId: 8, step: 1 }, { groupId: 12, step: 1 }, { groupId: 10, step: 1 }
     ];
 
-    // 문서에서 제외한 시너지는 시뮬레이터 내부 데이터와 분리해 표에 노출하지 않는다.
-    const hiddenDocumentSynergyGroups = new Set([2, 7, 11]);
+    // 문서에서 제외한 특성는 시뮬레이터 내부 데이터와 분리해 표에 노출하지 않는다.
+    const hiddenDocumentSynergyGroups = new Set();
 
     const equipTypeBody = document.querySelector("#equip-type-body");
     const equipFieldBody = document.querySelector("#equip-field-body");
@@ -6908,7 +7018,7 @@
       if (hiddenDocumentSynergyGroups.has(example.groupId)) return "";
       const synergy = synergies.find((item) => item.groupId === example.groupId);
       const step = example.step || 1;
-      const requiredPoints = synergy?.costMode === "investable" ? step : synergyCost(synergy);
+      const requiredPoints = synergy?.costMode === "investable" ? step * synergyMinPoints(synergy) : synergyCost(synergy);
       const row = synergyEffect(synergy, requiredPoints);
       if (!synergy || !row) return "";
       const values = inputMap(row.inputs);
@@ -6963,10 +7073,10 @@
 
     function synergyListRows(synergy) {
       const steps = synergy.costMode === "investable"
-        ? Array.from({ length: synergyMaxPoints(synergy) }, (_, index) => index + 1)
+        ? Array.from({ length: synergyMaxPoints(synergy) / synergyMinPoints(synergy) }, (_, index) => index + 1)
         : [1];
       return steps.map((step) => {
-        const requiredPoints = synergy.costMode === "investable" ? step : synergyCost(synergy);
+        const requiredPoints = synergy.costMode === "investable" ? step * synergyMinPoints(synergy) : synergyCost(synergy);
         const row = synergyEffect(synergy, requiredPoints);
         const values = inputMap(row.inputs);
         return `
@@ -7046,11 +7156,12 @@
       const base = previewEffect(synergy.effect);
       if (synergy.costMode !== "investable") return base;
       const values = effectInputs(base);
-      const inputs = { ...values, Value1: synergy.investmentValues?.[points - 1] ?? numericValue(values.Value1) * points };
+      const stage = Math.max(1, Math.min(3, Math.round(points / synergyMinPoints(synergy))));
+      const inputs = { ...values, Value1: synergy.investmentValues?.[stage - 1] ?? numericValue(values.Value1) * stage };
       return {
         ...base,
         inputs: ["Value1", "Value2", "Duration", "Cooldown", "TargetCount", "MaxStack"].map((key) => `${key}=${numericValue(inputs[key])}`).join(" / "),
-        effect: `${statMeaning(base.statType)} +${formatNumber(numericValue(inputs.Value1) * 100, 2)}${["CritChance", "DoubleAttackChance"].includes(base.statType) ? "%p" : "%"}`
+        effect: synergy.stageEffects?.[stage - 1] ?? `${statMeaning(base.statType)} +${formatNumber(numericValue(inputs.Value1) * 100, 2)}${["CritChance", "DoubleAttackChance"].includes(base.statType) ? "%p" : "%"}`
       };
     }
 
@@ -7058,7 +7169,7 @@
       const effect = synergyEffect(synergy);
       return `
         <tr class="balance-synergy-group-end" data-group="${synergy.groupId}">
-          <td>${synergy.costMode === "investable" ? `1~${synergyMaxPoints(synergy)}pt` : `${synergyCost(synergy)}pt`}</td>
+          <td>${synergy.costMode === "investable" ? `${synergyMinPoints(synergy)}/${synergyMinPoints(synergy) * 2}/${synergyMaxPoints(synergy)}pt` : `${synergyCost(synergy)}pt`}</td>
           <td class="name-cell"><span class="main">${synergy.name}</span></td>
           <td>
             <div class="stack"><div class="effect-block"><strong>${effect?.effect || ""}</strong></div></div>
@@ -7075,7 +7186,7 @@
       return left.name.localeCompare(right.name, "ko");
     });
 
-    const synergyDisplayOrder = (synergy) => synergy.costMode === "investable" ? 0 : (synergy.cost === 3 ? 2 : 1);
+    const synergyDisplayOrder = (synergy) => synergyMinPoints(synergy) - 1;
     const sortedSynergies = [...synergies].sort((left, right) => {
       const orderGap = synergyDisplayOrder(left) - synergyDisplayOrder(right);
       return orderGap !== 0 ? orderGap : left.groupId - right.groupId;
@@ -7089,7 +7200,7 @@
         })),
         ...sortedSynergies.map((synergy) => {
           const effect = synergyEffect(synergy);
-          return { key: `synergy-${effect.id}`, category: "시너지", grade: "", stage: 0,
+          return { key: `synergy-${effect.id}`, category: "특성", grade: "", stage: 0,
             name: synergy.name, title: synergy.name, detail: effect.effect, effect };
         })
       ];
@@ -7104,8 +7215,6 @@
       return [...relics, ...synergies.map(synergyEffect)].find((effect) => Number(effect?.id) === Number(id));
     }
 
-    const synergyPointCap = 6;
-    const synergySelectionCap = 3;
     let selectedSynergies = [];
     let loadoutState = [
       {
@@ -7117,6 +7226,26 @@
     ];
     let openSynergyPickerSlot = null;
     let simulatorEquipGrade = "N";
+
+    function simulatorSynergySelectionCap() {
+      return loadoutState.filter((state) => getPreviewRelic(state.relicId)).length * 2;
+    }
+
+    function simulatorSynergyPointCap() {
+      const gradeBudget = { N: 3, R: 4, SR: 5, SSR: 6 };
+      return loadoutState.reduce((total, state) => total + (gradeBudget[getPreviewRelic(state.relicId)?.grade] || 0), 0);
+    }
+
+    function normalizeSelectedSynergiesToLoadout() {
+      let pointsLeft = simulatorSynergyPointCap();
+      const slotCap = simulatorSynergySelectionCap();
+      selectedSynergies = selectedSynergies.filter((entry) => {
+        const synergy = getPreviewSynergy(entry.groupId);
+        if (!synergy || selectedSynergies.indexOf(entry) >= slotCap || entry.points > pointsLeft) return false;
+        pointsLeft -= entry.points;
+        return true;
+      });
+    }
 
     equipTypeBody.innerHTML = conditionTypes.map(typeRow).join("");
     equipFieldBody.innerHTML = equipFieldDefinitions.map(fieldRow).join("");
@@ -7237,13 +7366,13 @@
     }
 
     function candidateBadge(candidate) {
-      return candidate.category === "시너지"
+      return candidate.category === "특성"
         ? `<span class="synergy-point-badge point-${candidate.points}">${candidate.points}pt</span>`
         : gradePill(candidate.grade);
     }
 
     function candidateDisplayName(candidate) {
-      return candidate.category === "시너지" ? candidate.name.replace(/\s+\d+pt$/, "") : candidate.name;
+      return candidate.category === "특성" ? candidate.name.replace(/\s+\d+pt$/, "") : candidate.name;
     }
 
     function renderSimulatorEquippedRelics() {
@@ -7361,12 +7490,14 @@
       const synergy = getPreviewSynergy(groupId);
       if (!synergy) return;
       const entry = selectedSynergyEntry(groupId);
+      const selectionCap = simulatorSynergySelectionCap();
+      const pointCap = simulatorSynergyPointCap();
       if (action === "remove" && entry) selectedSynergies = selectedSynergies.filter((item) => item !== entry);
-      if (action === "add" && !entry && selectedSynergies.length < synergySelectionCap && selectedSynergyPoints() + synergyMinPoints(synergy) <= synergyPointCap) {
+      if (action === "add" && !entry && selectedSynergies.length < selectionCap && selectedSynergyPoints() + synergyMinPoints(synergy) <= pointCap) {
         selectedSynergies.push({ groupId: synergy.groupId, points: synergyMinPoints(synergy) });
       }
-      if (action === "increase" && entry && entry.points < synergyMaxPoints(synergy) && selectedSynergyPoints() < synergyPointCap) entry.points += 1;
-      if (action === "decrease" && entry && entry.points > synergyMinPoints(synergy)) entry.points -= 1;
+      if (action === "increase" && entry && entry.points < synergyMaxPoints(synergy) && selectedSynergyPoints() < pointCap) entry.points += synergyMinPoints(synergy);
+      if (action === "decrease" && entry && entry.points > synergyMinPoints(synergy)) entry.points -= synergyMinPoints(synergy);
       renderSimulatorSynergyList();
       renderSimulatorSynergySummary();
       renderLoadoutControls();
@@ -7382,16 +7513,18 @@
       if (!simulatorEquippedSynergiesColumn) return;
       const selected = selectedSynergies.map((entry) => ({ synergy: getPreviewSynergy(entry.groupId), points: entry.points })).filter((entry) => entry.synergy);
       const usedPoints = selectedSynergyPoints();
+      const pointCap = simulatorSynergyPointCap();
+      const selectionCap = simulatorSynergySelectionCap();
       simulatorEquippedSynergiesColumn.innerHTML = `
         <section class="simulator-equip-list" aria-labelledby="simulator-equipped-synergies-title">
-          <div class="section-head"><h2 id="simulator-equipped-synergies-title">장착 시너지</h2><span class="simulator-synergy-points">${usedPoints} / ${synergyPointCap}pt · ${selected.length} / ${synergySelectionCap}개</span></div>
+          <div class="section-head"><h2 id="simulator-equipped-synergies-title">장착 특성</h2><span class="simulator-synergy-points">${usedPoints} / ${pointCap}pt · ${selected.length} / ${selectionCap}개</span></div>
           <div class="section-body">
             <div class="table-wrap"><table class="simulator-equipped-table">
-              <thead><tr><th>시너지</th><th>해제</th></tr></thead>
+              <thead><tr><th>특성</th><th>해제</th></tr></thead>
               <tbody>${selected.length ? selected.map(({ synergy, points }) => {
               const row = synergyEffect(synergy, points);
               return `<tr><td class="relic-cell"><span class="balance-effect-title"><span class="simulator-synergy-icon" aria-hidden="true">${synergy.icon}</span><span class="effect-name">${synergy.name}</span><span class="simulator-synergy-points">${points}pt</span></span><span class="effect-kind">${row.effect}</span></td><td><button class="simulator-equipped-remove" type="button" data-equipped-synergy-remove="${synergy.groupId}">해제</button></td></tr>`;
-            }).join("") : `<tr><td class="simulator-empty-cell" colspan="2">선택한 시너지 없음</td></tr>`}</tbody>
+            }).join("") : `<tr><td class="simulator-empty-cell" colspan="2">선택한 특성 없음</td></tr>`}</tbody>
             </table></div>
           </div>
         </section>
@@ -7405,28 +7538,30 @@
       if (!simulatorSynergyColumn) return;
       const selectedIds = new Set(selectedSynergies.map((entry) => String(entry.groupId)));
       const usedPoints = selectedSynergyPoints();
+      const pointCap = simulatorSynergyPointCap();
+      const selectionCap = simulatorSynergySelectionCap();
       simulatorSynergyColumn.classList.add("is-selecting");
 
       simulatorSynergyColumn.innerHTML = `
-        <h3><span class="simulator-synergy-heading-title">공용 시너지</span><span class="simulator-synergy-heading-actions"><span class="simulator-synergy-points">${selectedIds.size} / ${synergySelectionCap}개</span></span></h3>
-        <div class="simulator-synergy-grid" aria-label="공용 시너지 목록">
+        <h3><span class="simulator-synergy-heading-title">공용 특성</span><span class="simulator-synergy-heading-actions"><span class="simulator-synergy-points">${selectedIds.size} / ${selectionCap}개</span></span></h3>
+        <div class="simulator-synergy-grid" aria-label="공용 특성 목록">
           ${sortedSynergies.map((synergy) => {
             const selected = selectedIds.has(String(synergy.groupId));
             const entry = selectedSynergyEntry(synergy.groupId);
             const row = synergyEffect(synergy, entry?.points || synergyMinPoints(synergy));
-            const disabled = !selected && (selectedIds.size >= synergySelectionCap || usedPoints + synergyMinPoints(synergy) > synergyPointCap);
-            return `<button class="simulator-synergy-tile point-tier-${synergyMinPoints(synergy)}${selected ? " is-selected" : ""}" type="button" data-simulator-add-synergy="${synergy.groupId}" aria-pressed="${selected}" aria-label="${synergy.name}. ${row.effect}"${disabled ? " disabled" : ""}><span class="simulator-synergy-tile-head"><span class="simulator-synergy-title"><span class="simulator-synergy-icon" aria-hidden="true">${synergy.icon}</span><span class="simulator-synergy-name">${synergy.name}</span></span><span class="simulator-synergy-stage">${synergy.costMode === "investable" ? `1~${synergyMaxPoints(synergy)}pt` : `${synergyCost(synergy)}pt`}</span></span><span class="simulator-synergy-tooltip" role="tooltip">${row.effect}</span></button>`;
+            const disabled = !selected && (selectedIds.size >= selectionCap || usedPoints + synergyMinPoints(synergy) > pointCap);
+            return `<button class="simulator-synergy-tile point-tier-${synergyMinPoints(synergy)}${selected ? " is-selected" : ""}" type="button" data-simulator-add-synergy="${synergy.groupId}" aria-pressed="${selected}" aria-label="${synergy.name}. ${row.effect}"${disabled ? " disabled" : ""}><span class="simulator-synergy-tile-head"><span class="simulator-synergy-title"><span class="simulator-synergy-icon" aria-hidden="true">${synergy.icon}</span><span class="simulator-synergy-name">${synergy.name}</span></span><span class="simulator-synergy-stage">${synergyMinPoints(synergy)}pt</span></span><span class="simulator-synergy-tooltip" role="tooltip">${row.effect}</span></button>`;
           }).join("")}
         </div>
         <section class="simulator-selection-summary" aria-labelledby="simulator-selected-synergies-title">
-          <h4 id="simulator-selected-synergies-title"><span>선택 시너지</span><span class="simulator-synergy-points">${usedPoints} / ${synergyPointCap}pt</span></h4>
+          <h4 id="simulator-selected-synergies-title"><span>선택 특성</span><span class="simulator-synergy-points">${usedPoints} / ${pointCap}pt</span></h4>
           ${selectedSynergies.length ? `<div class="simulator-selection-summary-list">${selectedSynergies.map(({ groupId, points }) => {
             const synergy = getPreviewSynergy(groupId);
             const row = synergy && synergyEffect(synergy, points);
             const adjustable = synergy?.costMode === "investable";
-            const controls = synergy ? `<span class="simulator-synergy-point-controls"><span>${points}pt</span><button type="button" data-selected-synergy-decrease="${groupId}" ${!adjustable || points <= synergyMinPoints(synergy) ? "disabled" : ""}>−</button><button type="button" data-selected-synergy-increase="${groupId}" ${!adjustable || points >= synergyMaxPoints(synergy) || usedPoints >= synergyPointCap ? "disabled" : ""}>+</button></span>` : "";
+            const controls = synergy ? `<span class="simulator-synergy-point-controls"><span>${points}pt</span><button type="button" data-selected-synergy-decrease="${groupId}" ${!adjustable || points <= synergyMinPoints(synergy) ? "disabled" : ""}>−</button><button type="button" data-selected-synergy-increase="${groupId}" ${!adjustable || points >= synergyMaxPoints(synergy) || usedPoints >= pointCap ? "disabled" : ""}>+</button></span>` : "";
             return synergy ? `<div class="simulator-selection-summary-item synergy-summary point-tier-${points}"><span class="balance-effect-title"><span class="simulator-synergy-icon" aria-hidden="true">${synergy.icon}</span><span class="effect-name">${synergy.name}</span>${controls}</span><span class="effect-kind">${row.effect}</span></div>` : "";
-          }).join("")}</div>` : '<div class="simulator-selection-summary-empty">선택한 시너지 없음</div>'}
+          }).join("")}</div>` : '<div class="simulator-selection-summary-empty">선택한 특성 없음</div>'}
         </section>
       `;
 
@@ -7452,7 +7587,7 @@
     function renderSingleEffectPanel() {
       if (!singleEffectList || !singleEffectDetail) return;
       const candidate = selectedSingleCandidate();
-      const filters = ["all", "유물", "시너지"];
+      const filters = ["all", "유물", "특성"];
       singleEffectList.innerHTML = `
         <div class="single-effect-list"><h2>단품 효과 선택</h2>
           <input class="single-search" type="search" data-single-search placeholder="효과명 검색" value="${simulationDraft.singleSearch}">
@@ -7621,7 +7756,7 @@
                     ${effectIconSvg(row, `synergy-icon grade-${gradeClass(synergy.grade)}`)}
                     <span class="synergy-tile-title">
                       <strong>${synergy.name}</strong>
-                      <span class="tile-cost">${synergyCost(synergy)}pt</span>
+                    <span class="tile-cost">${synergyCost(synergy)}pt</span>
                     </span>
                   </span>
                   <span class="tile-effect">${row?.effect || ""}</span>
@@ -7770,10 +7905,10 @@
             ${effectTuningHtml(relic, relic.name)}
             <div class="selected-synergy-effects">
               <div class="synergy-effect-head">
-                <strong>시너지 효과</strong>
-                <button class="synergy-add-button" type="button" data-toggle-synergy="${slotIndex}" ${selectedSynergies.length >= maxSlots || usedPoints >= 4 ? "disabled" : ""}>${openSynergyPickerSlot === slotIndex ? "선택 닫기" : "시너지 추가"}</button>
+                <strong>특성 효과</strong>
+                <button class="synergy-add-button" type="button" data-toggle-synergy="${slotIndex}" ${selectedSynergies.length >= maxSlots || usedPoints >= 4 ? "disabled" : ""}>${openSynergyPickerSlot === slotIndex ? "선택 닫기" : "특성 추가"}</button>
               </div>
-              ${selectedSynergyItems || '<p class="empty-slot">장착된 시너지 없음</p>'}
+              ${selectedSynergyItems || '<p class="empty-slot">장착된 특성 없음</p>'}
             </div>
             ${synergyPickerHtml(slotIndex, state, relic, counts)}
           </div>
@@ -7844,6 +7979,7 @@
         loadoutState[equippedSlot] = { relicId: "", synergies: ["", "", ""] };
         if (openSynergyPickerSlot === equippedSlot) openSynergyPickerSlot = null;
       }
+      normalizeSelectedSynergiesToLoadout();
       renderRelicPicker();
       renderLoadoutControls();
       renderSimulatorEquipList();
@@ -8296,7 +8432,7 @@
         return `
           <div class="damage-contribution-row combined" style="--contribution-color:${contributionColor};--kind-color:${identityColor};--row-color:${identityColor};">
             <div class="damage-contribution-label">
-              <span class="damage-contribution-kind ${item.sourceKind}">${item.sourceKind === "relic" ? "유물" : "시너지"}</span>
+              <span class="damage-contribution-kind ${item.sourceKind}">${item.sourceKind === "relic" ? "유물" : "특성"}</span>
               <b title="${item.source}">${item.source}</b>
             </div>
             <div class="contribution-metrics">
@@ -8325,7 +8461,7 @@
               </div>
             </div>
           </div>
-          ${rows ? `<div class="damage-contribution-list combined-contribution-list">${rows}</div>` : '<p class="damage-contribution-empty">장착 유물 및 활성 시너지 기여도가 없습니다.</p>'}
+          ${rows ? `<div class="damage-contribution-list combined-contribution-list">${rows}</div>` : '<p class="damage-contribution-empty">장착 유물 및 활성 특성 기여도가 없습니다.</p>'}
         </section>
         </article>`;
     }
@@ -8903,8 +9039,8 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       SR: [0.14, 0.16],
       SSR: [0.19, 0.21]
     };
-    // 시너지는 등급이 아니라 실제 사용 포인트로만 가치를 정한다.
-    // 시너지는 등급이 아니라 실제 선택 포인트 비용으로 가치를 계산한다.
+    // 특성는 등급이 아니라 실제 사용 포인트로만 가치를 정한다.
+    // 특성는 등급이 아니라 실제 선택 포인트 비용으로 가치를 계산한다.
     const synergyPointValueCenters = { 1: 0.01, 2: 0.0215, 3: 0.0345 };
     const balanceValueWeights = { attack: 1, survival: 1 };
     // 판단 가중치는 능력치 종류에만 적용한다. 등급·수치·개별 효과에는 적용하지 않는다.
@@ -8957,6 +9093,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         activeConditions,
         ...extra
       });
+
       switch (effect.conditionType) {
         case "CritChanceAbove": return fixture(`치명타 확률 ${formatPercent(threshold)} 이상`, [], { baseCritChance: threshold });
         case "CritChanceStep": return fixture(`치명타 확률 ${formatPercent(threshold)}당 1단계`, [], { baseCritChance: 0.15 });
@@ -9010,16 +9147,16 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         category: "유물", grade: relic.grade, stage: 0, name: relic.name,
         detail: relic.effectDesc, effect: relic
       })),
-      ...sortedSynergies.flatMap((synergy) => Array.from({ length: synergyMaxPoints(synergy) - synergyMinPoints(synergy) + 1 }, (_, index) => {
-        const points = synergyMinPoints(synergy) + index;
+      ...sortedSynergies.flatMap((synergy) => Array.from({ length: synergyMaxPoints(synergy) / synergyMinPoints(synergy) }, (_, index) => {
+        const points = synergyMinPoints(synergy) * (index + 1);
         const effect = synergyEffect(synergy, points);
-        return { category: "시너지", synergyGroupId: synergy.groupId, maxPoints: synergyMaxPoints(synergy), points, stage: 0, name: `${synergy.name} ${points}pt`, detail: effect.effect, effect };
+        return { category: "특성", synergyGroupId: synergy.groupId, maxPoints: synergyMaxPoints(synergy), points, stage: 0, name: `${synergy.name} ${points}pt`, detail: effect.effect, effect };
       }))
     ];
 
     // 개별 표는 최소 발동 조건의 단독 평가를 사용한다. 전수 조합 감사는 최고 효율·위험 분석 전용이다.
     const combinationEvaluatedSynergyEffectIds = new Set();
-    const isCombinationEvaluatedCandidate = (candidate) => candidate.category === "시너지" && combinationEvaluatedSynergyEffectIds.has(candidate.effect.id);
+    const isCombinationEvaluatedCandidate = (candidate) => candidate.category === "특성" && combinationEvaluatedSynergyEffectIds.has(candidate.effect.id);
 
     function applyCombinationEvaluation(candidate, profileKey, profile) {
       if (!isCombinationEvaluatedCandidate(candidate)) return profile;
@@ -9431,9 +9568,9 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
     function balanceProfileDetailCard(candidate) {
       if (candidate.combinationEvaluation) {
         const summary = candidate.combinationEvaluation;
-        if (summary.pending) return `<div class="balance-detail-card"><strong>조합 평가 대기</strong><span>전체 조합 검사를 실행하면 이 시너지의 제거 전후 한계 기여 분포를 계산합니다.</span></div>`;
+        if (summary.pending) return `<div class="balance-detail-card"><strong>조합 평가 대기</strong><span>전체 조합 검사를 실행하면 이 특성의 제거 전후 한계 기여 분포를 계산합니다.</span></div>`;
         const factor = summary.effectScoreMultiplier || 1;
-        return `<div class="balance-detail-card"><strong>조합 한계 기여</strong><span>전투 가치 P10 ${formatNumber(summary.p10 * 100, 1)}% · P50 ${formatNumber(summary.p50 * 100, 1)}% · P90 ${formatNumber(summary.p90 * 100, 1)}%<br>판단 보정 ×${formatNumber(factor, 3)} · 판단 가치 P50 ${formatNumber((summary.weightedP50 ?? summary.p50) * 100, 1)}%<br>완성 6pt 조합과 유물 3종 조합에서 이 시너지를 제거한 전투 가치 차이입니다.</span></div>`;
+        return `<div class="balance-detail-card"><strong>조합 한계 기여</strong><span>전투 가치 P10 ${formatNumber(summary.p10 * 100, 1)}% · P50 ${formatNumber(summary.p50 * 100, 1)}% · P90 ${formatNumber(summary.p90 * 100, 1)}%<br>판단 보정 ×${formatNumber(factor, 3)} · 판단 가치 P50 ${formatNumber((summary.weightedP50 ?? summary.p50) * 100, 1)}%<br>각 특성 최고 단계 조합과 유물 3종 조합에서 이 특성를 제거한 전투 가치 차이입니다.</span></div>`;
       }
       const expected = expectedBalanceOutcome(candidate);
       const beforeDps = candidate.baseline.totalDamage / Math.max(0.001, candidate.baseline.battleDuration);
@@ -9642,8 +9779,8 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         : rawPlayerHp > 0
         ? `${balanceMetricValue(rawPlayerHp, "", 0)} <small>(${formatNumber(rawPlayerHp / Math.max(1, profile.context.playerMaxHp) * 100, 1)}%)</small>`
         : `<span title="60초 전투 종료 시점에 최대 체력을 넘어 추가로 받은 누적 피해입니다. 0에 가까울수록 생존에 가깝습니다.">${balanceMetricValue(rawPlayerHp, "", 0)}</span>`;
-      const synergyGroupEnd = candidate.category === "시너지" && candidate.points === candidate.maxPoints;
-      const synergyGroupClass = candidate.category === "시너지" ? `balance-synergy-group balance-synergy-group-${candidate.synergyGroupId}` : "";
+      const synergyGroupEnd = candidate.category === "특성" && candidate.points === candidate.maxPoints;
+      const synergyGroupClass = candidate.category === "특성" ? `balance-synergy-group balance-synergy-group-${candidate.synergyGroupId}` : "";
       const classes = [rowClass, synergyGroupClass, synergyGroupEnd ? "balance-synergy-group-end" : ""].filter(Boolean).join(" ");
       const relicMeta = candidate.category === "유물" ? relicMetaBadges(candidate.effect) : "";
       const relicCellGrade = candidate.category === "유물" ? ` balance-relic-cell-${String(candidate.grade || "n").toLowerCase()}` : "";
@@ -9674,7 +9811,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
 
     function profileBalanceHeaders(profileKey, idSuffix = "top") {
       return [
-        balanceHeader(`profile-effect-${idSuffix}`, "효과", "유물과 시너지의 이름과 효과 설명입니다."),
+        balanceHeader(`profile-effect-${idSuffix}`, "효과", "유물과 특성의 이름과 효과 설명입니다."),
         balanceHeader(`profile-result-${idSuffix}`, "전투 성과", "60초 전투의 피해·처치와 DPS 변화입니다."),
         balanceHeader(`profile-health-${idSuffix}`, "남은 체력", "60초 전투 종료 시점의 체력입니다."),
         balanceHeader(`profile-value-${idSuffix}`, "전투 가치", "공격과 생존의 실제 전투 기여도입니다."),
@@ -9683,18 +9820,20 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       ].join("");
     }
 
-    const embeddedBalanceAuditSnapshot = {"version":1,"generatedAt":"2026-09-19","samples":32,"fingerprint":"v1-58dd5e40","rows":[{"key":"1002","profiles":{"normal":{"score":0.0577,"status":"range","attack":5.7732,"survival":0,"main":{"value":2.2188,"rate":5.4996},"dps":{"value":11.7448,"rate":5.7732},"hp":43.2,"hpRate":27},"boss":{"score":0,"status":"low","attack":0,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27}}},{"key":"1003","profiles":{"normal":{"score":0.05,"status":"range","attack":0,"survival":2,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27},"boss":{"score":0.05,"status":"range","attack":0,"survival":2,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27}}},{"key":"1004","profiles":{"normal":{"score":0.0105,"status":"low","attack":0.5253,"survival":0,"main":{"value":0.2813,"rate":0.6093},"dps":{"value":1.224,"rate":0.5253},"hp":40,"hpRate":25},"boss":{"score":0.0557,"status":"range","attack":2.7865,"survival":0,"main":{"value":359.375,"rate":2.7865},"dps":{"value":5.9896,"rate":2.7865},"hp":43.2,"hpRate":27}}},{"key":"1102","profiles":{"normal":{"score":0.0006,"status":"low","attack":0.0614,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1461,"rate":0.0614},"hp":40,"hpRate":25},"boss":{"score":0.1071,"status":"range","attack":10.7058,"survival":0,"main":{"value":1646.3438,"rate":10.7058},"dps":{"value":27.4391,"rate":10.7058},"hp":40,"hpRate":25}}},{"key":"1103","profiles":{"normal":{"score":0.018,"status":"low","attack":1.7992,"survival":0,"main":{"value":0.5313,"rate":1.0618},"dps":{"value":4.5313,"rate":1.7992},"hp":40,"hpRate":25},"boss":{"score":0.107,"status":"range","attack":10.7003,"survival":0,"main":{"value":1380,"rate":10.7003},"dps":{"value":23,"rate":10.7003},"hp":43.2,"hpRate":27}}},{"key":"1104","profiles":{"normal":{"score":0.0012,"status":"low","attack":0.1188,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.2767,"rate":0.1188},"hp":40,"hpRate":25},"boss":{"score":0.1094,"status":"range","attack":10.9386,"survival":0,"main":{"value":1410.7422,"rate":10.9386},"dps":{"value":23.5124,"rate":10.9386},"hp":43.2,"hpRate":27}}},{"key":"1201","profiles":{"normal":{"score":0.15,"status":"range","attack":0,"survival":6,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":49.6,"hpRate":31},"boss":{"score":0.15,"status":"range","attack":0,"survival":6,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":49.6,"hpRate":31}}},{"key":"1203","profiles":{"normal":{"score":0.1383,"status":"low","attack":13.8259,"survival":0,"main":{"value":6.8438,"rate":14.8274},"dps":{"value":32.2135,"rate":13.8259},"hp":40,"hpRate":25},"boss":{"score":0.15,"status":"range","attack":15.0036,"survival":0,"main":{"value":1935,"rate":15.0036},"dps":{"value":32.25,"rate":15.0036},"hp":43.2,"hpRate":27}}},{"key":"1204","profiles":{"normal":{"score":0.0939,"status":"low","attack":4.6943,"survival":0,"main":{"value":2.3438,"rate":5.0779},"dps":{"value":10.9375,"rate":4.6943},"hp":40,"hpRate":25},"boss":{"score":0.1655,"status":"high","attack":8.2748,"survival":0,"main":{"value":1067.1875,"rate":8.2748},"dps":{"value":17.7865,"rate":8.2748},"hp":43.2,"hpRate":27}}},{"key":"1301","profiles":{"normal":{"score":0.0681,"status":"low","attack":6.8084,"survival":0,"main":{"value":3.625,"rate":6.6975},"dps":{"value":18.5245,"rate":6.8084},"hp":40,"hpRate":25},"boss":{"score":0.2053,"status":"range","attack":20.5259,"survival":0,"main":{"value":3746.3047,"rate":20.5259},"dps":{"value":62.4384,"rate":20.5259},"hp":40,"hpRate":25}}},{"key":"1302","profiles":{"normal":{"score":0.1017,"status":"low","attack":10.171,"survival":0,"main":{"value":4.4688,"rate":9.6818},"dps":{"value":23.6979,"rate":10.171},"hp":40,"hpRate":25},"boss":{"score":0.2047,"status":"range","attack":20.4701,"survival":0,"main":{"value":2640,"rate":20.4701},"dps":{"value":44,"rate":20.4701},"hp":43.2,"hpRate":27}}},{"key":"1303","profiles":{"normal":{"score":0.1854,"status":"low","attack":0,"survival":7.4167,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":51.8667,"hpRate":32.4167},"boss":{"score":0.2063,"status":"range","attack":0,"survival":8.25,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":53.2,"hpRate":33.25}}},{"key":"2010:1","profiles":{"normal":{"score":0.0007,"status":"low","attack":0.0695,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1784,"rate":0.0695},"hp":40,"hpRate":25},"boss":{"score":0.05,"status":"range","attack":5,"survival":0,"main":{"value":662.8125,"rate":5},"dps":{"value":11.0469,"rate":5},"hp":43.2,"hpRate":27}}},{"key":"2010:2","profiles":{"normal":{"score":0.0014,"status":"low","attack":0.139,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.3568,"rate":0.139},"hp":40,"hpRate":25},"boss":{"score":0.1,"status":"range","attack":10,"survival":0,"main":{"value":1325.625,"rate":10},"dps":{"value":22.0938,"rate":10},"hp":43.2,"hpRate":27}}},{"key":"2010:3","profiles":{"normal":{"score":0.0177,"status":"low","attack":1.7703,"survival":0,"main":{"value":0.8438,"rate":1.6667},"dps":{"value":4.5443,"rate":1.7703},"hp":40,"hpRate":25},"boss":{"score":0.15,"status":"range","attack":15,"survival":0,"main":{"value":1988.4375,"rate":15},"dps":{"value":33.1406,"rate":15},"hp":43.2,"hpRate":27}}},{"key":"2020:1","profiles":{"normal":{"score":0.0638,"status":"high","attack":6.3813,"survival":0,"main":{"value":3.9688,"rate":7.8395},"dps":{"value":16.3802,"rate":6.3813},"hp":40,"hpRate":25},"boss":{"score":0.0579,"status":"range","attack":5.7874,"survival":0,"main":{"value":767.1875,"rate":5.7874},"dps":{"value":12.7865,"rate":5.7874},"hp":43.2,"hpRate":27}}},{"key":"2020:2","profiles":{"normal":{"score":0.1077,"status":"range","attack":10.7741,"survival":0,"main":{"value":5.9063,"rate":11.6667},"dps":{"value":27.6563,"rate":10.7741},"hp":40,"hpRate":25},"boss":{"score":0.1069,"status":"range","attack":10.6907,"survival":0,"main":{"value":1417.1875,"rate":10.6907},"dps":{"value":23.6198,"rate":10.6907},"hp":43.2,"hpRate":27}}},{"key":"2020:3","profiles":{"normal":{"score":0.1518,"status":"range","attack":15.177,"survival":0,"main":{"value":7.8438,"rate":15.4938},"dps":{"value":38.9583,"rate":15.177},"hp":40,"hpRate":25},"boss":{"score":0.1574,"status":"range","attack":15.7355,"survival":0,"main":{"value":2085.9375,"rate":15.7355},"dps":{"value":34.7656,"rate":15.7355},"hp":43.2,"hpRate":27}}},{"key":"2030:1","profiles":{"normal":{"score":0.0195,"status":"low","attack":0.9739,"survival":0,"main":{"value":0.5313,"rate":1.0494},"dps":{"value":2.5,"rate":0.9739},"hp":40,"hpRate":25},"boss":{"score":0.0545,"status":"range","attack":2.7228,"survival":0,"main":{"value":360.9375,"rate":2.7228},"dps":{"value":6.0156,"rate":2.7228},"hp":43.2,"hpRate":27}}},{"key":"2030:2","profiles":{"normal":{"score":0.041,"status":"low","attack":2.0493,"survival":0,"main":{"value":1.125,"rate":2.2222},"dps":{"value":5.2604,"rate":2.0493},"hp":40,"hpRate":25},"boss":{"score":0.0962,"status":"range","attack":4.8091,"survival":0,"main":{"value":637.5,"rate":4.8091},"dps":{"value":10.625,"rate":4.8091},"hp":43.2,"hpRate":27}}},{"key":"2030:3","profiles":{"normal":{"score":0.0741,"status":"low","attack":3.703,"survival":0,"main":{"value":2.0313,"rate":4.0123},"dps":{"value":9.5052,"rate":3.703},"hp":40,"hpRate":25},"boss":{"score":0.1561,"status":"range","attack":7.8029,"survival":0,"main":{"value":1034.375,"rate":7.8029},"dps":{"value":17.2396,"rate":7.8029},"hp":43.2,"hpRate":27}}},{"key":"2050:2","profiles":{"normal":{"score":0.0562,"status":"low","attack":5.6165,"survival":0,"main":{"value":3.2188,"rate":6.2462},"dps":{"value":14.5313,"rate":5.6165},"hp":40,"hpRate":25},"boss":{"score":0.7415,"status":"high","attack":74.1535,"survival":0,"main":{"value":9829.9688,"rate":74.1535},"dps":{"value":163.8328,"rate":74.1535},"hp":43.2,"hpRate":27}}},{"key":"2110:2","profiles":{"normal":{"score":0.0066,"status":"low","attack":0.6593,"survival":0,"main":{"value":0.1875,"rate":0.4684},"dps":{"value":1.3281,"rate":0.6593},"hp":-560,"hpRate":-350},"boss":{"score":0.0938,"status":"range","attack":9.3827,"survival":0,"main":{"value":1210.0781,"rate":9.3827},"dps":{"value":20.168,"rate":9.3827},"hp":-80,"hpRate":-50}}},{"key":"2120:2","profiles":{"normal":{"score":0.0006,"status":"low","attack":0.0583,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1388,"rate":0.0583},"hp":43.2,"hpRate":27},"boss":{"score":0.1049,"status":"range","attack":10.4889,"survival":0,"main":{"value":1612.9945,"rate":10.4889},"dps":{"value":26.8832,"rate":10.4889},"hp":43.2,"hpRate":27}}},{"key":"2070:3","profiles":{"normal":{"score":0.1559,"status":"range","attack":15.5941,"survival":0,"main":{"value":6.125,"rate":15.3005},"dps":{"value":31.4115,"rate":15.5941},"hp":64.6667,"hpRate":40.4167},"boss":{"score":0.2405,"status":"high","attack":24.0465,"survival":0,"main":{"value":3101.25,"rate":24.0465},"dps":{"value":51.6875,"rate":24.0465},"hp":66,"hpRate":41.25}}},{"key":"2080:3","profiles":{"normal":{"score":0.0295,"status":"low","attack":2.9468,"survival":0,"main":{"value":1.625,"rate":2.9902},"dps":{"value":8.0104,"rate":2.9468},"hp":40,"hpRate":25},"boss":{"score":0.1579,"status":"range","attack":15.7942,"survival":0,"main":{"value":2977.5,"rate":15.7942},"dps":{"value":49.625,"rate":15.7942},"hp":40,"hpRate":25}}},{"key":"2100:3","profiles":{"normal":{"score":0.0516,"status":"low","attack":5.16,"survival":0,"main":{"value":2.8125,"rate":5.1963},"dps":{"value":14.0396,"rate":5.16},"hp":43.2,"hpRate":27},"boss":{"score":0.1492,"status":"range","attack":14.9232,"survival":0,"main":{"value":2723.7188,"rate":14.9232},"dps":{"value":45.3953,"rate":14.9232},"hp":43.2,"hpRate":27}}}]};
+    const embeddedBalanceAuditSnapshot = {"version":1,"generatedAt":"2026-10-06","samples":32,"fingerprint":"v1-3250473e","rows":[{"key":"1002","profiles":{"normal":{"score":0.0579,"status":"range","attack":5.7889,"survival":0,"main":{"value":2.2188,"rate":5.4996},"dps":{"value":11.7708,"rate":5.7889},"hp":43.2,"hpRate":27},"boss":{"score":0,"status":"low","attack":0,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27}}},{"key":"1003","profiles":{"normal":{"score":0.05,"status":"range","attack":0,"survival":2,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27},"boss":{"score":0.05,"status":"range","attack":0,"survival":2,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":43.2,"hpRate":27}}},{"key":"1004","profiles":{"normal":{"score":0.0079,"status":"low","attack":0.3966,"survival":0,"main":{"value":0.125,"rate":0.2656},"dps":{"value":0.9375,"rate":0.3966},"hp":40,"hpRate":25},"boss":{"score":0.0492,"status":"range","attack":2.4594,"survival":0,"main":{"value":317.1875,"rate":2.4594},"dps":{"value":5.2865,"rate":2.4594},"hp":43.2,"hpRate":27}}},{"key":"1102","profiles":{"normal":{"score":0.0006,"status":"low","attack":0.0561,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1328,"rate":0.0561},"hp":40,"hpRate":25},"boss":{"score":0.1059,"status":"range","attack":10.5867,"survival":0,"main":{"value":1623.2344,"rate":10.5867},"dps":{"value":27.0539,"rate":10.5867},"hp":40,"hpRate":25}}},{"key":"1103","profiles":{"normal":{"score":0.079,"status":"low","attack":7.8991,"survival":0,"main":{"value":3.625,"rate":7.7025},"dps":{"value":18.6719,"rate":7.8991},"hp":40,"hpRate":25},"boss":{"score":0.107,"status":"range","attack":10.7003,"survival":0,"main":{"value":1380,"rate":10.7003},"dps":{"value":23,"rate":10.7003},"hp":43.2,"hpRate":27}}},{"key":"1104","profiles":{"normal":{"score":0.0006,"status":"low","attack":0.0565,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1335,"rate":0.0565},"hp":40,"hpRate":25},"boss":{"score":0.1094,"status":"range","attack":10.9386,"survival":0,"main":{"value":1410.7422,"rate":10.9386},"dps":{"value":23.5124,"rate":10.9386},"hp":43.2,"hpRate":27}}},{"key":"1201","profiles":{"normal":{"score":0.15,"status":"range","attack":0,"survival":6,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":49.6,"hpRate":31},"boss":{"score":0.15,"status":"range","attack":0,"survival":6,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":49.6,"hpRate":31}}},{"key":"1203","profiles":{"normal":{"score":0.0947,"status":"low","attack":9.4669,"survival":0,"main":{"value":4.5313,"rate":9.8172},"dps":{"value":22.0573,"rate":9.4669},"hp":40,"hpRate":25},"boss":{"score":0.1489,"status":"range","attack":14.8873,"survival":0,"main":{"value":1920,"rate":14.8873},"dps":{"value":32,"rate":14.8873},"hp":43.2,"hpRate":27}}},{"key":"1204","profiles":{"normal":{"score":0.0857,"status":"low","attack":4.2856,"survival":0,"main":{"value":1.9688,"rate":4.1833},"dps":{"value":10.1302,"rate":4.2856},"hp":40,"hpRate":25},"boss":{"score":0.1655,"status":"high","attack":8.2748,"survival":0,"main":{"value":1067.1875,"rate":8.2748},"dps":{"value":17.7865,"rate":8.2748},"hp":43.2,"hpRate":27}}},{"key":"1301","profiles":{"normal":{"score":0.0681,"status":"low","attack":6.8084,"survival":0,"main":{"value":3.625,"rate":6.6975},"dps":{"value":18.5245,"rate":6.8084},"hp":40,"hpRate":25},"boss":{"score":0.2053,"status":"range","attack":20.5259,"survival":0,"main":{"value":3746.3047,"rate":20.5259},"dps":{"value":62.4384,"rate":20.5259},"hp":40,"hpRate":25}}},{"key":"1302","profiles":{"normal":{"score":0.1529,"status":"low","attack":15.2914,"survival":0,"main":{"value":7.125,"rate":15.1394},"dps":{"value":36.1458,"rate":15.2914},"hp":40,"hpRate":25},"boss":{"score":0.2047,"status":"range","attack":20.4701,"survival":0,"main":{"value":2640,"rate":20.4701},"dps":{"value":44,"rate":20.4701},"hp":43.2,"hpRate":27}}},{"key":"1303","profiles":{"normal":{"score":0.1854,"status":"low","attack":0,"survival":7.4167,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":51.8667,"hpRate":32.4167},"boss":{"score":0.2063,"status":"range","attack":0,"survival":8.25,"main":{"value":0,"rate":0},"dps":{"value":0,"rate":0},"hp":53.2,"hpRate":33.25}}},{"key":"2010:1","profiles":{"normal":{"score":0.0003,"status":"low","attack":0.0317,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.0807,"rate":0.0317},"hp":40,"hpRate":25},"boss":{"score":0.05,"status":"range","attack":5,"survival":0,"main":{"value":660.7031,"rate":5},"dps":{"value":11.0117,"rate":5},"hp":43.2,"hpRate":27}}},{"key":"2010:2","profiles":{"normal":{"score":0.0006,"status":"low","attack":0.0633,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1615,"rate":0.0633},"hp":40,"hpRate":25},"boss":{"score":0.1,"status":"range","attack":10,"survival":0,"main":{"value":1321.4063,"rate":10},"dps":{"value":22.0234,"rate":10},"hp":43.2,"hpRate":27}}},{"key":"2010:3","profiles":{"normal":{"score":0.0052,"status":"low","attack":0.5228,"survival":0,"main":{"value":0.0625,"rate":0.1233},"dps":{"value":1.3333,"rate":0.5228},"hp":40,"hpRate":25},"boss":{"score":0.15,"status":"range","attack":15,"survival":0,"main":{"value":1982.1094,"rate":15},"dps":{"value":33.0352,"rate":15},"hp":43.2,"hpRate":27}}},{"key":"2020:1","profiles":{"normal":{"score":0.0441,"status":"range","attack":4.4109,"survival":0,"main":{"value":2.375,"rate":4.6856},"dps":{"value":11.25,"rate":4.4109},"hp":40,"hpRate":25},"boss":{"score":0.0579,"status":"range","attack":5.794,"survival":0,"main":{"value":765.625,"rate":5.794},"dps":{"value":12.7604,"rate":5.794},"hp":43.2,"hpRate":27}}},{"key":"2020:2","profiles":{"normal":{"score":0.0823,"status":"low","attack":8.2295,"survival":0,"main":{"value":4.3125,"rate":8.508},"dps":{"value":20.9896,"rate":8.2295},"hp":40,"hpRate":25},"boss":{"score":0.107,"status":"range","attack":10.7012,"survival":0,"main":{"value":1414.0625,"rate":10.7012},"dps":{"value":23.5677,"rate":10.7012},"hp":43.2,"hpRate":27}}},{"key":"2020:3","profiles":{"normal":{"score":0.1271,"status":"low","attack":12.7119,"survival":0,"main":{"value":6.4375,"rate":12.7004},"dps":{"value":32.4219,"rate":12.7119},"hp":40,"hpRate":25},"boss":{"score":0.1576,"status":"range","attack":15.7621,"survival":0,"main":{"value":2082.8125,"rate":15.7621},"dps":{"value":34.7135,"rate":15.7621},"hp":43.2,"hpRate":27}}},{"key":"2030:1","profiles":{"normal":{"score":0.01,"status":"low","attack":0.5003,"survival":0,"main":{"value":0.3438,"rate":0.6782},"dps":{"value":1.276,"rate":0.5003},"hp":40,"hpRate":25},"boss":{"score":0.052,"status":"range","attack":2.6014,"survival":0,"main":{"value":343.75,"rate":2.6014},"dps":{"value":5.7292,"rate":2.6014},"hp":43.2,"hpRate":27}}},{"key":"2030:2","profiles":{"normal":{"score":0.0251,"status":"low","attack":1.2559,"survival":0,"main":{"value":0.6875,"rate":1.3564},"dps":{"value":3.2031,"rate":1.2559},"hp":40,"hpRate":25},"boss":{"score":0.0955,"status":"range","attack":4.7771,"survival":0,"main":{"value":631.25,"rate":4.7771},"dps":{"value":10.5208,"rate":4.7771},"hp":43.2,"hpRate":27}}},{"key":"2030:3","profiles":{"normal":{"score":0.0455,"status":"low","attack":2.2769,"survival":0,"main":{"value":1.1875,"rate":2.3428},"dps":{"value":5.8073,"rate":2.2769},"hp":40,"hpRate":25},"boss":{"score":0.1542,"status":"range","attack":7.7096,"survival":0,"main":{"value":1018.75,"rate":7.7096},"dps":{"value":16.9792,"rate":7.7096},"hp":43.2,"hpRate":27}}},{"key":"2050:2","profiles":{"normal":{"score":0.0447,"status":"low","attack":4.4729,"survival":0,"main":{"value":2.25,"rate":4.4308},"dps":{"value":11.0938,"rate":4.4729},"hp":40,"hpRate":25},"boss":{"score":0.7448,"status":"high","attack":74.4796,"survival":0,"main":{"value":9841.7813,"rate":74.4796},"dps":{"value":164.0297,"rate":74.4796},"hp":43.2,"hpRate":27}}},{"key":"2050:4","profiles":{"normal":{"score":0.0447,"status":"low","attack":4.4729,"survival":0,"main":{"value":2.25,"rate":4.4308},"dps":{"value":11.0938,"rate":4.4729},"hp":40,"hpRate":25},"boss":{"score":0.9038,"status":"high","attack":90.3794,"survival":0,"main":{"value":11942.7891,"rate":90.3794},"dps":{"value":199.0465,"rate":90.3794},"hp":43.2,"hpRate":27}}},{"key":"2050:6","profiles":{"normal":{"score":0.0447,"status":"low","attack":4.4729,"survival":0,"main":{"value":2.25,"rate":4.4308},"dps":{"value":11.0938,"rate":4.4729},"hp":40,"hpRate":25},"boss":{"score":0.9638,"status":"high","attack":96.3794,"survival":0,"main":{"value":12735.6328,"rate":96.3794},"dps":{"value":212.2605,"rate":96.3794},"hp":43.2,"hpRate":27}}},{"key":"2110:2","profiles":{"normal":{"score":0.0066,"status":"low","attack":0.6593,"survival":0,"main":{"value":0.1875,"rate":0.4684},"dps":{"value":1.3281,"rate":0.6593},"hp":-560,"hpRate":-350},"boss":{"score":0.0938,"status":"range","attack":9.3827,"survival":0,"main":{"value":1210.0781,"rate":9.3827},"dps":{"value":20.168,"rate":9.3827},"hp":-80,"hpRate":-50}}},{"key":"2110:4","profiles":{"normal":{"score":0.0331,"status":"low","attack":3.3096,"survival":0,"main":{"value":1.1875,"rate":2.9664},"dps":{"value":6.6667,"rate":3.3096},"hp":-560,"hpRate":-350},"boss":{"score":0.1981,"status":"range","attack":19.808,"survival":0,"main":{"value":2554.6094,"rate":19.808},"dps":{"value":42.5768,"rate":19.808},"hp":-80,"hpRate":-50}}},{"key":"2110:6","profiles":{"normal":{"score":0.0399,"status":"low","attack":3.9948,"survival":0,"main":{"value":1.5313,"rate":3.8251},"dps":{"value":8.0469,"rate":3.9948},"hp":-560,"hpRate":-350},"boss":{"score":0.3023,"status":"range","attack":30.2332,"survival":0,"main":{"value":3899.1406,"rate":30.2332},"dps":{"value":64.9857,"rate":30.2332},"hp":-80,"hpRate":-50}}},{"key":"2120:2","profiles":{"normal":{"score":0.0005,"status":"low","attack":0.0505,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.1195,"rate":0.0505},"hp":43.2,"hpRate":27},"boss":{"score":0.099,"status":"range","attack":9.9025,"survival":0,"main":{"value":1518.3258,"rate":9.9025},"dps":{"value":25.3054,"rate":9.9025},"hp":43.2,"hpRate":27}}},{"key":"2120:4","profiles":{"normal":{"score":0.001,"status":"low","attack":0.1009,"survival":0,"main":{"value":0,"rate":0},"dps":{"value":0.2391,"rate":0.1009},"hp":43.2,"hpRate":27},"boss":{"score":0.198,"status":"range","attack":19.8049,"survival":0,"main":{"value":3036.6516,"rate":19.8049},"dps":{"value":50.6109,"rate":19.8049},"hp":43.2,"hpRate":27}}},{"key":"2120:6","profiles":{"normal":{"score":0.2189,"status":"low","attack":21.8917,"survival":0,"main":{"value":10.375,"rate":22.0745},"dps":{"value":51.8445,"rate":21.8917},"hp":43.2,"hpRate":27},"boss":{"score":0.3029,"status":"range","attack":30.2899,"survival":0,"main":{"value":4644.2906,"rate":30.2899},"dps":{"value":77.4048,"rate":30.2899},"hp":43.2,"hpRate":27}}},{"key":"2070:3","profiles":{"normal":{"score":0.1559,"status":"range","attack":15.5941,"survival":0,"main":{"value":6.125,"rate":15.3005},"dps":{"value":31.4115,"rate":15.5941},"hp":64.6667,"hpRate":40.4167},"boss":{"score":0.2405,"status":"high","attack":24.0465,"survival":0,"main":{"value":3101.25,"rate":24.0465},"dps":{"value":51.6875,"rate":24.0465},"hp":66,"hpRate":41.25}}},{"key":"2070:6","profiles":{"normal":{"score":0.1587,"status":"low","attack":15.8733,"survival":0,"main":{"value":6.125,"rate":15.3005},"dps":{"value":31.974,"rate":15.8733},"hp":64.6667,"hpRate":40.4167},"boss":{"score":0.3607,"status":"high","attack":36.0698,"survival":0,"main":{"value":4651.875,"rate":36.0698},"dps":{"value":77.5313,"rate":36.0698},"hp":66,"hpRate":41.25}}},{"key":"2070:9","profiles":{"normal":{"score":0.4436,"status":"range","attack":44.3568,"survival":0,"main":{"value":18.125,"rate":45.2771},"dps":{"value":89.349,"rate":44.3568},"hp":64.6667,"hpRate":40.4167},"boss":{"score":0.4809,"status":"high","attack":48.093,"survival":0,"main":{"value":6202.5,"rate":48.093},"dps":{"value":103.375,"rate":48.093},"hp":66,"hpRate":41.25}}},{"key":"2080:3","profiles":{"normal":{"score":0.0294,"status":"low","attack":2.94,"survival":0,"main":{"value":1.5313,"rate":2.986},"dps":{"value":7.5417,"rate":2.94},"hp":40,"hpRate":25},"boss":{"score":0.1419,"status":"range","attack":14.1903,"survival":0,"main":{"value":2673,"rate":14.1903},"dps":{"value":44.55,"rate":14.1903},"hp":40,"hpRate":25}}},{"key":"2080:6","profiles":{"normal":{"score":0.2085,"status":"low","attack":20.8479,"survival":0,"main":{"value":10.7188,"rate":20.9019},"dps":{"value":53.4792,"rate":20.8479},"hp":40,"hpRate":25},"boss":{"score":0.3081,"status":"range","attack":30.8097,"survival":0,"main":{"value":5803.5938,"rate":30.8097},"dps":{"value":96.7266,"rate":30.8097},"hp":40,"hpRate":25}}},{"key":"2080:9","profiles":{"normal":{"score":0.2085,"status":"low","attack":20.8479,"survival":0,"main":{"value":10.7188,"rate":20.9019},"dps":{"value":53.4792,"rate":20.8479},"hp":40,"hpRate":25},"boss":{"score":0.4479,"status":"range","attack":44.7949,"survival":0,"main":{"value":8437.9672,"rate":44.7949},"dps":{"value":140.6328,"rate":44.7949},"hp":40,"hpRate":25}}},{"key":"2100:3","profiles":{"normal":{"score":0.0516,"status":"low","attack":5.16,"survival":0,"main":{"value":2.8125,"rate":5.1963},"dps":{"value":14.0396,"rate":5.16},"hp":43.2,"hpRate":27},"boss":{"score":0.1492,"status":"range","attack":14.9232,"survival":0,"main":{"value":2723.7188,"rate":14.9232},"dps":{"value":45.3953,"rate":14.9232},"hp":43.2,"hpRate":27}}},{"key":"2100:6","profiles":{"normal":{"score":0.2197,"status":"low","attack":21.9659,"survival":0,"main":{"value":12.0938,"rate":22.3441},"dps":{"value":59.7656,"rate":21.9659},"hp":43.2,"hpRate":27},"boss":{"score":0.297,"status":"range","attack":29.7033,"survival":0,"main":{"value":5421.3125,"rate":29.7033},"dps":{"value":90.3552,"rate":29.7033},"hp":43.2,"hpRate":27}}},{"key":"2100:9","profiles":{"normal":{"score":0.2197,"status":"low","attack":21.9659,"survival":0,"main":{"value":12.0938,"rate":22.3441},"dps":{"value":59.7656,"rate":21.9659},"hp":43.2,"hpRate":27},"boss":{"score":0.443,"status":"range","attack":44.3042,"survival":0,"main":{"value":8086.2109,"rate":44.3042},"dps":{"value":134.7702,"rate":44.3042},"hp":43.2,"hpRate":27}}}]};
     function renderCachedBalanceAudit(profileKey = activeBalanceProfile, filterKey = activeBalanceEffectFilter) {
       const data = new Map(embeddedBalanceAuditSnapshot.rows.map(row => [row.key, row]));
       profileKey = balanceProfileDefinitions[profileKey] ? profileKey : "boss";
       const state = { low: "상향", high: "하향", range: "유지" };
-      const rows = ["유물", "시너지"].map(category => {
+      const rows = ["유물", "특성"].map(category => {
         const list = balanceCandidateDefinitions().filter(candidate => candidate.category === category);
         const body = list.map((candidate, index) => {
-          const key = candidate.category === "시너지" ? `${candidate.effect.id}:${candidate.points}` : String(candidate.effect.id);
-          const row = data.get(key), p = row.profiles[profileKey], n = row.profiles.normal, b = row.profiles.boss;
+          const key = candidate.category === "특성" ? `${candidate.effect.id}:${candidate.points}` : String(candidate.effect.id);
+          const row = data.get(key);
+          if (!row) return `<tr><td class="balance-effect-cell"><span class="balance-effect-title">${candidateBadge(candidate)}<span class="effect-name">${candidateDisplayName(candidate)}</span></span><span class="effect-kind">${candidate.detail}</span></td><td>—</td><td>—</td><td>—</td><td>검사 대기</td>${balanceRemarkCell(candidate)}</tr>`;
+          const p = row.profiles[profileKey], n = row.profiles.normal, b = row.profiles.boss;
           const main = profileKey === "normal" ? `+${formatNumber(p.main.value, 0)}명` : `+${formatNumber(p.main.value, 0)}`;
-          const rowClass = candidate.category === "시너지"
+          const rowClass = candidate.category === "특성"
             ? [
               `balance-synergy-group balance-synergy-group-${candidate.synergyGroupId}`,
               candidate.points === candidate.maxPoints ? "balance-synergy-group-end" : ""
@@ -9707,7 +9846,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
           const effectMeta = relicMetaBadges(candidate.effect);
           return `<tr${rowClass ? ` class="${rowClass}"` : ""}><td class="balance-effect-cell${effectMeta ? " has-meta" : ""}"><span class="balance-effect-title">${candidateBadge(candidate)}<span class="effect-name">${candidateDisplayName(candidate)}</span></span><span class="effect-kind">${candidate.detail}</span>${effectMeta ? `<span class="relic-meta-tray">${effectMeta}</span>` : ""}</td><td><span class="balance-result-stack"><span><b>${profileKey === "normal" ? "추가 처치" : "피해"}</b>${main}</span><span><b>DPS</b>+${formatNumber(p.dps.value, 1)}</span></span></td><td>${formatNumber(p.hp, 0)} <small>(${formatNumber(p.hpRate, 1)}%)</small></td><td><span class="balance-value-stack"><span><b>공격</b>${formatNumber(p.attack, 1)}%</span><span><b>생존</b>${formatNumber(p.survival, 1)}%</span></span></td><td><span class="balance-decision-stack"><span class="balance-status ${n.status}"><span class="balance-status-profile" data-profile="normal">일반전</span><span class="balance-status-decision">${state[n.status]} (${formatNumber(n.score * 100, 1)}%)</span></span><span class="balance-status ${b.status}"><span class="balance-status-profile" data-profile="boss">보스전</span><span class="balance-status-decision">${state[b.status]} (${formatNumber(b.score * 100, 1)}%)</span></span></span></td>${balanceRemarkCell(candidate)}</tr>`;
         }).join("");
-        const divider = category === "시너지" ? `<tr class="balance-relic-divider" aria-hidden="true"><td colspan="6"></td></tr>` : "";
+        const divider = category === "특성" ? `<tr class="balance-relic-divider" aria-hidden="true"><td colspan="6"></td></tr>` : "";
         return `${divider}<tr class="balance-group-row"><th colspan="6">${category}</th></tr>${body}`;
       }).join("");
       activeBalanceProfile = profileKey;
@@ -9749,7 +9888,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
     function createBalanceAuditView(profileKey, filterKey) {
       const filterCount = (key) => {
         const candidates = balanceProfileCache.filter((candidate) => key === "all" || balanceAuditFilterKeyFor(candidate) === key);
-        return new Set(candidates.map((candidate) => candidate.category === "시너지"
+        return new Set(candidates.map((candidate) => candidate.category === "특성"
           ? `synergy-${candidate.synergyGroupId}`
           : `relic-${candidate.effect.id}`)).size;
       };
@@ -9757,25 +9896,25 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         .filter(({ key, count }) => key === "all" || count > 0)
         .map(({ key, label, count }) => `<button class="balance-audit-filter" type="button" aria-pressed="${key === filterKey}" data-balance-effect-filter="${key}">${label} (${count})</button>`)
         .join("");
-      const body = ["유물", "시너지"].map((category) => {
+      const body = ["유물", "특성"].map((category) => {
         const candidates = balanceProfileCache.filter((candidate) => candidate.category === category)
           .filter((candidate) => filterKey === "all" || balanceAuditFilterKeyFor(candidate) === filterKey);
         if (!candidates.length) return "";
         const rows = candidates.map((candidate, index) => renderBalanceProfileRow(
           candidate,
           profileKey,
-          category === "시너지"
+          category === "특성"
             ? [
               `balance-synergy-group balance-synergy-group-${candidate.synergyGroupId}`,
               candidate.points === candidate.maxPoints ? "balance-synergy-group-end" : ""
             ].filter(Boolean).join(" ")
             : `${candidate.grade !== candidates[index + 1]?.grade ? "balance-grade-end" : ""} ${index === candidates.length - 1 ? "balance-relic-list-end" : ""} balance-relic-grade-${String(candidate.grade || "n").toLowerCase()}`
         )).join("");
-        const repeatedHead = category === "시너지"
+        const repeatedHead = category === "특성"
           ? `<tr class="balance-repeat-head">${profileBalanceHeaders(profileKey, "synergy")}</tr>`
           : "";
-        const categoryDivider = category === "시너지" ? `<tr class="balance-relic-divider" aria-hidden="true"><td colspan="6"></td></tr>` : "";
-        return `${categoryDivider}<tr class="balance-group-row balance-group-row-${category === "시너지" ? "synergy" : "relic"}"><th scope="rowgroup" colspan="6">${category}</th></tr>${repeatedHead}${rows}`;
+        const categoryDivider = category === "특성" ? `<tr class="balance-relic-divider" aria-hidden="true"><td colspan="6"></td></tr>` : "";
+        return `${categoryDivider}<tr class="balance-group-row balance-group-row-${category === "특성" ? "synergy" : "relic"}"><th scope="rowgroup" colspan="6">${category}</th></tr>${repeatedHead}${rows}`;
       }).join("");
       return { head: `<tr>${profileBalanceHeaders(profileKey, "top")}</tr>`, filters, body };
     }
@@ -9927,39 +10066,65 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       return picked;
     }
 
-    function allLegalSynergyPackages() {
-      const packages = [];
-      const visit = (startIndex, selected, points) => {
-        packages.push(selected.map((entry) => ({ ...entry })));
-        if (selected.length >= synergySelectionCap) return;
-        for (let index = startIndex; index < sortedSynergies.length; index += 1) {
-          const synergy = sortedSynergies[index];
-          for (let investment = synergyMinPoints(synergy); investment <= synergyMaxPoints(synergy); investment += 1) {
-            const nextPoints = points + investment;
-            if (nextPoints > synergyPointCap) continue;
-            selected.push({ synergy, points: investment, effect: synergyEffect(synergy, investment) });
-            visit(index + 1, selected, nextPoints);
-            selected.pop();
-          }
-        }
-      };
-      visit(0, [], 0);
-      return packages;
+    function fullBuildSynergyPointBudget(relicCombination) {
+      const gradeBudget = { N: 3, R: 4, SR: 5, SSR: 6 };
+      return relicCombination.reduce((total, relic) => total + (gradeBudget[relic.grade] || 0), 0);
     }
 
-    function fullBuildSynergyPackages() {
-      if (!fullBuildSynergyPackageCache) {
-        const allPackages = allLegalSynergyPackages()
-          .filter((synergies) => synergies.reduce((total, item) => total + item.points, 0) === synergyPointCap);
+    function fullBuildSynergyPackages(relicCombination) {
+      if (!fullBuildSynergyPackageCache) fullBuildSynergyPackageCache = new Map();
+      const relicKey = relicCombination.map((relic) => relic.id).join(",");
+      if (!fullBuildSynergyPackageCache.has(relicKey)) {
+        const pointCap = fullBuildSynergyPointBudget(relicCombination);
+        const selectionCap = Math.min(6, relicCombination.length * 2);
+        let maxPoints = -1;
+        let maxSynergyCount = 0;
+        let bestPackageCount = 0;
+        const selected = [];
+        const investmentOptions = sortedSynergies.map((synergy) => {
+          const minPoints = synergyMinPoints(synergy);
+          const options = [];
+          for (let points = minPoints; points <= synergyMaxPoints(synergy); points += minPoints) {
+            options.push({ synergy, points, effect: synergyEffect(synergy, points) });
+          }
+          return options;
+        });
+        const visit = (startIndex, points, onPackage) => {
+          onPackage(selected, points);
+          if (selected.length === selectionCap) return;
+          for (let index = startIndex; index < sortedSynergies.length; index += 1) {
+            for (const option of investmentOptions[index]) {
+              const nextPoints = points + option.points;
+              if (nextPoints > pointCap) continue;
+              selected.push(option);
+              visit(index + 1, nextPoints, onPackage);
+              selected.pop();
+            }
+          }
+        };
+        visit(0, 0, (entries, points) => {
+          if (points > maxPoints || (points === maxPoints && entries.length > maxSynergyCount)) {
+            maxPoints = points;
+            maxSynergyCount = entries.length;
+            bestPackageCount = 1;
+          } else if (points === maxPoints && entries.length === maxSynergyCount) {
+            bestPackageCount += 1;
+          }
+        });
+
         const representativeCount = 8;
-        fullBuildSynergyPackageCache = allPackages.length <= representativeCount
-          ? allPackages
-          : Array.from({ length: representativeCount }, (_, index) => {
-            const sourceIndex = Math.round(index * (allPackages.length - 1) / (representativeCount - 1));
-            return allPackages[sourceIndex];
-          });
+        const representativeIndexes = new Set(Array.from({ length: Math.min(representativeCount, bestPackageCount) }, (_, index) =>
+          Math.round(index * (bestPackageCount - 1) / Math.max(1, Math.min(representativeCount, bestPackageCount) - 1))));
+        const representatives = [];
+        let bestIndex = 0;
+        visit(0, 0, (entries, points) => {
+          if (points !== maxPoints || entries.length !== maxSynergyCount) return;
+          if (representativeIndexes.has(bestIndex)) representatives.push(entries.map((entry) => ({ ...entry })));
+          bestIndex += 1;
+        });
+        fullBuildSynergyPackageCache.set(relicKey, representatives);
       }
-      return fullBuildSynergyPackageCache;
+      return fullBuildSynergyPackageCache.get(relicKey);
     }
 
     function fullBuildCandidateForRelic(relic) {
@@ -9978,7 +10143,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
     function fullBuildCandidateForSynergy({ synergy, points, effect }) {
       return {
         key: `synergy-${synergy.effect.id}-${points}`,
-        category: "시너지",
+        category: "특성",
         sourceCategory: "synergy",
         points,
         stage: 0,
@@ -10001,7 +10166,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
     function fullBuildTarget(relicCombination, synergyPackage) {
       return [...relicCombination, ...synergyPackage].reduce((total, item) => {
         const target = item.effect
-          ? balanceTarget({ category: "시너지", points: item.points, stage: 0 })
+          ? balanceTarget({ category: "특성", points: item.points, stage: 0 })
           : balanceTarget({ category: "유물", grade: item.grade });
         return [total[0] + target[0], total[1] + target[1]];
       }, [0, 0]);
@@ -10012,7 +10177,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         const effect = item.effect || item;
         const role = balanceRole(effect) === "survival" ? "survival" : "attack";
         const target = item.effect
-          ? balanceTarget({ category: "시너지", points: item.points, stage: 0 })
+          ? balanceTarget({ category: "특성", points: item.points, stage: 0 })
           : balanceTarget({ category: "유물", grade: item.grade });
         targets[role] = [targets[role][0] + target[0], targets[role][1] + target[1]];
         return targets;
@@ -10053,9 +10218,9 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
 
     const fullBuildHeaderDescriptions = {
       "순위": "판단 가치가 높은 조합 순위입니다. 공격·생존 전투값에 치명타 확률·더블 공격 확률 ×2, 직접 보호막 ×2.5 보정치를 적용한 뒤 합산합니다.",
-      "조합": "위줄 유물 3개 / 아래줄 시너지 3개이며, 각각 가나다순입니다.",
+      "조합": "위줄 유물 3개 / 아래줄 특성 최대 6개이며, 각각 가나다순입니다.",
       "유물": "가나다순 유물 3개입니다.",
-      "시너지": "가나다순 공용 시너지 3개입니다.",
+      "특성": "유물 3개의 등급별 포인트 예산 안에서 최대 6개까지 장착할 수 있는 공용 특성 조합입니다. 개별 유물별 배정 제한은 적용하지 않습니다.",
       "최대 (도달)": "능력치의 최대 수치와 최초 도달 시점입니다.",
       "전투 가치": "전체 조합의 공격 가치와 생존 가치를 따로 표시합니다. 공격은 유효 피해 증가율, 생존은 실제 체력 손실 감소율이며 남은 보호막은 포함하지 않습니다.",
       "판정": "실제 전투값은 그대로 두고, 치명타 확률·더블 공격 확률 ×2, 직접 보호막 ×2.5를 적용한 판단 가치로 목표 범위와 비교합니다."
@@ -10079,7 +10244,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         if (!compositionHeader) return;
         const synergyHeader = document.createElement("th");
         compositionHeader.innerHTML = fullBuildHeaderHelp("유물");
-        synergyHeader.innerHTML = fullBuildHeaderHelp("시너지");
+        synergyHeader.innerHTML = fullBuildHeaderHelp("특성");
         compositionHeader.after(synergyHeader);
         table.querySelectorAll("tbody tr").forEach((row) => {
           const compositionCell = row.querySelector("td:has(.full-build-composition)");
@@ -10160,7 +10325,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
           ? fullBuildSynergyNameHtml(component.name)
           : `${gradePill(component.grade)} <span>${component.name}</span>`;
         const name = `<span class="full-build-effect-help" tabindex="0" aria-label="효과 설명">${displayName}<span class="full-build-effect-tooltip" role="tooltip">${tooltip}</span></span>`;
-        const type = component.sourceCategory === "relic" ? "유물" : "시너지";
+        const type = component.sourceCategory === "relic" ? "유물" : "특성";
         const rowClass = component.sourceCategory === "relic"
           ? `full-build-component-relic full-build-component-relic-${String(component.grade || "n").toLowerCase()}${index === item.relics.length - 1 ? " full-build-component-relic-end" : ""}`
           : "full-build-component-synergy";
@@ -10192,7 +10357,14 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       const synergyParts = (item) => sortByKoreanName(item.synergies.map(({ synergy, points, effect }) => ({ name: synergy.name, points, effect })))
         .map((synergy, index) => `<span class="full-build-composition-item full-build-synergy-line full-build-synergy-${synergy.points}${index === 0 ? " full-build-synergy-start" : ""}">${effectHelp(fullBuildSynergyNameHtml(`${synergy.name} ${synergy.points}pt`), synergy.effect.effect)}</span>`);
       const relicHtml = (item) => `<div class="full-build-composition">${relicParts(item).join("")}</div>`;
-      const synergyHtml = (item) => synergyParts(item).length ? `<div class="full-build-composition">${synergyParts(item).join("")}</div>` : "—";
+      const synergyHtml = (item) => {
+        const parts = synergyParts(item);
+        if (!parts.length) return "—";
+        const pointCap = fullBuildSynergyPointBudget(item.relics);
+        const usedPoints = item.synergies.reduce((total, entry) => total + entry.points, 0);
+        const slotCap = Math.min(6, item.relics.length * 2);
+        return `<div class="full-build-composition full-build-composition-synergies"><span class="full-build-synergy-summary">${item.synergies.length}/${slotCap}개 · ${usedPoints}/${pointCap}pt</span>${parts.join("")}</div>`;
+      };
       const combatValue = (item) => `<span class="balance-value-stack"><span><b>공격</b>${formatNumber(item.attackValue * 100, 1)}%</span><span><b>생존</b>${formatNumber(item.survivalValue * 100, 1)}%</span></span>`;
       const itemKey = fullBuildAuditItemKey;
 
@@ -10248,14 +10420,14 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         return `<tr tabindex="0" role="button" aria-expanded="false" data-full-build-key="${itemKey(item)}" data-full-build-columns="6"><td>${definition.label}</td><td>${relicHtml(item)}</td><td>${synergyHtml(item)}</td><td title="이 조합의 최고 수치와 처음 도달한 시점입니다.">${peak}</td><td title="기준 전투 대비 이 조합의 공격·생존 증가량입니다.">${combatValue(item)}</td><td>${decision(item)}</td></tr>`;
       }).join("");
       if (fullBuildAuditSummary) fullBuildAuditSummary.innerHTML = `
-          <div><span>유물 · 시너지 조합</span><span class="full-build-audit-count">${data.relicCombinationCount}개 · ${data.synergyPackageCount || 104}개</span></div>
+          <div><span>유물 · 특성 대표 패키지</span><span class="full-build-audit-count">${data.relicCombinationCount}개 · ${data.synergyPackageCount ?? 0}개</span></div>
           <div><span>비교 조합</span><span class="full-build-audit-count">${data.evaluatedCount.toLocaleString()}개</span></div>
       `;
       fullBuildAuditResult.innerHTML = `
         <h3>능력치별 최고 조합</h3>
-        <div class="table-wrap"><table class="full-build-audit-table full-build-risk-table"><thead><tr><th>${headerHelp("능력치")}</th><th>${headerHelp("유물")}</th><th>${headerHelp("시너지")}</th><th>${headerHelp("최대 (도달)")}</th><th>${headerHelp("전투 가치")}</th><th>${headerHelp("판정")}</th></tr></thead><tbody>${riskRows}</tbody></table></div>
+        <div class="table-wrap"><table class="full-build-audit-table full-build-risk-table"><thead><tr><th>${headerHelp("능력치")}</th><th>${headerHelp("유물")}</th><th>${headerHelp("특성")}</th><th>${headerHelp("최대 (도달)")}</th><th>${headerHelp("전투 가치")}</th><th>${headerHelp("판정")}</th></tr></thead><tbody>${riskRows}</tbody></table></div>
         <h3>가치 순위</h3>
-        <div class="table-wrap"><table class="full-build-audit-table"><thead><tr><th>${headerHelp("순위")}</th><th>${headerHelp("유물")}</th><th>${headerHelp("시너지")}</th><th>${headerHelp("최대 (도달)")}</th><th>${headerHelp("전투 가치")}</th><th>${headerHelp("판정")}</th></tr></thead><tbody>${attackRows}</tbody></table></div>`;
+        <div class="table-wrap"><table class="full-build-audit-table"><thead><tr><th>${headerHelp("순위")}</th><th>${headerHelp("유물")}</th><th>${headerHelp("특성")}</th><th>${headerHelp("최대 (도달)")}</th><th>${headerHelp("전투 가치")}</th><th>${headerHelp("판정")}</th></tr></thead><tbody>${attackRows}</tbody></table></div>`;
     }
 
     function prepareFullBuildAuditTask(relicCombination, synergyPackage, index) {
@@ -10279,10 +10451,11 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       const signature = fullBuildAuditCacheSignature || fullBuildAuditInputSignature();
       if (fullBuildTaskCache?.signature === signature) return fullBuildTaskCache;
       const relicCombinations = fullBuildRelicCombinations();
-      const synergyPackages = fullBuildSynergyPackages();
-      const tasks = relicCombinations.flatMap((relicCombination) => synergyPackages.map((synergyPackage) => ({ relicCombination, synergyPackage })))
+      const packagedCombinations = relicCombinations.map((relicCombination) => ({ relicCombination, synergyPackages: fullBuildSynergyPackages(relicCombination) }));
+      const synergyPackageCount = Math.max(0, ...packagedCombinations.map(({ synergyPackages }) => synergyPackages.length));
+      const tasks = packagedCombinations.flatMap(({ relicCombination, synergyPackages }) => synergyPackages.map((synergyPackage) => ({ relicCombination, synergyPackage })))
         .map(({ relicCombination, synergyPackage }, index) => prepareFullBuildAuditTask(relicCombination, synergyPackage, index));
-      fullBuildTaskCache = { signature, relicCombinationCount: relicCombinations.length, synergyPackageCount: synergyPackages.length, tasks };
+      fullBuildTaskCache = { signature, relicCombinationCount: relicCombinations.length, synergyPackageCount: synergyPackageCount, tasks };
       return fullBuildTaskCache;
     }
 
@@ -10547,10 +10720,10 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
     function fullBuildAuditInputSignature() {
       const settings = auditSettings();
       return JSON.stringify({
-        version: 51,
+        version: 54,
         representativeRelicCount: 18,
         representativeSynergyCount: 8,
-        viewSchemaVersion: 10,
+        viewSchemaVersion: 11,
         settings,
         relics: relics.map((relic) => {
           const effect = previewEffect(relic);
@@ -10737,7 +10910,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       }
     }
 
-    const embeddedVerifiedFullBuildAuditViews = {"signatureVersion":47,"views":{"normal":{"summary":"<div><span>유물 · 시너지 조합</span><span class=\"full-build-audit-count\">220개 · 104개</span></div><div><span>전체 조합</span><span class=\"full-build-audit-count\">22,880개</span></div>","result":"<h3>능력치별 최고 조합</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table full-build-risk-table\"><thead><tr><th>능력치</th><th>유물</th><th>시너지</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>치명타</td><td>월광의 왕관<br>전투의 씨앗<br>공허의 등불</td><td>맹공 1pt<br>강타 3pt<br>예리 2pt</td><td>1.9배 <small>(13.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>39.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 39.2%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 39.2%)</small></span></span></span></td></tr><tr><td>공격 속도</td><td>별빛 부스터<br>용린의 힘<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>2.5회/초 <small>(5.9초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>75.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 75.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 75.5%)</small></span></span></span></td></tr><tr><td>더블 공격</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>+8.5%p <small>(10.3초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>79.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>공격력</td><td>번개의 눈<br>나무 부적<br>연격의 핵</td><td>맹공 3pt<br>반격 3pt</td><td>218 <small>(50.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>15%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 15%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 41.8%)</small></span></span></span></td></tr><tr><td>보호막</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>4.9 <small>(20.2초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>76%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span></span></td></tr></tbody></table></div><h3>가치 순위</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table\"><thead><tr><th>순위</th><th>유물</th><th>시너지</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>1</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>83.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 83.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 115.4%)</small></span></span></span></td></tr><tr><td>2</td><td>별빛 부스터<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>82.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 82.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>3</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>79.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>4</td><td>별빛 부스터<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>77.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 77.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 77.7%)</small></span></span></span></td></tr><tr><td>5</td><td>전투의 씨앗<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.9%)</small></span></span></span></td></tr><tr><td>6</td><td>빙결 파편<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.3%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.3%)</small></span></span></span></td></tr><tr><td>7</td><td>번개의 눈<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.1%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76.1%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76.1%)</small></span></span></span></td></tr><tr><td>8</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span></span></td></tr><tr><td>9</td><td>빙결 파편<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>75.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 75.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.2%)</small></span></span></span></td></tr><tr><td>10</td><td>별빛 부스터<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.9%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.9%)</small></span></span></span></td></tr><tr><td>11</td><td>용린의 힘<br>나무 부적<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.6%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.6%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.6%)</small></span></span></span></td></tr><tr><td>12</td><td>서리 장막<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.3%</span><span><b>생존</b>2%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 74.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 96.4%)</small></span></span></span></td></tr><tr><td>13</td><td>별빛 부스터<br>전투의 씨앗<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72.3%)</small></span></span></span></td></tr><tr><td>14</td><td>월광의 왕관<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 72.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 100.3%)</small></span></span></span></td></tr><tr><td>15</td><td>별빛 부스터<br>빙결 파편<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72%)</small></span></span></span></td></tr><tr><td>16</td><td>불꽃의 심장<br>연격의 핵<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>71.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 71.8%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>17</td><td>빙결 파편<br>용린의 힘<br>불꽃의 심장</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.9%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.9%)</small></span></span></span></td></tr><tr><td>18</td><td>월광의 왕관<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.6%)</small></span></span></span></td></tr><tr><td>19</td><td>별빛 부스터<br>번개의 눈<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.7%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.7%)</small></span></span></span></td></tr><tr><td>20</td><td>별빛 부스터<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.3%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.3%)</small></span></span></span></td></tr></tbody></table></div>"},"boss":{"summary":"<div><span>유물 · 시너지 조합</span><span class=\"full-build-audit-count\">220개 · 104개</span></div><div><span>전체 조합</span><span class=\"full-build-audit-count\">22,880개</span></div>","result":"<h3>능력치별 최고 조합</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table full-build-risk-table\"><thead><tr><th>능력치</th><th>유물</th><th>시너지</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>치명타</td><td>월광의 왕관<br>전투의 씨앗<br>공허의 등불</td><td>신속 1pt<br>강타 3pt<br>예리 2pt</td><td>1.9배 <small>(12.7초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>53.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 53.4%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 53.4%)</small></span></span></span></td></tr><tr><td>공격 속도</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>2.3회/초 <small>(0초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>113.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.4%)</small></span></span></span></td></tr><tr><td>더블 공격</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>+8.5%p <small>(10.3초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>공격력</td><td>번개의 눈<br>나무 부적<br>연격의 핵</td><td>맹공 3pt<br>반격 3pt</td><td>218 <small>(51.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>41.8%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 15%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 41.8%)</small></span></span></span></td></tr><tr><td>보호막</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>3.6 <small>(20.2초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.2%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span></span></td></tr></tbody></table></div><h3>가치 순위</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table\"><thead><tr><th>순위</th><th>유물</th><th>시너지</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>1</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>115.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 83.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 115.4%)</small></span></span></span></td></tr><tr><td>2</td><td>빙결 파편<br>불꽃의 심장<br>공허의 등불</td><td>맹공 1pt<br>분노 2pt<br>파열 3pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>113.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.3%)</small></span></span></span></td></tr><tr><td>3</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>4</td><td>빙결 파편<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 75.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.2%)</small></span></span></span></td></tr><tr><td>5</td><td>용린의 힘<br>나무 부적<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>107.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 107.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 107.2%)</small></span></span></span></td></tr><tr><td>6</td><td>나무 부적<br>연격의 핵<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>104.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 104.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 104.5%)</small></span></span></span></td></tr><tr><td>7</td><td>빙결 파편<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>102.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 102.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 102.4%)</small></span></span></span></td></tr><tr><td>8</td><td>월광의 왕관<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>100.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 72.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 100.3%)</small></span></span></span></td></tr><tr><td>9</td><td>전투의 씨앗<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>99.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.9%)</small></span></span></span></td></tr><tr><td>10</td><td>빙결 파편<br>용린의 힘<br>불꽃의 심장</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>99.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.5%)</small></span></span></span></td></tr><tr><td>11</td><td>번개의 눈<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>98.5%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 98.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 98.5%)</small></span></span></span></td></tr><tr><td>12</td><td>월광의 왕관<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.6%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.6%)</small></span></span></span></td></tr><tr><td>13</td><td>전투의 씨앗<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.3%)</small></span></span></span></td></tr><tr><td>14</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.2%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span></span></td></tr><tr><td>15</td><td>서리 장막<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>96.4%</span><span><b>생존</b>2%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 74.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 96.4%)</small></span></span></span></td></tr><tr><td>16</td><td>용린의 힘<br>번개의 눈<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.9%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.9%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.9%)</small></span></span></span></td></tr><tr><td>17</td><td>별빛 부스터<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 82.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>18</td><td>불꽃의 심장<br>연격의 핵<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 71.8%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>19</td><td>용린의 힘<br>불꽃의 심장<br>나무 부적</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.4%)</small></span></span></span></td></tr><tr><td>20</td><td>용린의 힘<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>94.4%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 94.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 94.4%)</small></span></span></span></td></tr></tbody></table></div>"}}};
+    const embeddedVerifiedFullBuildAuditViews = {"signatureVersion":47,"views":{"normal":{"summary":"<div><span>유물 · 특성 조합</span><span class=\"full-build-audit-count\">220개 · 104개</span></div><div><span>전체 조합</span><span class=\"full-build-audit-count\">22,880개</span></div>","result":"<h3>능력치별 최고 조합</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table full-build-risk-table\"><thead><tr><th>능력치</th><th>유물</th><th>특성</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>치명타</td><td>월광의 왕관<br>전투의 씨앗<br>공허의 등불</td><td>맹공 1pt<br>강타 3pt<br>예리 2pt</td><td>1.9배 <small>(13.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>39.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 39.2%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 39.2%)</small></span></span></span></td></tr><tr><td>공격 속도</td><td>별빛 부스터<br>용린의 힘<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>2.5회/초 <small>(5.9초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>75.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 75.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 75.5%)</small></span></span></span></td></tr><tr><td>더블 공격</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>+8.5%p <small>(10.3초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>79.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>공격력</td><td>번개의 눈<br>나무 부적<br>연격의 핵</td><td>맹공 3pt<br>반격 3pt</td><td>218 <small>(50.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>15%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 15%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 41.8%)</small></span></span></span></td></tr><tr><td>보호막</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>4.9 <small>(20.2초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>76%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span></span></td></tr></tbody></table></div><h3>가치 순위</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table\"><thead><tr><th>순위</th><th>유물</th><th>특성</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>1</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>83.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 83.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 115.4%)</small></span></span></span></td></tr><tr><td>2</td><td>별빛 부스터<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>82.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 82.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>3</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>79.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>4</td><td>별빛 부스터<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>77.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 77.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 77.7%)</small></span></span></span></td></tr><tr><td>5</td><td>전투의 씨앗<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.9%)</small></span></span></span></td></tr><tr><td>6</td><td>빙결 파편<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.3%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.3%)</small></span></span></span></td></tr><tr><td>7</td><td>번개의 눈<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76.1%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76.1%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76.1%)</small></span></span></span></td></tr><tr><td>8</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>76%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 76%)</small></span></span></span></td></tr><tr><td>9</td><td>빙결 파편<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>75.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 75.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.2%)</small></span></span></span></td></tr><tr><td>10</td><td>별빛 부스터<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.9%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.9%)</small></span></span></span></td></tr><tr><td>11</td><td>용린의 힘<br>나무 부적<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.6%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.6%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 74.6%)</small></span></span></span></td></tr><tr><td>12</td><td>서리 장막<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>74.3%</span><span><b>생존</b>2%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 74.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 96.4%)</small></span></span></span></td></tr><tr><td>13</td><td>별빛 부스터<br>전투의 씨앗<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72.3%)</small></span></span></span></td></tr><tr><td>14</td><td>월광의 왕관<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 72.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 100.3%)</small></span></span></span></td></tr><tr><td>15</td><td>별빛 부스터<br>빙결 파편<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>72%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 72%)</small></span></span></span></td></tr><tr><td>16</td><td>불꽃의 심장<br>연격의 핵<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>71.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 71.8%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>17</td><td>빙결 파편<br>용린의 힘<br>불꽃의 심장</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.9%)</small></span></span><span class=\"balance-status range\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.9%)</small></span></span></span></td></tr><tr><td>18</td><td>월광의 왕관<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.7%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.6%)</small></span></span></span></td></tr><tr><td>19</td><td>별빛 부스터<br>번개의 눈<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.7%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.7%)</small></span></span></span></td></tr><tr><td>20</td><td>별빛 부스터<br>공허의 등불<br>수호의 성흔</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>70.3%</span><span><b>생존</b>7.4%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 70.3%)</small></span></span></span></td></tr></tbody></table></div>"},"boss":{"summary":"<div><span>유물 · 특성 조합</span><span class=\"full-build-audit-count\">220개 · 104개</span></div><div><span>전체 조합</span><span class=\"full-build-audit-count\">22,880개</span></div>","result":"<h3>능력치별 최고 조합</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table full-build-risk-table\"><thead><tr><th>능력치</th><th>유물</th><th>특성</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>치명타</td><td>월광의 왕관<br>전투의 씨앗<br>공허의 등불</td><td>신속 1pt<br>강타 3pt<br>예리 2pt</td><td>1.9배 <small>(12.7초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>53.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 53.4%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 53.4%)</small></span></span></span></td></tr><tr><td>공격 속도</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>2.3회/초 <small>(0초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>113.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.4%)</small></span></span></span></td></tr><tr><td>더블 공격</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>+8.5%p <small>(10.3초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>공격력</td><td>번개의 눈<br>나무 부적<br>연격의 핵</td><td>맹공 3pt<br>반격 3pt</td><td>218 <small>(51.5초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>41.8%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 15%)</small></span></span><span class=\"balance-status low\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 41.8%)</small></span></span></span></td></tr><tr><td>보호막</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>3.6 <small>(20.2초)</small></td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.2%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span></span></td></tr></tbody></table></div><h3>가치 순위</h3><div class=\"table-wrap\"><table class=\"full-build-audit-table\"><thead><tr><th>순위</th><th>유물</th><th>특성</th><th>최대 (도달)</th><th>전투 가치</th><th>판정</th></tr></thead><tbody><tr><td>1</td><td>용린의 힘<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>115.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 83.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 115.4%)</small></span></span></span></td></tr><tr><td>2</td><td>빙결 파편<br>불꽃의 심장<br>공허의 등불</td><td>맹공 1pt<br>분노 2pt<br>파열 3pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>113.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 113.3%)</small></span></span></span></td></tr><tr><td>3</td><td>불꽃의 심장<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 79.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.9%)</small></span></span></span></td></tr><tr><td>4</td><td>빙결 파편<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>108.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 75.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 108.2%)</small></span></span></span></td></tr><tr><td>5</td><td>용린의 힘<br>나무 부적<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>107.2%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 107.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 107.2%)</small></span></span></span></td></tr><tr><td>6</td><td>나무 부적<br>연격의 핵<br>공허의 등불</td><td>맹공 1pt<br>신속 3pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>104.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 104.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 104.5%)</small></span></span></span></td></tr><tr><td>7</td><td>빙결 파편<br>나무 부적<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>102.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 102.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 102.4%)</small></span></span></span></td></tr><tr><td>8</td><td>월광의 왕관<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>100.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 72.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 100.3%)</small></span></span></span></td></tr><tr><td>9</td><td>전투의 씨앗<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>99.9%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 76.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.9%)</small></span></span></span></td></tr><tr><td>10</td><td>빙결 파편<br>용린의 힘<br>불꽃의 심장</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>99.5%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 99.5%)</small></span></span></span></td></tr><tr><td>11</td><td>번개의 눈<br>불꽃의 심장<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>98.5%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 98.5%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 98.5%)</small></span></span></span></td></tr><tr><td>12</td><td>월광의 왕관<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.6%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status range\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">유지 <small>(공격 판단 70.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.6%)</small></span></span></span></td></tr><tr><td>13</td><td>전투의 씨앗<br>용린의 힘<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.3%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.3%)</small></span></span></span></td></tr><tr><td>14</td><td>불꽃의 심장<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>97.2%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 97.2%)</small></span></span></span></td></tr><tr><td>15</td><td>서리 장막<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>96.4%</span><span><b>생존</b>2%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 74.3%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 96.4%)</small></span></span></span></td></tr><tr><td>16</td><td>용린의 힘<br>번개의 눈<br>공허의 등불</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.9%</span><span><b>생존</b>6%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.9%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.9%)</small></span></span></span></td></tr><tr><td>17</td><td>별빛 부스터<br>불꽃의 심장<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 82.7%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>18</td><td>불꽃의 심장<br>연격의 핵<br>공허의 등불</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.8%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status low\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">상향 <small>(공격 판단 71.8%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.8%)</small></span></span></span></td></tr><tr><td>19</td><td>용린의 힘<br>불꽃의 심장<br>나무 부적</td><td>맹공 3pt<br>신속 1pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>95.4%</span><span><b>생존</b>0%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 95.4%)</small></span></span></span></td></tr><tr><td>20</td><td>용린의 힘<br>공허의 등불<br>수호의 성흔</td><td>맹공 2pt<br>신속 2pt<br>분노 2pt</td><td>—</td><td><span class=\"balance-value-stack\"><span><b>공격</b>94.4%</span><span><b>생존</b>8.3%</span></span></td><td><span class=\"balance-decision-stack\"><span class=\"balance-status high\"><span class=\"balance-status-profile\">일반전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 94.4%)</small></span></span><span class=\"balance-status high\"><span class=\"balance-status-profile\">보스전</span><span class=\"balance-status-decision\">하향 <small>(공격 판단 94.4%)</small></span></span></span></td></tr></tbody></table></div>"}}};
 
     function hydrateEmbeddedFullBuildAuditInteractions() {
       if (!fullBuildAuditResult) return;
@@ -10804,7 +10977,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       }
       else if (fullBuildAuditResult) {
         if (fullBuildAuditSummary) fullBuildAuditSummary.innerHTML = "";
-        fullBuildAuditResult.innerHTML = `<div class="combination-build-empty">대표 조합 비교 버튼을 누르면 유물 3개와 시너지 3개의 대표 조합을 계산합니다.</div>`;
+        fullBuildAuditResult.innerHTML = `<div class="combination-build-empty">대표 조합 비교 버튼을 누르면 유물 3개의 포인트 예산 안에서 특성 최대 6개 조합을 계산합니다.</div>`;
       }
       updateFullBuildAuditRunLabel();
     }
@@ -11119,7 +11292,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
           case "DoubleAttackChance":
             return `${synergyLabel}: 공격이 한 번 더 발생할 확률을 높인다. 두 번째 공격도 유물 발동 횟수와 확률 판정에 포함한다.`;
           default:
-            return `${synergyLabel}: ${statMeaning(row.statType)} 값을 바꾸는 별도 시너지 효과로 적용한다.`;
+            return `${synergyLabel}: ${statMeaning(row.statType)} 값을 바꾸는 별도 특성 효과로 적용한다.`;
         }
       }
 
@@ -11150,7 +11323,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       const result = simulateLoadout(loadout, context);
       const activeSlots = loadout.slots.filter((slot) => slot.relic);
       const composition = activeSlots.length
-        ? activeSlots.map((slot) => `${slot.relic.name} · ${slot.activeSynergies.map(({ synergy }) => synergy.name).join(", ") || "시너지 없음"}`).join("<br>")
+        ? activeSlots.map((slot) => `${slot.relic.name} · ${slot.activeSynergies.map(({ synergy }) => synergy.name).join(", ") || "특성 없음"}`).join("<br>")
         : "장착된 유물이 없습니다.";
       return { result, composition };
     }
@@ -11191,9 +11364,9 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         contributionHtml,
         killCountAfter: comparison.killCountAfter,
         baseEffects: activeSlots.map((slot) => `${slot.relic.name}: ${slot.relic.effectName} - ${slot.relic.effectDesc} / ${conditionSummary(slot.relic)} ${resultSummary(slot.relic)}`),
-        activeSynergies: synergyRows.map(({ synergy, row }) => `${synergy.name}: 공용 시너지 적용 (${row.effect}) / ${conditionSummary(row)} ${resultSummary(row)}`),
+        activeSynergies: synergyRows.map(({ synergy, row }) => `${synergy.name}: 공용 특성 적용 (${row.effect}) / ${conditionSummary(row)} ${resultSummary(row)}`),
         impact: activeSlots.flatMap((slot) => {
-          if (!synergyRows.length) return [`${slot.relic.name}: 장착된 시너지가 없어 유물 기본 효과만 적용한다.`];
+          if (!synergyRows.length) return [`${slot.relic.name}: 장착된 특성가 없어 유물 기본 효과만 적용한다.`];
           return synergyRows.map(({ synergy, stage, row }) => `${slot.relic.name} ← ${synergyImpactForRelic(slot.relic, synergy, stage, row)}`);
         }),
         activationChecks: effects.map(({ source, effect }) => `${source}: ${activationPreview(effect, context)}`),

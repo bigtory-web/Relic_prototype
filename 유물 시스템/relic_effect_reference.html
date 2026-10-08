@@ -3079,7 +3079,7 @@
       border-bottom: 3px double #9eb5b0 !important;
     }
 
-    /* 단일 단계 고정 특성는 다음 특성와 일반선으로만 구분한다. */
+    /* 단일 단계 고정 특성은 다음 특성와 일반선으로만 구분한다. */
     .balance-audit-table tbody tr.balance-synergy-group-5.balance-synergy-group-end > td,
     .balance-audit-table tbody tr.balance-synergy-group-7.balance-synergy-group-end > td,
     .balance-audit-table tbody tr.balance-synergy-group-8.balance-synergy-group-end > td,
@@ -3317,10 +3317,10 @@
     .synergy-example-table td:nth-child(7) { width: 80px !important; }
     .synergy-example-table th:nth-child(8),
     .synergy-example-table td:nth-child(8) { width: 56px !important; }
-    .synergy-example-table th:nth-child(9),
-    .synergy-example-table td:nth-child(9) { width: 44px !important; }
     .synergy-example-table th:nth-child(10),
-    .synergy-example-table td:nth-child(10) { width: 60px !important; }
+    .synergy-example-table td:nth-child(10) { width: 44px !important; }
+    .synergy-example-table th:nth-child(11),
+    .synergy-example-table td:nth-child(11) { width: 60px !important; }
 
     .input-example-table .effect-block strong {
       font-size: 11px !important;
@@ -3365,13 +3365,13 @@
       white-space: nowrap;
     }
 
-    #input-rules-panel #synergy-effect-table .synergy-example-table th:nth-child(9),
-    #input-rules-panel #synergy-effect-table .synergy-example-table td:nth-child(9) {
+    #input-rules-panel #synergy-effect-table .synergy-example-table th:nth-child(10),
+    #input-rules-panel #synergy-effect-table .synergy-example-table td:nth-child(10) {
       width: 60px !important;
     }
 
-    #input-rules-panel #synergy-effect-table .synergy-example-table th:nth-child(10),
-    #input-rules-panel #synergy-effect-table .synergy-example-table td:nth-child(10) {
+    #input-rules-panel #synergy-effect-table .synergy-example-table th:nth-child(11),
+    #input-rules-panel #synergy-effect-table .synergy-example-table td:nth-child(11) {
       width: 78px !important;
     }
 
@@ -5712,6 +5712,7 @@
                     <th style="width: 50px;">Group</th>
                     <th style="width: 44px;">Step</th>
                     <th style="width: 64px;">Point</th>
+                    <th style="width: 80px;">UnlockLevel</th>
                     <th style="width: 100px;">ConditionType</th>
                     <th style="width: 120px;">StatType</th>
                     <th style="width: 56px;">Value1</th>
@@ -5836,8 +5837,8 @@
                 <button class="simulation-mode-button" type="button" role="tab" aria-selected="false" data-simulation-mode="audit">밸런스 검사</button>
                 <button class="simulation-mode-button" type="button" role="tab" aria-selected="false" data-simulation-mode="full-build-audit">대표 조합 비교</button>
               </div>
-              <div class="simulation-context-intro" id="build-simulation-intro">- 장착 테스트는 유물과 특성를 조합해 장착 전후 전투 결과를 비교한다.<br>- 선택한 효과의 기여도와 핵심 전투 지표를 확인한다.<br>- 특성는 장착 유물당 최대 2개, 유물 등급별 포인트 예산 안에서 선택한다.</div>
-              <div class="simulation-context-intro" id="full-build-audit-intro" hidden>- 대표 조합 비교는 유물 3개의 등급별 포인트 예산 안에서 특성 최대 6개를 구성해 능력치별 최고 조합과 가치 순위를 비교한다.<br>- 특성는 개별 유물에 배정하지 않고 전체 포인트 예산 기준으로 계산한다.</div>
+              <div class="simulation-context-intro" id="build-simulation-intro">- 장착 테스트는 유물과 특성을 조합해 장착 전후 전투 결과를 비교한다.<br>- 선택한 효과의 기여도와 핵심 전투 지표를 확인한다.<br>- 특성은 장착 유물당 최대 2개, 유물 등급별 포인트 예산 안에서 선택한다.</div>
+              <div class="simulation-context-intro" id="full-build-audit-intro" hidden>- 대표 조합 비교는 유물 3개의 등급별 포인트 예산 안에서 특성 최대 6개를 구성해 능력치별 최고 조합과 가치 순위를 비교한다.<br>- 특성은 개별 유물에 배정하지 않고 전체 포인트 예산 기준으로 계산한다.</div>
               <div class="simulation-context-intro" id="balance-audit-intro" hidden>- 밸런스 검사는 모든 유물과 특성의 전투 결과를 점검한다.<br>- 일반전과 보스전 기준의 전투 가치와 판단 가치를 비교해 밸런스를 확인한다.</div>
               <div class="damage-contribution-host" id="damage-contribution-host" aria-live="polite" hidden></div>
               <div class="simulator-loadout-panel" id="build-simulation-panel" hidden>
@@ -5916,7 +5917,7 @@
               <h3 class="section-title-with-link">특성 효과 테이블<a class="section-jump-link" href="#input-rules-panel" data-open-tab="input-rules-panel">특성 효과 테이블로 이동</a></h3>
               <div class="table-wrap input-example-wrap">
                 <table class="matrix-table input-example-table effect-list-table synergy-example-table synergy-list-table">
-                  <thead><tr><th>ID</th><th>Name</th><th>Group</th><th>Step</th><th>Point</th><th>ConditionType</th><th>StatType</th><th>Value1</th><th>Value2</th><th>Duration</th><th>설명</th></tr></thead>
+                  <thead><tr><th>ID</th><th>Name</th><th>Group</th><th>Step</th><th>Point</th><th>UnlockLevel</th><th>ConditionType</th><th>StatType</th><th>Value1</th><th>Value2</th><th>Duration</th><th>설명</th></tr></thead>
                   <tbody id="synergy-list-body"></tbody>
                 </table>
               </div>
@@ -5970,6 +5971,7 @@
       { name: "Group", type: "int", meaning: "특성 그룹 ID", example: "1 = 맹공", note: "- 같은 특성의 단계들을 묶는 그룹 번호를 입력한다." },
       { name: "Step", type: "int", meaning: "그룹 내 단계", example: "2 = 두 번째 단계", note: "- 특성 단계가 있을 경우 그룹 안에서 해당 단계 번호를 입력한다." },
       { name: "Point", type: "int", meaning: "필요 포인트", example: "3 = 3pt", note: "- 해당 단계까지의 총 투자 포인트를 입력한다. 1pt 계열은 1/2/3, 2pt 계열은 2/4/6, 3pt 계열은 3/6/9다." },
+      { name: "UnlockLevel", type: "int", meaning: "해금 레벨", example: "25 = 유물 Lv.25", note: "- 해당 특성을 장착할 수 있는 유물 레벨을 입력한다.<br>- 같은 특성의 모든 단계에 동일한 해금 레벨을 사용한다." },
       { name: "ConditionType", type: "string", meaning: "발동 조건", example: "TargetHp = 대상 체력", note: "- 효과가 언제 발동하는지 입력한다.<br>- <a href=\"#equip-effect-type-definitions\">아래 ConditionType 정의</a> 참고." },
       { name: "StatType", type: "string", meaning: "버프 타입", example: "Attack = 공격력", note: "- 변경되는 능력치를 입력한다.<br>- <a href=\"#stat-type-definitions\">아래 StatType 정의</a> 참고." },
       { name: "Value1", type: "float", meaning: "결과 수치", example: "0.60 = 60%", note: "- 효과가 얼마나 적용되는지 입력한다." },
@@ -6162,6 +6164,7 @@
           "inputs": "Value1=0.05 / Value2=0 / Duration=0 / Cooldown=0 / TargetCount=0 / MaxStack=0"
         },
         "cost": 1,
+        "requiredRelicLevel": 1,
         "stageEffects": [
           "공격력 +5%",
           "공격력 +10%",
@@ -6197,6 +6200,7 @@
           0.165
         ],
         "cost": 1,
+        "requiredRelicLevel": 1,
         "stageEffects": [
           "공격 속도 +6.5%",
           "공격 속도 +11.5%",
@@ -6227,6 +6231,7 @@
           0.17
         ],
         "cost": 1,
+        "requiredRelicLevel": 1,
         "stageEffects": [
           "치명타 확률 +6%p",
           "치명타 확률 +11.2%p",
@@ -6241,6 +6246,7 @@
         "icon": "✧",
         "costMode": "investable",
         "cost": 2,
+        "requiredRelicLevel": 25,
         "effect": {
           "id": 2050,
           "conditionType": "TargetHp",
@@ -6271,6 +6277,7 @@
         "icon": "☆",
         "costMode": "investable",
         "cost": 3,
+        "requiredRelicLevel": 40,
         "effect": {
           "id": 2070,
           "conditionType": "Shield",
@@ -6301,6 +6308,7 @@
         "icon": "◇",
         "costMode": "investable",
         "cost": 3,
+        "requiredRelicLevel": 40,
         "effect": {
           "id": 2080,
           "conditionType": "Always",
@@ -6331,6 +6339,7 @@
         "icon": "☄",
         "costMode": "investable",
         "cost": 2,
+        "requiredRelicLevel": 25,
         "effect": {
           "id": 2110,
           "conditionType": "SelfHpAbove",
@@ -6361,6 +6370,7 @@
         "icon": "◎",
         "costMode": "investable",
         "cost": 2,
+        "requiredRelicLevel": 25,
         "effect": {
           "id": 2120,
           "conditionType": "CritChanceStep",
@@ -6391,6 +6401,7 @@
         "icon": "↯",
         "costMode": "investable",
         "cost": 3,
+        "requiredRelicLevel": 40,
         "effect": {
           "id": 2100,
           "conditionType": "Always",
@@ -6424,7 +6435,7 @@
       { groupId: 8, step: 1 }, { groupId: 12, step: 1 }, { groupId: 10, step: 1 }
     ];
 
-    // 문서에서 제외한 특성는 시뮬레이터 내부 데이터와 분리해 표에 노출하지 않는다.
+    // 문서에서 제외한 특성은 시뮬레이터 내부 데이터와 분리해 표에 노출하지 않는다.
     const hiddenDocumentSynergyGroups = new Set();
 
     const equipTypeBody = document.querySelector("#equip-type-body");
@@ -7029,6 +7040,7 @@
           <td>${synergy.groupId}</td>
           <td>${step}</td>
           <td>${requiredPoints}</td>
+            <td>${synergy.requiredRelicLevel}</td>
           <td>${formatTypeToken(row.conditionType)}</td>
           <td>${formatTypeToken(dataValue(row.statType))}</td>
           <td>${decimalInputValue(values.Value1)}</td>
@@ -7086,6 +7098,7 @@
             <td>${synergy.groupId}</td>
             <td>${step}</td>
             <td>${requiredPoints}</td>
+            <td>${synergy.requiredRelicLevel}</td>
             <td>${formatTypeToken(row.conditionType)}</td>
             <td>${formatTypeToken(dataValue(row.statType))}</td>
             <td>${decimalInputValue(values.Value1)}</td>
@@ -9039,8 +9052,8 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
       SR: [0.14, 0.16],
       SSR: [0.19, 0.21]
     };
-    // 특성는 등급이 아니라 실제 사용 포인트로만 가치를 정한다.
-    // 특성는 등급이 아니라 실제 선택 포인트 비용으로 가치를 계산한다.
+    // 특성은 등급이 아니라 실제 사용 포인트로만 가치를 정한다.
+    // 특성은 등급이 아니라 실제 선택 포인트 비용으로 가치를 계산한다.
     const synergyPointValueCenters = { 1: 0.01, 2: 0.0215, 3: 0.0345 };
     const balanceValueWeights = { attack: 1, survival: 1 };
     // 판단 가중치는 능력치 종류에만 적용한다. 등급·수치·개별 효과에는 적용하지 않는다.
@@ -9570,7 +9583,7 @@ function simulateExpectedBattleOutcome(effects, context, equipped, sampleCount =
         const summary = candidate.combinationEvaluation;
         if (summary.pending) return `<div class="balance-detail-card"><strong>조합 평가 대기</strong><span>전체 조합 검사를 실행하면 이 특성의 제거 전후 한계 기여 분포를 계산합니다.</span></div>`;
         const factor = summary.effectScoreMultiplier || 1;
-        return `<div class="balance-detail-card"><strong>조합 한계 기여</strong><span>전투 가치 P10 ${formatNumber(summary.p10 * 100, 1)}% · P50 ${formatNumber(summary.p50 * 100, 1)}% · P90 ${formatNumber(summary.p90 * 100, 1)}%<br>판단 보정 ×${formatNumber(factor, 3)} · 판단 가치 P50 ${formatNumber((summary.weightedP50 ?? summary.p50) * 100, 1)}%<br>각 특성 최고 단계 조합과 유물 3종 조합에서 이 특성를 제거한 전투 가치 차이입니다.</span></div>`;
+        return `<div class="balance-detail-card"><strong>조합 한계 기여</strong><span>전투 가치 P10 ${formatNumber(summary.p10 * 100, 1)}% · P50 ${formatNumber(summary.p50 * 100, 1)}% · P90 ${formatNumber(summary.p90 * 100, 1)}%<br>판단 보정 ×${formatNumber(factor, 3)} · 판단 가치 P50 ${formatNumber((summary.weightedP50 ?? summary.p50) * 100, 1)}%<br>각 특성 최고 단계 조합과 유물 3종 조합에서 이 특성을 제거한 전투 가치 차이입니다.</span></div>`;
       }
       const expected = expectedBalanceOutcome(candidate);
       const beforeDps = candidate.baseline.totalDamage / Math.max(0.001, candidate.baseline.battleDuration);

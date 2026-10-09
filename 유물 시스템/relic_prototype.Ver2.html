@@ -3825,20 +3825,46 @@
       .equipped-synergy-view-slots { grid-column: 1; grid-row: 1; width: 100%; height: auto; }
       .equipped-synergy-view-content { grid-column: 1; grid-row: 2; grid-template-rows: var(--equipped-info-height) auto; }
     }
+        .test-controls-dock { position: fixed; left: 6px; top: 22px; width: 88px; z-index: 40; display: grid; gap: 6px; }
+    .test-controls-toggle { width: 28px; height: 28px; padding: 0; border: 1px solid #48534d; border-radius: 6px; background: #242523; color: #aeb8b1; font-size: 20px; font-weight: 400; cursor: pointer; }
+    .test-controls-dock .draw-panel { margin: 0; grid-template-columns: 1fr; gap: 6px; }
+    .test-controls-dock .draw-panel[hidden] { display: none; }
+    .test-controls-dock .draw-button { grid-column: auto !important; grid-row: auto !important; width: 100%; height: 34px; border-radius: 6px; font-size: 11px; font-weight: 400; }
+    .inventory .inventory-grid { flex: 1 1 auto; }
+        .test-controls-divider { width: 100%; height: 1px; margin: 4px 0; border: 0; background: #48534d; }
+    .test-controls-dock #drawRelicHundredButton { background: #45371e; border-color: #947445; color: #f0d29b; }
+    .test-controls-dock #bulkLevelUpButton { background: #203d4a; border-color: #4e8197; color: #b9dfef; }
+    .test-controls-dock #maxLevelUpButton { background: #203d4a; border-color: #4e8197; color: #b9dfef; }
+    .test-controls-dock #bulkEquipButton { background: #214537; border-color: #4d8d70; color: #b9e5cd; }
+    .test-controls-dock #bulkEquipSynergyButton { background: #214537; border-color: #4d8d70; color: #b9e5cd; }
+    .test-controls-dock .draw-button:hover { filter: brightness(1.18); }
+        .restored-synergy-list .modal-synergy-slots { grid-template-columns: 26px minmax(0, 1fr); grid-template-rows: 1fr; gap: 8px; }
+    .synergy-preset-tabs { display: grid; grid-template-rows: repeat(3, 22px); gap: 4px; }
+    .synergy-preset-tab { width: 26px; height: 22px; padding: 0; border: 1px solid #48534d; border-radius: 5px; background: #242b27; color: #aeb8b1; font-size: 11px; font-weight: 400; cursor: pointer; }
+    .synergy-preset-tab:hover { border-color: #49c6a1; }
+    .synergy-preset-tab.active { border-color: #49c6a1; background: rgba(43,104,82,.42); color: #e9fff6; }
+        .restored-synergy-list .modal-synergy-slots { position: relative; grid-template-columns: 1fr; gap: 0; }
+    .restored-synergy-list .modal-synergy-slots .synergy-preset-tabs { position: absolute; left: 7px; top: 50%; transform: translateY(-50%); }
+    .restored-synergy-list .modal-synergy-slots-row { justify-self: center; width: max-content; }
     </style>
 </head>
 <body>
+  <aside class="test-controls-dock" aria-label="테스트 도구">
+    <button class="test-controls-toggle" id="testControlsToggle" type="button" aria-controls="testControlsPanel" aria-expanded="true" aria-label="테스트 버튼 숨기기" title="테스트 버튼 숨기기">‹</button>
+      <div class="draw-panel" id="testControlsPanel">
+        <button class="draw-button" type="button" id="drawRelicHundredButton">100회 뽑기</button>
+        <hr class="test-controls-divider">
+        <button class="draw-button" type="button" id="bulkLevelUpButton">일괄 레벨업</button>
+        <button class="draw-button" type="button" id="maxLevelUpButton">최대 레벨업</button>
+        <hr class="test-controls-divider">
+        <button class="draw-button" type="button" id="bulkEquipButton">일괄 장착</button>
+        <button class="draw-button" type="button" id="bulkEquipSynergyButton">특성 장착</button>
+      </div>
+  </aside>
   <main class="stage" aria-label="유물 시스템 프로토타입">
     <section class="panel inventory" aria-label="인벤토리">
       <h1 class="panel-title visually-hidden">인벤토리</h1>
       <div class="inventory-grid" id="inventoryGrid"></div>
-      <div class="draw-panel">
-        <button class="draw-button" type="button" id="bulkEquipSynergyButton">특성 장착</button>
-        <button class="draw-button" type="button" id="maxLevelUpButton">최대 레벨업</button>
-        <button class="draw-button" type="button" id="bulkEquipButton">일괄 장착</button>
-        <button class="draw-button" type="button" id="drawRelicHundredButton">100회 뽑기</button>
-        <button class="draw-button" type="button" id="bulkLevelUpButton">일괄 레벨업</button>
-      </div>
     </section>
 
     <section class="panel equip-panel" aria-label="장착 슬롯">
@@ -4350,10 +4376,11 @@
     const synergyPointsByGrade = { N: 3, R: 4, SR: 5, SSR: 6 };
     const synergySelectionCap = 2;
     let synergySelectionsByRelic = {};
+    const synergyPresetsByRelic = {};
+    const activeSynergyPresetByRelic = {};
     let editingSynergyRelicId = null;
     const loadoutPresets = Array.from({ length: 3 }, (_, index) => ({
-      equippedSlots: index === 0 ? [...equippedSlots] : Array(equippedSlots.length).fill(null),
-      synergySelectionsByRelic: {}
+      equippedSlots: index === 0 ? [...equippedSlots] : Array(equippedSlots.length).fill(null)
     }));
     let activeLoadoutPreset = 0;
     let selectedRelicId = "heart_fire";
@@ -4495,7 +4522,7 @@
 
     function synergyPointCap(relicId = synergyOwnerId()) {
       const relic = getRelic(relicId);
-      if (!relic?.owned) return 0;
+      if (!relic) return 0;
       return synergyPointsByGrade[relic.grade] ?? 0;
     }
 
@@ -4564,15 +4591,59 @@
     }
 
     function fitSynergiesToCurrentLoadout() {
-      // 유물 선택과 투자량은 해제·교체 후에도 프리셋 안에 보존합니다.
+      // 유물별 특성 설정은 장착 프리셋과 독립적으로 유지합니다.
       return false;
     }
 
+    function copyRelicSynergyState(state) {
+      return { slots: [...state.slots], pointsById: { ...state.pointsById } };
+    }
+    function relicSynergyPresets(relicId = synergyOwnerId()) {
+      if (!synergyPresetsByRelic[relicId]) {
+        activeSynergyPresetByRelic[relicId] = 0;
+        synergyPresetsByRelic[relicId] = Array.from({ length: 3 }, (_, index) => index === 0
+          ? copyRelicSynergyState(synergyStateForRelic(relicId))
+          : { slots: Array(synergySelectionCap).fill(null), pointsById: {} });
+      }
+      return synergyPresetsByRelic[relicId];
+    }
+    function saveActiveSynergyPresets() {
+      Object.entries(synergySelectionsByRelic).forEach(([id, state]) => {
+        const presets = relicSynergyPresets(id);
+        presets[activeSynergyPresetByRelic[id] ?? 0] = copyRelicSynergyState(state);
+      });
+    }
     function saveActiveLoadoutPreset() {
-      loadoutPresets[activeLoadoutPreset] = {
-        equippedSlots: [...equippedSlots],
-        synergySelectionsByRelic: cloneRelicSynergies(synergySelectionsByRelic)
-      };
+      saveActiveSynergyPresets();
+      loadoutPresets[activeLoadoutPreset] = { equippedSlots: [...equippedSlots] };
+    }
+    function switchRelicSynergyPreset(index) {
+      const relicId = synergyOwnerId();
+      if (!getRelic(relicId) || !Number.isInteger(index) || index < 0 || index >= 3) return false;
+      const presets = relicSynergyPresets(relicId);
+      if (index === activeSynergyPresetByRelic[relicId]) return false;
+      saveActiveSynergyPresets();
+      const previous = synergyStateForRelic(relicId);
+      synergySelectionsByRelic[relicId] = copyRelicSynergyState(presets[index]);
+      if (!validSynergyLoadout(equippedSlots)) {
+        synergySelectionsByRelic[relicId] = previous;
+        showToast('최대 단계입니다.');
+        return false;
+      }
+      activeSynergyPresetByRelic[relicId] = index;
+      const slotIndex = editingSynergyIndex ?? 0;
+      const currentId = synergySlotsForRelic(relicId)[slotIndex];
+      const otherIds = synergySlotsForRelic(relicId).filter((id, i) => i !== slotIndex && id);
+      selectedSynergyPreviewId = currentId || synergies.find(s => !otherIds.includes(s.id))?.id || null;
+      pendingSynergyId = selectedSynergyPreviewId;
+      pendingSynergyPoints = pendingSynergyId ? selectedPointsFor(getSynergy(pendingSynergyId), relicId) : null;
+      previewTouchedInModal = false;
+      lastAppliedSynergyId = null;
+      lastAppliedSynergyIndex = null;
+      saveActiveLoadoutPreset();
+      renderAll();
+      if (modalMode === 'edit') renderSynergyOptions();
+      return true;
     }
 
     function renderLoadoutPresets() {
@@ -4586,10 +4657,10 @@
     function switchLoadoutPreset(index) {
       if (!Number.isInteger(index) || index < 0 || index >= loadoutPresets.length || index === activeLoadoutPreset) return;
       saveActiveLoadoutPreset();
-      activeLoadoutPreset = index;
       const preset = loadoutPresets[index];
+      if (!validSynergyLoadout(preset.equippedSlots)) { showToast("최대 단계입니다."); return; }
+      activeLoadoutPreset = index;
       equippedSlots.splice(0, equippedSlots.length, ...preset.equippedSlots);
-      synergySelectionsByRelic = cloneRelicSynergies(preset.synergySelectionsByRelic);
       editingSynergyRelicId = null;
       fitSynergiesToCurrentLoadout();
       selectedSlotIndex = Math.max(0, equippedSlots.findIndex(Boolean));
@@ -4832,8 +4903,20 @@
       return `${signed && rounded >= 0 ? "+" : ""}${text}%`;
     }
 
+    function levelGrowthStep(base, growth, maxLevel) {
+      if (!Number.isFinite(base) || base <= 0) return 0;
+      const raw = base * growth / Math.max(1, Number(maxLevel) || 100);
+      return Math.max(1, Math.ceil(raw * 100 - 1e-9)) / 100;
+    }
+    function steppedLevelAmount(base, level, maxLevel, growth) {
+      const cap = Math.max(1, Number(maxLevel) || 100);
+      const safeLevel = Math.min(cap, Math.max(0, Number(level) || 0));
+      const baseCents = Math.round(base * 100);
+      const stepCents = Math.round(levelGrowthStep(base, growth, cap) * 100);
+      return (baseCents + stepCents * safeLevel) / 100;
+    }
     function scaledLevelPercent(amount, level, maxLevel) {
-      return amount * (1 + levelGrowthRatio(level, maxLevel));
+      return steppedLevelAmount(amount, level, maxLevel, maxLevelEffectGrowth);
     }
 
     function levelScaledDescription(value, level, maxLevel) {
@@ -4841,8 +4924,7 @@
     }
 
     function ownedEffectAmount(effect, relic, stars = relic.stars, level = relic.level) {
-      const safeLevel = Math.min(relic.maxLevel, Math.max(0, Number(level) || 0));
-      return (effect.base + effect.perStar * stars) * (1 + ownedMaxLevelEffectGrowth * safeLevel / relic.maxLevel);
+      return steppedLevelAmount(effect.base + effect.perStar * stars, level, relic.maxLevel, ownedMaxLevelEffectGrowth);
     }
 
     function formatOwnedEffect(effect, amount, signed = true, precision = 2) {
@@ -4876,8 +4958,7 @@
 
     function renderGrowthDeltaBadge(delta, unit = "percent") {
       if (!Number.isFinite(delta) || Math.abs(delta) < 0.000001) return "";
-      const precision = Math.abs(delta) < 0.01 ? 3 : 2;
-      const display = formatOwnedEffect({ unit }, delta, false, precision);
+      const display = formatOwnedEffect({ unit }, delta, false, 2);
       return `<span class="next-value">(+${display})</span>`;
     }
 
@@ -5152,7 +5233,7 @@
         const synergy = getSynergy(id);
         const points = synergy ? selectedPointsFor(synergy, relic.id) : 0;
         const content = synergy ? `<span class="summary-token-icon" aria-hidden="true">${synergy.icon}<span class="synergy-level-chip">${synergyLevelFor(synergy, points)}</span></span>` : '<span aria-hidden="true">+</span>';
-        return `<button class="summary-token ${synergy ? synergyPointClass(synergy) : 'empty'}" type="button" data-relic-synergy-index="${index}" aria-label="${relic.name} 특성 슬롯 ${index + 1}${synergy ? ': ' + synergy.name + ', ' + synergyLevelFor(synergy, points) + '단계' : ': 선택'}" ${relic.owned ? '' : 'disabled'}>${content}</button>`;
+        return `<button class="summary-token ${synergy ? synergyPointClass(synergy) : 'empty'}" type="button" data-relic-synergy-index="${index}" aria-label="${relic.name} 특성 슬롯 ${index + 1}${synergy ? ': ' + synergy.name + ', ' + synergyLevelFor(synergy, points) + '단계' : ': 선택'}">${content}</button>`;
       }).join("");
       return `<div class="relic-synergy-selection"><div class="relic-synergy-selection-head"><span>특성</span><span class="point-total" aria-label="사용 포인트 ${selectedSynergyPoints(ids, relic.id)} / ${synergyPointCap(relic.id)}">${selectedSynergyPoints(ids, relic.id)}/${synergyPointCap(relic.id)} ${pointIconMarkup()}</span></div><div class="relic-synergy-slots">${slots}</div></div>`;
     }
@@ -5194,17 +5275,17 @@
       levelupButton.classList.toggle("action-success", lastActionFeedback === "upgrade");
       levelupButton.classList.add("levelup-action");
       levelupButton.disabled = !canPreviewUpgrade;
-      const isSelectingEquipSlot = pendingEquipRelicId === relic.id;
-      equipActionButton.dataset.action = isSelectingEquipSlot ? "cancel-equip" : isEquipped ? "unequip" : "equip";
-      equipActionButton.textContent = isSelectingEquipSlot ? "장착 취소" : isEquipped ? "장착 해제" : "장착";
+      equipActionButton.dataset.action = isEquipped ? "unequip" : "equip";
+      equipActionButton.textContent = isEquipped ? "장착 해제" : "장착";
       equipActionButton.classList.add("equip-action");
       equipActionButton.classList.toggle("unequip-action", isEquipped);
-      equipActionButton.classList.toggle("cancel-equip-action", isSelectingEquipSlot);
-      equipActionButton.disabled = isSelectingEquipSlot || isEquipped ? false : !canEquipRelic(relic);
+      equipActionButton.classList.remove("cancel-equip-action");
+      equipActionButton.disabled = isEquipped ? false : !canEquipRelic(relic);
     }
 
     function renderSynergyOptions() {
       synergyList.className = "synergy-list common-synergy-list restored-synergy-list";
+      relicSynergyPresets();
       const selectedPoints = selectedSynergyPoints();
       modalSynergyLimit.innerHTML = "";
       const currentId = synergySlotsForRelic()[editingSynergyIndex] || null;
@@ -5302,6 +5383,7 @@
 
       synergyList.innerHTML = `
         <div class="modal-synergy-slots">
+          <div class="synergy-preset-tabs" role="group" aria-label="특성 프리셋">${Array.from({ length: 3 }, (_, index) => `<button class="synergy-preset-tab ${index === (activeSynergyPresetByRelic[synergyOwnerId()] ?? 0) ? 'active' : ''}" type="button" data-synergy-preset="${index}" aria-pressed="${index === (activeSynergyPresetByRelic[synergyOwnerId()] ?? 0)}" aria-label="특성 프리셋 ${index + 1}">${index + 1}</button>`).join('')}</div>
           <div class="modal-synergy-slots-row">${selectedSlots}</div>
         </div>
         <div class="synergy-icon-grid">${iconGrid}</div>
@@ -5310,7 +5392,7 @@
     }
 
     function openModal(index) {
-      if (!getRelic(selectedRelicId)?.owned || !Number.isInteger(index) || index < 0 || index >= activeSynergySlotCount()) return;
+      if (!getRelic(selectedRelicId) || !Number.isInteger(index) || index < 0 || index >= activeSynergySlotCount()) return;
       editingSynergyRelicId = selectedRelicId;
       lastModalFocus = document.activeElement;
       modalMode = "edit";
@@ -5668,6 +5750,17 @@
       renderAll();
     });
 
+    const testControlsToggle = document.querySelector('#testControlsToggle');
+    const testControlsPanel = document.querySelector('#testControlsPanel');
+    testControlsToggle.addEventListener('click', () => {
+      const expanded = testControlsPanel.hidden;
+      testControlsPanel.hidden = !expanded;
+      testControlsToggle.setAttribute('aria-expanded', String(expanded));
+      testControlsToggle.setAttribute('aria-label', expanded ? '테스트 버튼 숨기기' : '테스트 버튼 표시');
+      testControlsToggle.title = expanded ? '테스트 버튼 숨기기' : '테스트 버튼 표시';
+      testControlsToggle.textContent = expanded ? '‹' : '›';
+    });
+
     bulkEquipButton.addEventListener("click", bulkEquipRelics);
     bulkEquipSynergyButton.addEventListener("click", bulkEquipSynergies);
     drawRelicHundredButton.addEventListener("click", () => drawTestReward(100));
@@ -5717,6 +5810,8 @@
     });
 
     synergyList.addEventListener("click", (event) => {
+      const presetButton = event.target.closest("[data-synergy-preset]");
+      if (modalMode === "edit" && presetButton) { switchRelicSynergyPreset(Number(presetButton.dataset.synergyPreset)); return; }
       const viewedSlot = event.target.closest("[data-view-equipped-synergy-id]");
       if (modalMode === "equipped-view" && viewedSlot) {
         viewedEquippedSynergyId = viewedSlot.dataset.viewEquippedSynergyId;

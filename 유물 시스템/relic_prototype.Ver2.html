@@ -4473,7 +4473,8 @@
     }
     function synergyContributionBadge(synergy, relicId = synergyOwnerId(), ownLevel = null) {
       const value = synergyContribution(synergy, relicId, ownLevel);
-      return value.final ? '<span class="synergy-level-chip">'+value.final+'</span>' : '';
+      const displayLevel = value.equipped ? value.final : (value.own || value.other);
+      return displayLevel ? '<span class="synergy-level-chip">'+displayLevel+'</span>' : '';
     }
 
     function canInvestSynergyLevel(synergy, points, relicId = synergyOwnerId()) {
@@ -5368,7 +5369,7 @@
               <div class="preview-synergy-card ${previewPointClass}" aria-hidden="true">
                 <div class="synergy-icon">${previewSynergy.icon}${previewIconLevel}</div>
               </div>
-              <div class="preview-title"><div class="option-title"><span class="preview-level-label">${previewContribution.final || previewLevel}/${previewSynergy.stages.length} 단계</span><span class="preview-synergy-name">${previewSynergy.name}</span></div></div>
+              <div class="preview-title"><div class="option-title"><span class="preview-level-label">${(previewContribution.equipped ? previewContribution.final : previewContribution.own) || previewLevel}/${previewSynergy.stages.length} 단계</span><span class="preview-synergy-name">${previewSynergy.name}</span></div></div>
             </div>
             <div class="synergy-effect-preview">${proposedContribution.equipped ? proposedContribution.effect : synergyEffectFor(previewSynergy, previewPoints)}</div>
           </div>

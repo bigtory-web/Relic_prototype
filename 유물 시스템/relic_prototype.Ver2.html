@@ -365,6 +365,10 @@
       background: linear-gradient(90deg, rgba(44, 214, 161, 0.35), rgba(44, 214, 161, 0.7));
     }
 
+    .shard-gauge.max-level .shard-fill {
+      background: linear-gradient(90deg, #24483d, #326b58);
+    }
+
     .relic-card.locked .shard-fill {
       background: linear-gradient(90deg, rgba(125, 130, 120, 0.22), rgba(125, 130, 120, 0.5));
     }
@@ -3808,6 +3812,7 @@
     .equipped-synergy-view { --synergy-card-radius: 8px; --equipped-info-height: 200px; display: grid; grid-template-columns: 220px minmax(0, 1fr); grid-template-rows: auto; align-content: center; gap: 8px; min-height: 0; }
     .equipped-synergy-view-slots { grid-column: 1; grid-row: 1; align-self: stretch; width: 100%; height: auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); align-content: center; justify-items: center; gap: 8px; padding: 9px; border: 2px solid rgba(112, 145, 177, .72); border-radius: 9px; background: linear-gradient(135deg, rgba(43, 59, 76, .34), rgba(28, 32, 36, .44)); box-shadow: inset 0 0 0 1px rgba(155, 183, 210, .12); overflow: hidden; }
     .equipped-relic-synergy-item { width: 58px; height: 58px; min-width: 0; padding: 4px; cursor: pointer; }
+    .equipped-relic-synergy-item.view-selected { border-color: var(--accent-soft); outline: 2px solid var(--accent); outline-offset: -2px; box-shadow: 0 0 0 2px rgba(52, 200, 156, .2); }
     .equipped-relic-synergy-item .summary-token-icon { width: 34px; height: 34px; font-size: 18px; }
     .equipped-total-synergies { width: min(100%, 320px); display: grid; justify-items: center; padding: 8px; border: 0; border-radius: 0; background: transparent; }
     .equipped-total-synergies-grid { display: grid; grid-template-columns: repeat(3, 58px); justify-content: center; align-content: start; gap: 6px; }
@@ -3819,7 +3824,7 @@
     .equipped-synergy-view-detail .preview-level-label { color: #a9afa8; font-size: 13px; line-height: 1; }
     .equipped-synergy-view-detail .preview-synergy-name { color: #f5f2eb; font-size: 18px; line-height: 1.2; }
     .equipped-synergy-view-detail .preview-synergy-card { width: 58px; height: 58px; padding: 0; }
-    .equipped-synergy-view-detail .preview-synergy-card .synergy-icon { width: 34px; height: 34px; font-size: 18px; }
+    .equipped-synergy-view-detail .preview-synergy-card .synergy-icon { position: relative; overflow: visible; width: 34px; height: 34px; font-size: 18px; }
     .equipped-synergy-view-detail .synergy-effect-preview { margin-top: 10px; font-size: 12px; }
     .equipped-synergy-view-content > .action-button { width: min(100%, var(--equipped-detail-width)); justify-self: center; }
     .equipped-summary-slot { cursor: pointer; }
@@ -3834,6 +3839,7 @@
     .test-controls-dock .draw-panel { margin: 0; grid-template-columns: 1fr; gap: 6px; }
     .test-controls-dock .draw-panel[hidden] { display: none; }
     .test-controls-dock .draw-button { grid-column: auto !important; grid-row: auto !important; width: 100%; height: 34px; border-radius: 6px; font-size: 11px; font-weight: 400; }
+    .test-controls-label { color: #aeb8b1; font-size: 11px; font-weight: 400; line-height: 1.3; }
     .inventory .inventory-grid { flex: 1 1 auto; }
         .test-controls-divider { width: 100%; height: 1px; margin: 4px 0; border: 0; background: #48534d; }
     .test-controls-dock #drawRelicHundredButton { background: #45371e; border-color: #947445; color: #f0d29b; }
@@ -3856,12 +3862,15 @@
   <aside class="test-controls-dock" aria-label="테스트 도구">
     <button class="test-controls-toggle" id="testControlsToggle" type="button" aria-controls="testControlsPanel" aria-expanded="true" aria-label="테스트 버튼 숨기기" title="테스트 버튼 숨기기">‹</button>
       <div class="draw-panel" id="testControlsPanel">
+        <div class="test-controls-label">유물 뽑기</div>
         <button class="draw-button" type="button" id="drawRelicHundredButton">100회 뽑기</button>
         <hr class="test-controls-divider">
+        <div class="test-controls-label">유물 레벨업</div>
         <button class="draw-button" type="button" id="bulkLevelUpButton">일괄 레벨업</button>
         <button class="draw-button" type="button" id="maxLevelUpButton">최대 레벨업</button>
         <hr class="test-controls-divider">
-        <button class="draw-button" type="button" id="bulkEquipButton">일괄 장착</button>
+        <div class="test-controls-label">슬롯 장착</div>
+        <button class="draw-button" type="button" id="bulkEquipButton">유물 장착</button>
         <button class="draw-button" type="button" id="bulkEquipSynergyButton">특성 장착</button>
       </div>
   </aside>
@@ -4744,7 +4753,9 @@
 
     function renderShardGauge(relic) {
       if (relic.owned && relic.level >= relic.maxLevel) {
-        return `<span class="shard-gauge" aria-label="조각 ${relic.shards}개, 최대 레벨"><span class="shard-fill" style="--shard-progress: 100%;"></span><span class="shard-label">${relic.shards}/MAX</span></span>`;
+        const lastRequired = relic.maxLevel <= 10 ? relic.maxLevel : 10 + Math.floor((relic.maxLevel - 1) / 10) * 5;
+        const progress = Math.min(100, Math.round((relic.shards / lastRequired) * 100));
+        return `<span class="shard-gauge max-level" aria-label="최대 레벨, 조각 ${relic.shards}/${lastRequired}"><span class="shard-fill" style="--shard-progress: ${progress}%;"></span><span class="shard-label">${relic.shards}/${lastRequired}</span></span>`;
       }
       return `
         <span class="shard-gauge" aria-label="조각 ${relic.shards}/${relic.requiredShards}">
@@ -5084,7 +5095,7 @@
       }
       return relic.baseEquipEffect.map(([label, value]) => `
         <div class="effect-card">
-          <span class="effect-desc">${renderDescriptionWithNext(value, relic)}</span>
+          <span class="effect-desc">${renderDescriptionWithNext(splitEffectMeta(value).description, relic)}</span>
         </div>
       `).join("");
     }
@@ -5109,7 +5120,7 @@
         </div>
         <div class="promotion-compare">
           <div class="promotion-effect-section stat-section">
-            <div class="promotion-card-title">장착 효과</div>
+            <div class="effect-heading"><div class="promotion-card-title">장착 효과</div>${effectMetaMarkup(relic.baseEquipEffect)}</div>
             ${levelUpEffectCards(relic)}
           </div>
           <div class="promotion-effect-section owned-section">

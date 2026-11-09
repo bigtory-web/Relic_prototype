@@ -940,6 +940,10 @@
       gap: 5px;
     }
 
+    .effect-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .effect-meta { display: flex; justify-content: flex-end; gap: 5px; }
+    .effect-meta-badge { padding: 2px 7px; border: 1px solid #6f9185; border-radius: 4px; color: #c5ddd2; font-size: 12px; font-weight: 400; line-height: 1.35; white-space: nowrap; }
+
     .stat-title {
       width: max-content;
       padding: 3px 9px;
@@ -5251,6 +5255,16 @@
       return `<div class="relic-synergy-selection"><div class="relic-synergy-selection-head"><span>특성</span><span class="point-total" aria-label="사용 포인트 ${selectedSynergyPoints(ids, relic.id)} / ${synergyPointCap(relic.id)}">${selectedSynergyPoints(ids, relic.id)}/${synergyPointCap(relic.id)} ${pointIconMarkup()}</span></div><div class="relic-synergy-slots">${slots}</div></div>`;
     }
 
+    function splitEffectMeta(value) {
+      const match = value.match(/\s*\((\d+(?:\.\d+)?(?:초|중첩))\)\s*$/);
+      return { description: match ? value.slice(0, match.index).trimEnd() : value, meta: match ? match[1] : "" };
+    }
+
+    function effectMetaMarkup(effects) {
+      const values = effects.map(([, value]) => splitEffectMeta(value).meta).filter(Boolean);
+      return values.length ? '<span class="effect-meta">' + values.map((value) => '<span class="effect-meta-badge">' + value + '</span>').join("") + '</span>' : "";
+    }
+
     function renderDetail() {
       const relic = getRelic(selectedRelicId);
       if (!relic) return;
@@ -5267,7 +5281,7 @@
       `;
       const equipRows = relic.equipEffect.map(([, value]) => `
         <div class="effect-card ${relic.owned ? "" : "disabled"}">
-          <span class="effect-desc">${highlightLevelScaledValue(value)}</span>
+          <span class="effect-desc">${highlightLevelScaledValue(splitEffectMeta(value).description)}</span>
         </div>
       `).join("");
       const ownedRows = relic.ownedEffect.map(([label, value]) => `
@@ -5276,7 +5290,7 @@
           <span class="effect-desc">${highlightLevelScaledValue(displayOwnedEffectValue(value))}</span>
         </div>
       `).join("");
-      statBlock.innerHTML = `<div class="detail-tab-content relic-effect-tab"><div class="stat-section"><div class="stat-title">장착 효과</div>${equipRows}</div><div class="owned-section"><div class="stat-title">보유 효과</div>${ownedRows}</div><div class="owned-section synergy-info-section">${renderRelicSynergySlots(relic)}</div></div>`;
+      statBlock.innerHTML = `<div class="detail-tab-content relic-effect-tab"><div class="stat-section"><div class="effect-heading"><div class="stat-title">장착 효과</div>${effectMetaMarkup(relic.equipEffect)}</div>${equipRows}</div><div class="owned-section"><div class="stat-title">보유 효과</div>${ownedRows}</div><div class="owned-section synergy-info-section">${renderRelicSynergySlots(relic)}</div></div>`;
       detailActions.hidden = false;
       const levelupButton = document.querySelector('[data-action="levelup"]');
       const canUpgrade = canUpgradeRelic(relic);

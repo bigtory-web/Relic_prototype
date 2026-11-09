@@ -7207,9 +7207,9 @@
     <header class="hero">
       <h1>유물 효과 문서</h1>
       <div class="doc-tabs" role="tablist" aria-label="문서 보기">
-        <button class="tab-button" type="button" role="tab" id="input-rules-tab" aria-selected="false" aria-controls="input-rules-panel" tabindex="-1" data-tab-target="input-rules-panel">유물 테이블</button>
+        <button class="tab-button" type="button" role="tab" id="input-rules-tab" aria-selected="true" aria-controls="input-rules-panel" data-tab-target="input-rules-panel">유물 테이블</button>
         <button class="tab-button" type="button" role="tab" id="effect-list-tab" aria-selected="false" aria-controls="effect-list-panel" tabindex="-1" data-tab-target="effect-list-panel">유물 리스트</button>
-        <button class="tab-button" type="button" role="tab" id="combo-preview-tab" aria-selected="true" aria-controls="combo-preview-panel" data-tab-target="combo-preview-panel">유물 시뮬레이션</button>
+        <button class="tab-button" type="button" role="tab" id="combo-preview-tab" aria-selected="false" aria-controls="combo-preview-panel" tabindex="-1" data-tab-target="combo-preview-panel">유물 시뮬레이션</button>
       </div>
     </header>
 
@@ -7218,7 +7218,7 @@
         <h2>유물 테이블</h2>
       </div>
       <div class="section-body">
-        <div class="tab-panel" id="input-rules-panel" role="tabpanel" aria-labelledby="input-rules-tab" hidden>
+        <div class="tab-panel" id="input-rules-panel" role="tabpanel" aria-labelledby="input-rules-tab">
           <div class="feature-context-intro"><ul class="document-bullets"><li>유물 장착 효과와 특성 효과의 입력 데이터 구조를 확인한다.</li><li>각 필드의 의미와 효과 설명을 함께 확인한다.</li></ul></div>
           <div class="types-group">
             <div class="grid">
@@ -7386,7 +7386,7 @@
             </div>
           </div>
         </div>
-        <div class="tab-panel" id="combo-preview-panel" role="tabpanel" aria-labelledby="combo-preview-tab">
+        <div class="tab-panel" id="combo-preview-panel" role="tabpanel" aria-labelledby="combo-preview-tab" hidden>
           <article class="card combo-preview-card">
             <div class="simulator-workspace">
               <div class="simulation-mode-tabs" role="tablist" aria-label="유물 시뮬레이션 하위 탭">
@@ -14520,7 +14520,7 @@ function representativeComponentShareTableHtml(data) {
           document.getElementById(link.dataset.openTab)?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
       });
-      const defaultTab = Array.from(previewTabButtons).find((button) => button.dataset.tabTarget === "combo-preview-panel");
+      const defaultTab = Array.from(previewTabButtons).find((button) => button.dataset.tabTarget === "input-rules-panel");
       if (defaultTab) activateTab(defaultTab);
     }
 
